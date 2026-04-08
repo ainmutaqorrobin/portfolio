@@ -29,6 +29,13 @@ const statusLabels: Record<ProjectStatus, string> = {
     live: 'Live',
 }
 
+const projectImages: Record<string, string> = {
+    'AI-Powered Notes with RAG': '/ai-notes.png',
+    'Book Review Platform': '/book-review.png',
+    'Ticketing App': '/ticket-app.png',
+    'Recipe Shop': '/recipe-shop.png',
+}
+
 export function ProjectsSection({ projects }: { projects: Project[] }) {
     return (
         <SectionReveal id="projects" delay={160}>
@@ -46,12 +53,24 @@ export function ProjectsSection({ projects }: { projects: Project[] }) {
                         <SectionReveal delay={index * 80} key={project.name}>
                             <Card
                                 className={cn(
-                                    'h-full border-border/70 bg-background/55',
+                                    'relative h-full overflow-hidden border-border/70 bg-background/55',
                                     project.status === 'deprecated' &&
                                         'border-red-400/15 bg-red-400/5'
                                 )}
                             >
-                                <CardHeader className="gap-4">
+                                {projectImages[project.name] ? (
+                                    <div className="relative h-52 overflow-hidden border-b border-border/60 sm:h-60">
+                                        <div
+                                            className="absolute inset-0 bg-cover bg-center"
+                                            style={{
+                                                backgroundImage: `url(${projectImages[project.name]})`,
+                                            }}
+                                        />
+                                        <div className="absolute inset-0 bg-[linear-gradient(180deg,hsl(var(--background)/0.08),hsl(var(--background)/0.16)_35%,hsl(var(--background)/0.72))]" />
+                                        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background/85 to-transparent" />
+                                    </div>
+                                ) : null}
+                                <CardHeader className="relative gap-4 bg-background/92">
                                     <div className="flex flex-wrap items-center justify-between gap-3">
                                         <p className="text-sm uppercase tracking-[0.22em] text-muted-foreground">
                                             {project.date}
@@ -78,7 +97,7 @@ export function ProjectsSection({ projects }: { projects: Project[] }) {
                                         ))}
                                     </div>
                                 </CardHeader>
-                                <CardContent className="grid gap-5">
+                                <CardContent className="relative grid gap-5 bg-background/92">
                                     <div className="flex flex-wrap gap-2">
                                         {project.stack.map((item) => (
                                             <Badge key={item} variant="outline">
