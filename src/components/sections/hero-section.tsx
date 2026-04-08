@@ -149,7 +149,7 @@ export function HeroSection({ profile }: { profile: Profile }) {
             <SectionReveal delay={240}>
                 <Card className="overflow-hidden border-primary/15 bg-card/70">
                     <CardContent className="p-4">
-                        <div className="relative overflow-hidden rounded-[1.5rem] border border-border/60 bg-[linear-gradient(180deg,hsl(var(--primary)/0.18),hsl(var(--secondary))_38%,hsl(var(--background)))]">
+                        <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-[linear-gradient(180deg,hsl(var(--primary)/0.18),hsl(var(--secondary))_38%,hsl(var(--background)))]">
                             <div className="absolute inset-x-0 top-0 z-10 flex flex-wrap justify-between gap-2 p-4">
                                 <Badge
                                     variant="outline"
@@ -164,7 +164,7 @@ export function HeroSection({ profile }: { profile: Profile }) {
                                     Full-Stack Developer
                                 </Badge>
                             </div>
-                            <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-background via-background/60 to-transparent p-5">
+                            <div className="absolute inset-x-0 bottom-0 z-10 bg-linear-to-t from-background via-background/60 to-transparent p-5">
                                 <p className="font-heading text-xl text-foreground">
                                     {profile.name}
                                 </p>
@@ -180,7 +180,7 @@ export function HeroSection({ profile }: { profile: Profile }) {
                                 width={1440}
                                 height={1800}
                                 sizes="(min-width: 1024px) 32vw, (min-width: 640px) 50vw, 100vw"
-                                className="relative z-[1] mx-auto h-[360px] w-auto max-w-full object-contain object-bottom pt-14 sm:h-[440px] lg:h-[520px]"
+                                className="relative z-1 mx-auto h-90 w-auto max-w-full object-contain object-bottom pt-14 sm:h-[440px] lg:h-[520px]"
                                 priority
                             />
                         </div>
