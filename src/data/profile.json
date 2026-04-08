@@ -39,6 +39,28 @@
                 "Used Swagger and Postman to check and document APIs, ensuring the website runs correctly.",
                 "Developed comprehensive utility functions and global CSS variables, enhancing code reusability and maintaining consistent design system across multiple modules."
             ]
+        },
+        {
+            "company": "Mesiniaga Berhad",
+            "role": "Software Engineer (Protege)",
+            "period": "2024 - 2024",
+            "summary": "Built web applications using Next.js and TypeScript in a product-focused team environment.",
+            "highlights": [
+                "Handling front-end development and developing web application using TypeScript language in Angular Framework.",
+                "Convert REST API and make API Integration from business logic to front-end application using Angular.",
+                "Resolve ticketing issue and bug raised by partner related with internal library and company framework in GitLab"
+            ]
+        },
+        {
+            "company": "Netizen Experience",
+            "role": "Software Engineer Internship",
+            "period": "2023 - 2023",
+            "summary": "Built web applications using Next.js and TypeScript in a product-focused team environment.",
+            "highlights": [
+                "Incorporate doing some web development task using Html, CSS, JavaScript and TypeScript.",
+                "Develop Internal project using TypeScript language in React, CSS Modules and GitHub.",
+                "Created E-commerce website documentation (Front-end and Back-end) related with Next.JS and AWS Lambda."
+            ]
         }
     ],
     "skills": {

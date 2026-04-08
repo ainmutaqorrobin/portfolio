@@ -1,11 +1,14 @@
 import { SectionReveal } from '@/components/section-reveal'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { cn } from '@/lib/utils'
 import type { Profile } from '@/lib/content'
 
 export function ExperienceSection({
     workExperience,
 }: Pick<Profile, 'workExperience'>) {
+    const timelineItems = workExperience
+
     return (
         <SectionReveal id="experience" delay={120}>
             <Card>
@@ -18,44 +21,76 @@ export function ExperienceSection({
                     </CardTitle>
                 </CardHeader>
                 <CardContent className="grid gap-4">
-                    {workExperience.map((job, index) => (
-                        <article
-                            className="grid gap-5 rounded-[1.75rem] border border-border/60 bg-secondary/35 p-6 lg:grid-cols-[140px_1fr]"
-                            key={`${job.company}-${job.period}`}
-                        >
-                            <div className="space-y-2">
-                                <p className="text-xs uppercase tracking-[0.24em] text-primary">
-                                    Role {String(index + 1).padStart(2, '0')}
-                                </p>
-                                <p className="text-sm text-muted-foreground">
-                                    {job.period}
-                                </p>
-                            </div>
-                            <div className="space-y-4">
-                                <div>
-                                    <h3 className="font-heading text-2xl">
-                                        {job.role}
-                                    </h3>
-                                    <p className="mt-1 text-sm text-muted-foreground">
-                                        {job.company}
-                                    </p>
-                                </div>
-                                <p className="max-w-3xl text-sm leading-7 text-muted-foreground sm:text-base">
-                                    {job.summary}
-                                </p>
-                                <ul className="grid gap-2 text-sm text-muted-foreground">
-                                    {job.highlights.map((highlight) => (
-                                        <li
-                                            className="rounded-2xl border border-border/60 bg-background/50 px-4 py-3"
-                                            key={highlight}
-                                        >
-                                            {highlight}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </article>
-                    ))}
+                    <div className="relative mx-auto max-w-5xl py-4">
+                        <div className="absolute bottom-0 left-4 top-0 w-px bg-border/70 md:left-1/2 md:-translate-x-1/2" />
+                        {timelineItems.map((job, index) => {
+                            const isCurrent = index === 0
+
+                            return (
+                                <SectionReveal
+                                    className="relative pb-8 last:pb-0"
+                                    delay={index * 80}
+                                    key={`${job.company}-${job.period}`}
+                                >
+                                    <div className="absolute left-4 top-10 size-4 -translate-x-1/2 rounded-full border-4 border-background bg-primary shadow-[0_0_0_1px_hsl(var(--border))] md:left-1/2" />
+                                    <div
+                                        className={cn(
+                                            'ml-10 md:ml-0 md:grid md:grid-cols-2 md:gap-10',
+                                            index % 2 === 0
+                                                ? ''
+                                                : 'md:[&>*:first-child]:col-start-2'
+                                        )}
+                                    >
+                                        <article className="rounded-[1.75rem] border border-border/60 bg-secondary/35 p-6 shadow-sm">
+                                            <div className="mb-4 flex flex-col gap-3">
+                                                <div className="flex flex-wrap items-center gap-3">
+                                                    <Badge
+                                                        variant="outline"
+                                                        className="w-fit"
+                                                    >
+                                                        {isCurrent
+                                                            ? 'Current'
+                                                            : `Previous ${String(
+                                                                  index
+                                                              ).padStart(
+                                                                  2,
+                                                                  '0'
+                                                              )}`}
+                                                    </Badge>
+                                                    <p className="text-sm text-muted-foreground">
+                                                        {job.period}
+                                                    </p>
+                                                </div>
+                                                <div className="space-y-1">
+                                                    <h3 className="font-heading text-2xl">
+                                                        {job.role}
+                                                    </h3>
+                                                    <p className="text-sm text-muted-foreground">
+                                                        {job.company}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <p className="max-w-3xl text-sm leading-7 text-muted-foreground sm:text-base">
+                                                {job.summary}
+                                            </p>
+                                            <ul className="mt-4 grid gap-2 text-sm text-muted-foreground">
+                                                {job.highlights.map(
+                                                    (highlight) => (
+                                                        <li
+                                                            className="rounded-2xl border border-border/60 bg-background/50 px-4 py-3"
+                                                            key={highlight}
+                                                        >
+                                                            {highlight}
+                                                        </li>
+                                                    )
+                                                )}
+                                            </ul>
+                                        </article>
+                                    </div>
+                                </SectionReveal>
+                            )
+                        })}
+                    </div>
                 </CardContent>
             </Card>
         </SectionReveal>
