@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 
 import { SectionReveal } from '@/components/section-reveal'
 import { ThemeToggle } from '@/components/theme-toggle'
@@ -16,6 +16,7 @@ const navItems = [
 
 export function SiteHeader({ role }: Pick<Profile, 'role'>) {
     const [activeSection, setActiveSection] = useState<string>('about')
+    const [, startTransition] = useTransition()
 
     useEffect(() => {
         const sections = navItems
@@ -27,18 +28,38 @@ export function SiteHeader({ role }: Pick<Profile, 'role'>) {
         let ticking = false
 
         const updateActiveSection = () => {
-            const offset = 140
-            const scrollPosition = window.scrollY + offset
+            const focusLine = 150
+            const scrollBottom = window.scrollY + window.innerHeight
+            const documentHeight = document.documentElement.scrollHeight
 
             let currentSection = sections[0].id
 
-            for (const section of sections) {
-                if (scrollPosition >= section.offsetTop) {
-                    currentSection = section.id
+            if (scrollBottom >= documentHeight - 4) {
+                currentSection = sections.at(-1)?.id ?? currentSection
+            } else {
+                let closestDistance = Number.POSITIVE_INFINITY
+
+                for (const section of sections) {
+                    const top = section.getBoundingClientRect().top
+
+                    if (top <= focusLine) {
+                        const distance = Math.abs(top - focusLine)
+
+                        if (distance < closestDistance) {
+                            closestDistance = distance
+                            currentSection = section.id
+                        }
+                    }
                 }
             }
 
-            setActiveSection(currentSection)
+            startTransition(() => {
+                setActiveSection((previousSection) =>
+                    previousSection === currentSection
+                        ? previousSection
+                        : currentSection
+                )
+            })
             ticking = false
         }
 
