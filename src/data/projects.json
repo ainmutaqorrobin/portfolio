@@ -1,0 +1,29 @@
+[
+  {
+    "name": "Project Alpha",
+    "date": "2025",
+    "stack": ["Next.js", "TypeScript", "Docker"],
+    "status": "live",
+    "githubRepo": "https://github.com/your-username/project-alpha",
+    "hostedLink": "https://project-alpha.example.com",
+    "summary": "TODO: Short description of the project and the result it delivered."
+  },
+  {
+    "name": "Project Beta",
+    "date": "2024",
+    "stack": ["React", "Node.js", "PostgreSQL"],
+    "status": "development",
+    "githubRepo": "https://github.com/your-username/project-beta",
+    "hostedLink": "",
+    "summary": "TODO: Explain what this project is, why it matters, and what is still in progress."
+  },
+  {
+    "name": "Project Gamma",
+    "date": "2023",
+    "stack": ["Vue", "Firebase"],
+    "status": "deprecated",
+    "githubRepo": "https://github.com/your-username/project-gamma",
+    "hostedLink": "",
+    "summary": "TODO: Mention why this project is deprecated or archived."
+  }
+]
