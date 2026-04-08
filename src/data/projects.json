@@ -1,29 +1,57 @@
 [
     {
-        "name": "Project Alpha",
+        "name": "AI-Powered Notes with RAG",
         "date": "2025",
-        "stack": ["Next.js", "TypeScript", "Docker"],
+        "stack": [
+            "Next.js",
+            "Convex",
+            "OpenAI",
+            "RadixUI",
+            "Tailwind CSS",
+            "Lucide Icons",
+            "TypeScript",
+            "Docker"
+        ],
         "status": "live",
-        "githubRepo": "https://github.com/your-username/project-alpha",
-        "hostedLink": "https://project-alpha.example.com",
-        "summary": "TODO: Short description of the project and the result it delivered."
+        "githubRepo": "https://github.com/ainmutaqorrobin/AI-notes",
+        "hostedLink": "https://ai-notes-vert.vercel.app/",
+        "summary": "Note AI is an intelligent note-taking application powered by AI. It allows users to create and manage notes, and then ask questions about their notes using RAG (Retrieval-Augmented Generation) with OpenAI. It’s a great example of combining Next.js, Convex, and the Vercel AI SDK to build real-time, full-stack AI experiences."
     },
     {
-        "name": "Project Beta",
-        "date": "2024",
-        "stack": ["React", "Node.js", "PostgreSQL"],
+        "name": "Book Review Platform",
+        "date": "2025",
+        "stack": [
+            "Express",
+            "TypeScript",
+            "PostgreSQL",
+            "Mastra AI",
+            "Docker",
+            "Next.js",
+            "ShadCN",
+            "Sonner",
+            "Lucide Icons"
+        ],
+        "status": "live",
+        "githubRepo": "https://github.com/ainmutaqorrobin/book-review-platform",
+        "hostedLink": "https://book-review.syura.my/",
+        "summary": "A full-stack web application where users can browse books, write reviews, and get AI-enriched insights (summary, sentiment, and tags) powered by Mastra AI."
+    },
+    {
+        "name": "Ticketing App",
+        "date": "2025",
+        "stack": ["Node.JS", "Docker", "Kubernetes", "skaffold", "Express"],
         "status": "development",
-        "githubRepo": "https://github.com/your-username/project-beta",
+        "githubRepo": "https://github.com/ainmutaqorrobin/TicketingApp",
         "hostedLink": "",
-        "summary": "TODO: Explain what this project is, why it matters, and what is still in progress."
+        "summary": "A microservices-based ticketing system. This project is inspired by real-world event-ticketing platforms and demonstrates concepts like event-driven architecture, asynchronous communication, and service isolation."
     },
     {
-        "name": "Project Gamma",
-        "date": "2023",
-        "stack": ["Vue", "Firebase"],
+        "name": "Recipe Shop",
+        "date": "2024",
+        "stack": ["Angular", "Bootstrap", "Firebase"],
         "status": "deprecated",
-        "githubRepo": "https://github.com/your-username/project-gamma",
-        "hostedLink": "",
-        "summary": "TODO: Mention why this project is deprecated or archived."
+        "githubRepo": "https://github.com/ainmutaqorrobin/RecipeShop",
+        "hostedLink": "https://ng-project-18616.web.app",
+        "summary": "Recipe Shop where user can add ingredients list to shop by adding manually at shopping list tab or by importing the ingredients from recipe book."
     }
 ]
