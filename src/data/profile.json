@@ -40,29 +40,25 @@
             ]
         }
     ],
-    "skills": [
-        "Javascript",
-        "TypeScript",
-        "React",
-        "Next.js",
-        "Angular",
-        "Node.js",
-        "Express",
-        "NestJS",
-        "MongoDB",
-        "PostgreSQL",
-        "Firebase",
-        "Convex",
-        "Docker",
-        "Postman",
-        "NATS Streaming",
-        "Jest",
-        "Docker",
-        "Kubernetes",
-        "Terraform",
-        "Ansible",
-        "Promethus",
-        "Grafana",
-        "CI/CD"
-    ]
+    "skills": {
+        "frontend": ["JavaScript", "TypeScript", "React", "Next.js", "Angular"],
+        "backend": [
+            "Node.js",
+            "Express",
+            "NestJS",
+            "Jest",
+            "Postman",
+            "NATS Streaming"
+        ],
+        "database": ["MongoDB", "PostgreSQL", "Firebase", "Convex"],
+        "devops": [
+            "Docker",
+            "Kubernetes",
+            "Terraform",
+            "Ansible",
+            "Prometheus",
+            "Grafana",
+            "CI/CD"
+        ]
+    }
 }

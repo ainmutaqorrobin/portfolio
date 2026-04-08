@@ -14,6 +14,7 @@ import type { Profile } from '@/lib/content'
 
 export function HeroSection({ profile }: { profile: Profile }) {
     const { contact } = profile
+    const skillGroups = Object.entries(profile.skills)
 
     return (
         <section
@@ -121,9 +122,18 @@ export function HeroSection({ profile }: { profile: Profile }) {
                             Skills Snapshot
                         </CardDescription>
                     </CardHeader>
-                    <CardContent className="flex flex-wrap gap-2">
-                        {profile.skills.map((skill) => (
-                            <Badge key={skill}>{skill}</Badge>
+                    <CardContent className="grid gap-4">
+                        {skillGroups.map(([category, items]) => (
+                            <div key={category} className="space-y-2">
+                                <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
+                                    {category}
+                                </p>
+                                <div className="flex flex-wrap gap-2">
+                                    {items.map((skill) => (
+                                        <Badge key={`${category}-${skill}`}>{skill}</Badge>
+                                    ))}
+                                </div>
+                            </div>
                         ))}
                     </CardContent>
                 </Card>

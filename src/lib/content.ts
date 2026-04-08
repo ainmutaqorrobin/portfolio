@@ -36,7 +36,7 @@ export type Profile = {
     }
     about: string[]
     workExperience: WorkExperience[]
-    skills: string[]
+    skills: Record<string, string[]>
 }
 
 export const siteProfile = profile as Profile
