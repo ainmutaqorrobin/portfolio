@@ -33,6 +33,7 @@ export type Profile = {
         github: string
         linkedin: string
         phone: string
+        whatsapp: string
     }
     about: string[]
     workExperience: WorkExperience[]

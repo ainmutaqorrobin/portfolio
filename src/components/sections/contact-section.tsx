@@ -1,4 +1,4 @@
-import { ExternalLink, Github, Mail, Phone } from 'lucide-react'
+import { ExternalLink, Github, Mail, MessageCircle, Phone } from 'lucide-react'
 
 import { SectionReveal } from '@/components/section-reveal'
 import { Badge } from '@/components/ui/badge'
@@ -27,6 +27,25 @@ export function ContactSection({ contact }: Pick<Profile, 'contact'>) {
                     </div>
 
                     <div className="grid gap-3">
+                        <a
+                            href={contact.whatsapp}
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            <Card className="border-border/70 bg-background/55 transition-transform duration-200 hover:-translate-y-1">
+                                <CardContent className="flex items-center gap-4 p-5">
+                                    <MessageCircle className="size-5 text-primary" />
+                                    <div>
+                                        <p className="text-sm text-muted-foreground">
+                                            WhatsApp
+                                        </p>
+                                        <p className="font-medium">
+                                            Chat on WhatsApp
+                                        </p>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </a>
                         <a href={`mailto:${contact.email}`}>
                             <Card className="border-border/70 bg-background/55 transition-transform duration-200 hover:-translate-y-1">
                                 <CardContent className="flex items-center gap-4 p-5">
