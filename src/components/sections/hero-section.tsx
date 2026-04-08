@@ -19,14 +19,11 @@ export function HeroSection({ profile }: { profile: Profile }) {
     const skillGroups = Object.entries(profile.skills)
 
     return (
-        <section
-            id="hero"
-            className="grid gap-6 lg:min-h-[calc(100vh-8rem)] lg:grid-cols-[1.35fr_0.9fr]"
-        >
-            <SectionReveal className="flex">
-                <Card className="relative flex-1 overflow-hidden border-primary/15 bg-card/65">
+        <section id="hero" className="grid items-start gap-6 lg:grid-cols-3">
+            <SectionReveal className="lg:col-span-3">
+                <Card className="relative overflow-hidden border-primary/15 bg-card/65">
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,hsl(var(--primary)/0.2),transparent_36%),radial-gradient(circle_at_bottom_right,hsl(196_100%_65%/0.15),transparent_28%)]" />
-                    <CardContent className="relative flex h-full flex-col justify-between gap-10 p-7 sm:p-10">
+                    <CardContent className="relative grid gap-8 p-7 sm:p-10">
                         <div className="space-y-6">
                             <Badge className="w-fit" variant="outline">
                                 Personal Brand / Software Portfolio
@@ -64,47 +61,37 @@ export function HeroSection({ profile }: { profile: Profile }) {
                 </Card>
             </SectionReveal>
 
-            <SectionReveal className="grid gap-6" delay={120}>
-                <Card className="overflow-hidden border-primary/15 bg-card/70">
-                    <CardContent className="p-4">
-                        <div className="relative overflow-hidden rounded-[1.5rem] border border-border/60 bg-[linear-gradient(180deg,hsl(var(--primary)/0.18),hsl(var(--secondary))_38%,hsl(var(--background)))]">
-                            <div className="absolute inset-x-0 top-0 z-10 flex flex-wrap justify-between gap-2 p-4">
-                                <Badge
-                                    variant="outline"
-                                    className="bg-background/70"
-                                >
-                                    Based in Malaysia
-                                </Badge>
-                                <Badge
-                                    variant="outline"
-                                    className="bg-background/70"
-                                >
-                                    Full-Stack Developer
-                                </Badge>
-                            </div>
-                            <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-background via-background/60 to-transparent p-5">
-                                <p className="font-heading text-xl text-foreground">
-                                    {profile.name}
+            <SectionReveal delay={120}>
+                <Card>
+                    <CardHeader>
+                        <CardDescription className="uppercase tracking-[0.22em] text-primary">
+                            Stack & Skills
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="grid gap-4">
+                        {skillGroups.map(([category, items]) => (
+                            <div key={category} className="space-y-2">
+                                <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
+                                    {category}
                                 </p>
-                                <p className="text-sm text-muted-foreground">
-                                    Building web, backend, mobile, and delivery
-                                    workflows.
-                                </p>
+                                <div className="flex flex-wrap gap-2">
+                                    {items.map((skill) => (
+                                        <Badge
+                                            key={`${category}-${skill}`}
+                                            className="gap-2 normal-case tracking-normal"
+                                        >
+                                            <SkillIcon skill={skill} />
+                                            {skill}
+                                        </Badge>
+                                    ))}
+                                </div>
                             </div>
-                            <div className="absolute inset-x-0 bottom-0 h-28 bg-[radial-gradient(circle_at_center,hsl(var(--foreground)/0.16),transparent_70%)] blur-2xl" />
-                            <Image
-                                src="/Myself.png"
-                                alt={`${profile.name} portrait`}
-                                width={1440}
-                                height={1800}
-                                sizes="(min-width: 1024px) 32vw, (min-width: 640px) 50vw, 100vw"
-                                className="relative z-[1] mx-auto h-[360px] w-auto max-w-full object-contain object-bottom pt-14 sm:h-[440px] lg:h-[520px]"
-                                priority
-                            />
-                        </div>
+                        ))}
                     </CardContent>
                 </Card>
+            </SectionReveal>
 
+            <SectionReveal delay={180}>
                 <Card className="overflow-hidden">
                     <CardHeader>
                         <CardDescription className="uppercase tracking-[0.22em] text-primary">
@@ -157,32 +144,46 @@ export function HeroSection({ profile }: { profile: Profile }) {
                         </div>
                     </CardContent>
                 </Card>
+            </SectionReveal>
 
-                <Card>
-                    <CardHeader>
-                        <CardDescription className="uppercase tracking-[0.22em] text-primary">
-                            Stack & Skills
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent className="grid gap-4">
-                        {skillGroups.map(([category, items]) => (
-                            <div key={category} className="space-y-2">
-                                <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
-                                    {category}
-                                </p>
-                                <div className="flex flex-wrap gap-2">
-                                    {items.map((skill) => (
-                                        <Badge
-                                            key={`${category}-${skill}`}
-                                            className="gap-2 normal-case tracking-normal"
-                                        >
-                                            <SkillIcon skill={skill} />
-                                            {skill}
-                                        </Badge>
-                                    ))}
-                                </div>
+            <SectionReveal delay={240}>
+                <Card className="overflow-hidden border-primary/15 bg-card/70">
+                    <CardContent className="p-4">
+                        <div className="relative overflow-hidden rounded-[1.5rem] border border-border/60 bg-[linear-gradient(180deg,hsl(var(--primary)/0.18),hsl(var(--secondary))_38%,hsl(var(--background)))]">
+                            <div className="absolute inset-x-0 top-0 z-10 flex flex-wrap justify-between gap-2 p-4">
+                                <Badge
+                                    variant="outline"
+                                    className="bg-background/70"
+                                >
+                                    Based in Malaysia
+                                </Badge>
+                                <Badge
+                                    variant="outline"
+                                    className="bg-background/70"
+                                >
+                                    Full-Stack Developer
+                                </Badge>
                             </div>
-                        ))}
+                            <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-background via-background/60 to-transparent p-5">
+                                <p className="font-heading text-xl text-foreground">
+                                    {profile.name}
+                                </p>
+                                <p className="text-sm text-muted-foreground">
+                                    Building web, backend, mobile, and delivery
+                                    workflows.
+                                </p>
+                            </div>
+                            <div className="absolute inset-x-0 bottom-0 h-28 bg-[radial-gradient(circle_at_center,hsl(var(--foreground)/0.16),transparent_70%)] blur-2xl" />
+                            <Image
+                                src="/Myself.png"
+                                alt={`${profile.name} portrait`}
+                                width={1440}
+                                height={1800}
+                                sizes="(min-width: 1024px) 32vw, (min-width: 640px) 50vw, 100vw"
+                                className="relative z-[1] mx-auto h-[360px] w-auto max-w-full object-contain object-bottom pt-14 sm:h-[440px] lg:h-[520px]"
+                                priority
+                            />
+                        </div>
                     </CardContent>
                 </Card>
             </SectionReveal>
