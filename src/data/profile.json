@@ -3,7 +3,7 @@
     "role": "Full-Stack Developer",
     "location": "Kuala Lumpur, Malaysia",
     "tagline": "I build web and mobile products with a strong focus on maintainability, delivery speed, and clean engineering workflows.",
-    "heroSummary": "Enjoy building practical products, improving developer workflows, and turning ideas into production-ready systems with modern JavaScript and TypeScript stacks.",
+    "heroSummary": "I enjoy building practical products, improving developer workflows, and turning ideas into production-ready systems with modern JavaScript and TypeScript stacks.",
     "availability": "Open to freelance projects, software roles, and technical collaborations.",
     "contact": {
         "email": "ainmutaqorrobin@gmail.com",
@@ -44,22 +44,22 @@
             "company": "Mesiniaga Berhad",
             "role": "Software Engineer (Protege)",
             "period": "2024 - 2024",
-            "summary": "Built web applications using Next.js and TypeScript in a product-focused team environment.",
+            "summary": "Worked on enterprise web applications using Angular and TypeScript in a structured engineering environment.",
             "highlights": [
-                "Handling front-end development and developing web application using TypeScript language in Angular Framework.",
-                "Convert REST API and make API Integration from business logic to front-end application using Angular.",
-                "Resolve ticketing issue and bug raised by partner related with internal library and company framework in GitLab"
+                "Handled front-end development for web applications using TypeScript and the Angular framework.",
+                "Integrated REST APIs and connected business logic to the front-end application using Angular.",
+                "Resolved tickets and bugs raised by partners related to internal libraries and the company framework in GitLab."
             ]
         },
         {
             "company": "Netizen Experience",
             "role": "Software Engineer Internship",
             "period": "2023 - 2023",
-            "summary": "Built web applications using Next.js and TypeScript in a product-focused team environment.",
+            "summary": "Supported web development tasks and internal product work during my software engineering internship.",
             "highlights": [
-                "Incorporate doing some web development task using Html, CSS, JavaScript and TypeScript.",
-                "Develop Internal project using TypeScript language in React, CSS Modules and GitHub.",
-                "Created E-commerce website documentation (Front-end and Back-end) related with Next.JS and AWS Lambda."
+                "Contributed to web development tasks using HTML, CSS, JavaScript, and TypeScript.",
+                "Worked on internal projects using React, TypeScript, CSS Modules, and GitHub.",
+                "Created documentation for an e-commerce website covering both front-end and back-end flows with Next.js and AWS Lambda."
             ]
         }
     ],

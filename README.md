@@ -38,9 +38,9 @@ npm run dev
 
 3. Open `http://localhost:3000`
 
-## Content TODO
+## Content
 
-Replace the placeholder values inside:
+Update your portfolio content inside:
 
 - `src/data/profile.json`
 - `src/data/projects.json`
@@ -123,7 +123,7 @@ Notes:
 
 ## Recommended Next Steps
 
-1. Replace all placeholder content.
+1. Update your portfolio content.
 2. Run `npm install`.
 3. Run `npm test` and `npm run build`.
 4. Push to GitHub.
