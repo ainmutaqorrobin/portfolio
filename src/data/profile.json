@@ -1,53 +1,68 @@
 {
-    "name": "Your Name",
+    "name": "Ain Mutaqorrobin",
     "role": "Full-Stack Developer",
     "location": "Kuala Lumpur, Malaysia",
     "tagline": "I build maintainable products with fast feedback loops and clean delivery pipelines.",
     "heroSummary": "Use this area to explain who you are, what kind of work you do, and what you want recruiters or clients to notice first.",
-    "availability": "Open to full-time roles, freelance work, and technical collaborations.",
+    "availability": "Open to freelance work, and technical collaborations.",
     "contact": {
-        "email": "your.email@example.com",
-        "github": "https://github.com/your-username",
-        "linkedin": "https://www.linkedin.com/in/your-handle",
-        "phone": "+60 12-345 6789"
+        "email": "ainmutaqorrobin@gmail.com",
+        "github": "https://github.com/ainmutaqorrobin",
+        "linkedin": "https://www.linkedin.com/in/ainmutaqorrobin",
+        "phone": "+60 11-53 122122"
     },
     "about": [
-        "TODO: Replace this paragraph with your background, years of experience, and main strengths.",
-        "TODO: Add the industries, products, or problem spaces you enjoy working on.",
-        "TODO: Mention what makes your approach different: speed, code quality, ownership, UI taste, DevOps, or product thinking."
+        "Software Engineer with 3 years working experience currently on pace with DevOps",
+        "Doing Web Development, Mobile App, Maintenance, Debugging",
+        "Currently deepening microservices and DevOps with Docker and Kubernetes to better understand containerization and deployment workflows."
     ],
     "workExperience": [
         {
-            "company": "Example Company",
-            "role": "Senior Developer",
-            "period": "2024 - Present",
-            "summary": "TODO: Describe your role, scope, and measurable outcomes.",
+            "company": "Studio20",
+            "role": "Full-Stack Developer",
+            "period": "2025 - Present",
+            "summary": "Manage from backend, frontend and mobile apps",
             "highlights": [
-                "TODO: Add one impact bullet with a metric.",
-                "TODO: Add one technical ownership bullet.",
-                "TODO: Add one collaboration or delivery bullet."
+                "Build and maintain scalable web and mobile applications.",
+                "Manage and scale containerized environments for reliable deployments.",
+                "Lead and coordinate mobile development teams to deliver projects efficiently."
             ]
         },
         {
-            "company": "Previous Company",
-            "role": "Software Engineer",
-            "period": "2022 - 2024",
-            "summary": "TODO: Replace this with your actual work history.",
+            "company": "Siaga Labs",
+            "role": "Junior Software Developer",
+            "period": "2024 - 2025",
+            "summary": "Built web applications using Next.js and TypeScript",
             "highlights": [
-                "TODO: Add one product or feature achievement.",
-                "TODO: Add one architecture or platform contribution.",
-                "TODO: Add one process or tooling improvement."
+                "Connected backend and frontend systems using Axios, making sure different parts of the application work well together.",
+                "Used Swagger and Postman to check and document APIs, ensuring the website runs correctly.",
+                "Developed comprehensive utility functions and global CSS variables, enhancing code reusability and maintaining consistent design system across multiple modules."
             ]
         }
     ],
     "skills": [
+        "Javascript",
         "TypeScript",
         "React",
         "Next.js",
+        "Angular",
         "Node.js",
-        "Docker",
-        "CI/CD",
+        "Express",
+        "NestJS",
+        "MongoDB",
         "PostgreSQL",
-        "REST APIs"
+        "Firebase",
+        "Convex",
+        "Docker",
+        "Postman",
+        "NATS Streaming",
+        "Jest",
+        "Docker",
+        "Kubernetes",
+        "Terraform",
+        "Ansible",
+        "Promethus",
+        "Grafana",
+        "CI/CD"
     ]
 }
