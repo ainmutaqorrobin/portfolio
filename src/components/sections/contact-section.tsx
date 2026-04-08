@@ -19,9 +19,11 @@ export function ContactSection({ contact }: Pick<Profile, 'contact'>) {
                                 Let&apos;s build something useful.
                             </h2>
                             <p className="max-w-2xl text-base leading-8 text-muted-foreground">
-                                Replace this block with your preferred contact
-                                CTA, response time, timezone, or project intake
-                                process.
+                                If you are looking for a developer for web,
+                                backend, mobile, or DevOps-related work, feel
+                                free to reach out. I am open to freelance
+                                projects, collaborations, and software
+                                opportunities.
                             </p>
                         </div>
                     </div>

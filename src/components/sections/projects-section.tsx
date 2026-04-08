@@ -38,12 +38,8 @@ export function ProjectsSection({ projects }: { projects: Project[] }) {
                         Skills and Projects
                     </Badge>
                     <CardTitle className="text-3xl sm:text-4xl">
-                        Selected work from one structured source of truth
+                        Stacks and Projects I have built
                     </CardTitle>
-                    <CardDescription>
-                        Project cards below are driven from{' '}
-                        <code>src/data/projects.json</code>.
-                    </CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-4 lg:grid-cols-2">
                     {projects.map((project, index) => (

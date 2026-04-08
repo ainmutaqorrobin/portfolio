@@ -14,9 +14,8 @@ const bodyFont = Instrument_Sans({
 })
 
 export const metadata: Metadata = {
-    title: 'Portfolio Starter',
-    description:
-        'Personal portfolio starter with project data, Docker, and CI/CD scaffolding.',
+    title: 'Portfolio Robin',
+    description: 'Personal portfolio about robin',
 }
 
 export default function RootLayout({

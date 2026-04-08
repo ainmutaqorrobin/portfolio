@@ -1,10 +1,10 @@
 {
     "name": "Ain Mutaqorrobin",
-    "role": "Software Developer",
+    "role": "Full-Stack Developer",
     "location": "Kuala Lumpur, Malaysia",
-    "tagline": "I build maintainable products with fast feedback loops and clean delivery pipelines.",
-    "heroSummary": "Use this area to explain who you are, what kind of work you do, and what you want recruiters or clients to notice first.",
-    "availability": "Open to freelance work, and technical collaborations.",
+    "tagline": "I build web and mobile products with a strong focus on maintainability, delivery speed, and clean engineering workflows.",
+    "heroSummary": "I am a full-stack developer with hands-on experience across frontend, backend, mobile, and DevOps-focused delivery. I enjoy building practical products, improving developer workflows, and turning ideas into production-ready systems with modern JavaScript and TypeScript stacks.",
+    "availability": "Open to freelance projects, software roles, and technical collaborations.",
     "contact": {
         "email": "ainmutaqorrobin@gmail.com",
         "github": "https://github.com/ainmutaqorrobin",
@@ -13,16 +13,16 @@
         "whatsapp": "https://wa.me/601153122122"
     },
     "about": [
-        "Software Engineer with 3 years working experience currently on pace with DevOps",
-        "Doing Web Development, Mobile App, Maintenance, Debugging",
-        "Currently deepening microservices and DevOps with Docker and Kubernetes to better understand containerization and deployment workflows."
+        "I am a software engineer with around three years of experience building and maintaining applications across web and mobile platforms.",
+        "My work covers frontend development, backend services, debugging, maintenance, and shipping features that are practical for real users and teams.",
+        "Lately I have been going deeper into microservices and DevOps, especially Docker and Kubernetes, to strengthen how I design, package, and deploy production systems."
     ],
     "workExperience": [
         {
             "company": "Studio20",
             "role": "Full-Stack Developer",
             "period": "2025 - Present",
-            "summary": "Manage from backend, frontend and mobile apps",
+            "summary": "Working across backend, frontend, and mobile application development.",
             "highlights": [
                 "Build and maintain scalable web and mobile applications.",
                 "Manage and scale containerized environments for reliable deployments.",
@@ -33,7 +33,7 @@
             "company": "Siaga Labs",
             "role": "Junior Software Developer",
             "period": "2024 - 2025",
-            "summary": "Built web applications using Next.js and TypeScript",
+            "summary": "Built web applications using Next.js and TypeScript in a product-focused team environment.",
             "highlights": [
                 "Connected backend and frontend systems using Axios, making sure different parts of the application work well together.",
                 "Used Swagger and Postman to check and document APIs, ensuring the website runs correctly.",
