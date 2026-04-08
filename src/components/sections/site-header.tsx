@@ -1,12 +1,68 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+
 import { SectionReveal } from '@/components/section-reveal'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { cn } from '@/lib/utils'
 import type { Profile } from '@/lib/content'
 
+const navItems = [
+    { href: '#about', label: 'About', id: 'about' },
+    { href: '#experience', label: 'Experience', id: 'experience' },
+    { href: '#projects', label: 'Projects', id: 'projects' },
+    { href: '#contact', label: 'Contact', id: 'contact' },
+] as const
+
 export function SiteHeader({ role }: Pick<Profile, 'role'>) {
+    const [activeSection, setActiveSection] = useState<string>('about')
+
+    useEffect(() => {
+        const sections = navItems
+            .map((item) => document.getElementById(item.id))
+            .filter((section): section is HTMLElement => section !== null)
+
+        if (sections.length === 0) return
+
+        let ticking = false
+
+        const updateActiveSection = () => {
+            const offset = 140
+            const scrollPosition = window.scrollY + offset
+
+            let currentSection = sections[0].id
+
+            for (const section of sections) {
+                if (scrollPosition >= section.offsetTop) {
+                    currentSection = section.id
+                }
+            }
+
+            setActiveSection(currentSection)
+            ticking = false
+        }
+
+        const onScroll = () => {
+            if (!ticking) {
+                window.requestAnimationFrame(updateActiveSection)
+                ticking = true
+            }
+        }
+
+        updateActiveSection()
+        window.addEventListener('scroll', onScroll, { passive: true })
+        window.addEventListener('resize', onScroll)
+
+        return () => {
+            window.removeEventListener('scroll', onScroll)
+            window.removeEventListener('resize', onScroll)
+        }
+    }, [])
+
     return (
-        <SectionReveal>
-            <header className="sticky top-4 z-50">
-                <div className="rounded-full border border-border/70 bg-background/70 px-4 py-3 shadow-xl shadow-black/10 backdrop-blur xl:px-5">
+        <SectionReveal className="sticky top-3 z-50">
+            <header>
+                <div className="border border-border/70 bg-background/86 px-4 py-3 shadow-xl shadow-black/10 backdrop-blur md:rounded-2xl md:border md:border-border/60 md:bg-background/72 md:px-5 md:py-3 md:shadow-lg xl:px-6">
                     <div className="flex items-center justify-between gap-4">
                         <div>
                             <p className="font-heading text-sm font-semibold uppercase tracking-[0.25em] text-primary">
@@ -16,34 +72,52 @@ export function SiteHeader({ role }: Pick<Profile, 'role'>) {
                                 {role}
                             </p>
                         </div>
-                        <nav className="hidden items-center gap-5 text-sm text-muted-foreground md:flex">
-                            <a
-                                className="transition-colors hover:text-foreground"
-                                href="#about"
-                            >
-                                About
-                            </a>
-                            <a
-                                className="transition-colors hover:text-foreground"
-                                href="#experience"
-                            >
-                                Experience
-                            </a>
-                            <a
-                                className="transition-colors hover:text-foreground"
-                                href="#projects"
-                            >
-                                Projects
-                            </a>
-                            <a
-                                className="transition-colors hover:text-foreground"
-                                href="#contact"
-                            >
-                                Contact
-                            </a>
+                        <nav className="hidden items-center gap-1 md:flex">
+                            {navItems.map((item) => {
+                                const isActive = activeSection === item.id
+
+                                return (
+                                    <a
+                                        key={item.id}
+                                        className={cn(
+                                            'rounded-full px-4 py-2 text-sm transition-colors',
+                                            isActive
+                                                ? 'bg-primary text-primary-foreground'
+                                                : 'text-muted-foreground hover:bg-background/70 hover:text-foreground'
+                                        )}
+                                        href={item.href}
+                                        aria-current={
+                                            isActive ? 'page' : undefined
+                                        }
+                                    >
+                                        {item.label}
+                                    </a>
+                                )
+                            })}
                         </nav>
                         <ThemeToggle />
                     </div>
+                    <nav className="mt-3 flex flex-wrap gap-2 text-sm text-muted-foreground md:hidden">
+                        {navItems.map((item) => {
+                            const isActive = activeSection === item.id
+
+                            return (
+                                <a
+                                    key={item.id}
+                                    className={cn(
+                                        'rounded-full border border-border/60 px-3 py-1.5 transition-colors',
+                                        isActive
+                                            ? 'border-primary/40 bg-primary text-primary-foreground'
+                                            : 'bg-background/40 hover:text-foreground'
+                                    )}
+                                    href={item.href}
+                                    aria-current={isActive ? 'page' : undefined}
+                                >
+                                    {item.label}
+                                </a>
+                            )
+                        })}
+                    </nav>
                 </div>
             </header>
         </SectionReveal>
