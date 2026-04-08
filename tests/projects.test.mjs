@@ -29,5 +29,13 @@ test('projects.json contains the required project fields', () => {
         )
         assert.equal(typeof project.githubRepo, 'string')
         assert.equal(typeof project.hostedLink, 'string')
+        assert.ok(Array.isArray(project.summary), 'summary must be an array')
+        assert.ok(
+            project.summary.length > 0,
+            'summary must contain at least one paragraph'
+        )
+        for (const paragraph of project.summary) {
+            assert.equal(typeof paragraph, 'string')
+        }
     }
 })

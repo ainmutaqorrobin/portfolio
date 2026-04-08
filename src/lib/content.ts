@@ -10,7 +10,7 @@ export type Project = {
     status: ProjectStatus
     githubRepo: string
     hostedLink: string
-    summary: string
+    summary: string[]
 }
 
 export type WorkExperience = {

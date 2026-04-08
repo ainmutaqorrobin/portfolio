@@ -15,7 +15,10 @@
         "status": "live",
         "githubRepo": "https://github.com/ainmutaqorrobin/AI-notes",
         "hostedLink": "https://ai-notes-vert.vercel.app/",
-        "summary": "Note AI is an intelligent note-taking application powered by AI. It allows users to create and manage notes, and then ask questions about their notes using RAG (Retrieval-Augmented Generation) with OpenAI. It’s a great example of combining Next.js, Convex, and the Vercel AI SDK to build real-time, full-stack AI experiences."
+        "summary": [
+            "Note AI is an intelligent note-taking application powered by AI.",
+            "It lets users create and manage notes, then ask questions about them using RAG with OpenAI."
+        ]
     },
     {
         "name": "Book Review Platform",
@@ -34,7 +37,10 @@
         "status": "live",
         "githubRepo": "https://github.com/ainmutaqorrobin/book-review-platform",
         "hostedLink": "https://book-review.syura.my/",
-        "summary": "A full-stack web application where users can browse books, write reviews, and get AI-enriched insights (summary, sentiment, and tags) powered by Mastra AI."
+        "summary": [
+            "A full-stack web application where users can browse books and write reviews.",
+            "It also provides AI-enriched insights such as summary, sentiment, and tags using Mastra AI."
+        ]
     },
     {
         "name": "Ticketing App",
@@ -43,7 +49,10 @@
         "status": "development",
         "githubRepo": "https://github.com/ainmutaqorrobin/TicketingApp",
         "hostedLink": "",
-        "summary": "A microservices-based ticketing system. This project is inspired by real-world event-ticketing platforms and demonstrates concepts like event-driven architecture, asynchronous communication, and service isolation."
+        "summary": [
+            "A microservices-based ticketing system inspired by real-world event-ticketing platforms.",
+            "It demonstrates event-driven architecture, asynchronous communication, and service isolation."
+        ]
     },
     {
         "name": "Recipe Shop",
@@ -52,6 +61,9 @@
         "status": "deprecated",
         "githubRepo": "https://github.com/ainmutaqorrobin/RecipeShop",
         "hostedLink": "https://ng-project-18616.web.app",
-        "summary": "Recipe Shop where user can add ingredients list to shop by adding manually at shopping list tab or by importing the ingredients from recipe book."
+        "summary": [
+            "Recipe Shop lets users manage shopping ingredients manually or import them from recipes.",
+            "This project is now deprecated but still useful as an earlier Angular and Firebase reference."
+        ]
     }
 ]

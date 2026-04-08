@@ -71,9 +71,16 @@ export function ProjectsSection({ projects }: { projects: Project[] }) {
                                     <CardTitle className="text-2xl">
                                         {project.name}
                                     </CardTitle>
-                                    <CardDescription className="text-sm leading-7">
-                                        {project.summary}
-                                    </CardDescription>
+                                    <div className="space-y-2">
+                                        {project.summary.map((paragraph) => (
+                                            <CardDescription
+                                                className="text-sm leading-7"
+                                                key={paragraph}
+                                            >
+                                                {paragraph}
+                                            </CardDescription>
+                                        ))}
+                                    </div>
                                 </CardHeader>
                                 <CardContent className="grid gap-5">
                                     <div className="flex flex-wrap gap-2">
