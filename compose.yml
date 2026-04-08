@@ -1,9 +1,9 @@
 services:
-  portfolio:
-    image: ${PORTFOLIO_IMAGE}
-    container_name: portfolio-app
-    restart: unless-stopped
-    ports:
-      - "${PORTFOLIO_PORT:-3000}:3000"
-    environment:
-      NODE_ENV: production
+    portfolio:
+        image: ${PORTFOLIO_IMAGE}
+        container_name: portfolio-app
+        restart: unless-stopped
+        ports:
+            - '${PORTFOLIO_PORT:-3000}:3000'
+        environment:
+            NODE_ENV: production
