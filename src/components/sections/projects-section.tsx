@@ -12,6 +12,7 @@ import {
     CardTitle,
 } from '@/components/ui/card'
 import type { Project, ProjectStatus } from '@/lib/content'
+import { cn } from '@/lib/utils'
 
 const statusVariants: Record<
     ProjectStatus,
@@ -47,7 +48,13 @@ export function ProjectsSection({ projects }: { projects: Project[] }) {
                 <CardContent className="grid gap-4 lg:grid-cols-2">
                     {projects.map((project, index) => (
                         <SectionReveal delay={index * 80} key={project.name}>
-                            <Card className="h-full border-border/70 bg-background/55">
+                            <Card
+                                className={cn(
+                                    'h-full border-border/70 bg-background/55',
+                                    project.status === 'deprecated' &&
+                                        'border-red-400/15 bg-red-400/5'
+                                )}
+                            >
                                 <CardHeader className="gap-4">
                                     <div className="flex flex-wrap items-center justify-between gap-3">
                                         <p className="text-sm uppercase tracking-[0.22em] text-muted-foreground">
