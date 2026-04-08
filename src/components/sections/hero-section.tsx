@@ -1,6 +1,7 @@
 import { ArrowRight, Github, Mail, MapPin } from 'lucide-react'
 
 import { SectionReveal } from '@/components/section-reveal'
+import { SkillIcon } from '@/components/skill-icon'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -119,7 +120,7 @@ export function HeroSection({ profile }: { profile: Profile }) {
                 <Card>
                     <CardHeader>
                         <CardDescription className="uppercase tracking-[0.22em] text-primary">
-                            Skills Snapshot
+                            Stack & Skills
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="grid gap-4">
@@ -130,7 +131,13 @@ export function HeroSection({ profile }: { profile: Profile }) {
                                 </p>
                                 <div className="flex flex-wrap gap-2">
                                     {items.map((skill) => (
-                                        <Badge key={`${category}-${skill}`}>{skill}</Badge>
+                                        <Badge
+                                            key={`${category}-${skill}`}
+                                            className="gap-2 normal-case tracking-normal"
+                                        >
+                                            <SkillIcon skill={skill} />
+                                            {skill}
+                                        </Badge>
                                     ))}
                                 </div>
                             </div>
