@@ -81,19 +81,45 @@ export function SiteHeader({ role }: Pick<Profile, 'role'>) {
     }, [])
 
     return (
-        <SectionReveal className="sticky top-3 z-50">
+        <SectionReveal className="sticky top-0 z-50 w-full">
             <header>
-                <div className="border border-border/70 bg-background/86 px-4 py-3 shadow-xl shadow-black/10 backdrop-blur md:rounded-2xl md:border md:border-border/60 md:bg-background/72 md:px-5 md:py-3 md:shadow-lg xl:px-6">
-                    <div className="flex items-center justify-between gap-4">
-                        <div>
-                            <p className="font-heading text-sm font-semibold uppercase tracking-[0.25em] text-primary">
-                                Portfolio
-                            </p>
-                            <p className="text-sm text-muted-foreground">
-                                {role}
-                            </p>
+                <div className="w-full border-b border-border/60 bg-background/86 shadow-lg shadow-black/10 backdrop-blur">
+                    <div className="mx-auto flex w-full max-w-7xl flex-col gap-3 px-4 py-3 sm:px-6 lg:px-8">
+                        <div className="flex items-center justify-between gap-4">
+                            <div>
+                                <p className="font-heading text-sm font-semibold uppercase tracking-[0.25em] text-primary">
+                                    Portfolio
+                                </p>
+                                <p className="text-sm text-muted-foreground">
+                                    {role}
+                                </p>
+                            </div>
+                            <nav className="hidden items-center gap-1 md:flex">
+                                {navItems.map((item) => {
+                                    const isActive = activeSection === item.id
+
+                                    return (
+                                        <a
+                                            key={item.id}
+                                            className={cn(
+                                                'rounded-full px-4 py-2 text-sm transition-colors',
+                                                isActive
+                                                    ? 'bg-primary text-primary-foreground'
+                                                    : 'text-muted-foreground hover:bg-background/70 hover:text-foreground'
+                                            )}
+                                            href={item.href}
+                                            aria-current={
+                                                isActive ? 'page' : undefined
+                                            }
+                                        >
+                                            {item.label}
+                                        </a>
+                                    )
+                                })}
+                            </nav>
+                            <ThemeToggle />
                         </div>
-                        <nav className="hidden items-center gap-1 md:flex">
+                        <nav className="flex flex-wrap gap-2 text-sm text-muted-foreground md:hidden">
                             {navItems.map((item) => {
                                 const isActive = activeSection === item.id
 
@@ -101,10 +127,10 @@ export function SiteHeader({ role }: Pick<Profile, 'role'>) {
                                     <a
                                         key={item.id}
                                         className={cn(
-                                            'rounded-full px-4 py-2 text-sm transition-colors',
+                                            'rounded-full border border-border/60 px-3 py-1.5 transition-colors',
                                             isActive
-                                                ? 'bg-primary text-primary-foreground'
-                                                : 'text-muted-foreground hover:bg-background/70 hover:text-foreground'
+                                                ? 'border-primary/40 bg-primary text-primary-foreground'
+                                                : 'bg-background/40 hover:text-foreground'
                                         )}
                                         href={item.href}
                                         aria-current={
@@ -116,29 +142,7 @@ export function SiteHeader({ role }: Pick<Profile, 'role'>) {
                                 )
                             })}
                         </nav>
-                        <ThemeToggle />
                     </div>
-                    <nav className="mt-3 flex flex-wrap gap-2 text-sm text-muted-foreground md:hidden">
-                        {navItems.map((item) => {
-                            const isActive = activeSection === item.id
-
-                            return (
-                                <a
-                                    key={item.id}
-                                    className={cn(
-                                        'rounded-full border border-border/60 px-3 py-1.5 transition-colors',
-                                        isActive
-                                            ? 'border-primary/40 bg-primary text-primary-foreground'
-                                            : 'bg-background/40 hover:text-foreground'
-                                    )}
-                                    href={item.href}
-                                    aria-current={isActive ? 'page' : undefined}
-                                >
-                                    {item.label}
-                                </a>
-                            )
-                        })}
-                    </nav>
                 </div>
             </header>
         </SectionReveal>
