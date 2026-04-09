@@ -161,7 +161,7 @@ export function HeroSection({ profile }: { profile: Profile }) {
                                     variant="outline"
                                     className="bg-background/70"
                                 >
-                                    Full-Stack Developer
+                                    Software Engineer
                                 </Badge>
                             </div>
                             <div className="absolute inset-x-0 bottom-0 z-10 bg-linear-to-t from-background via-background/60 to-transparent p-5">

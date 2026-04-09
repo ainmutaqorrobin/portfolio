@@ -24,8 +24,6 @@ export function ExperienceSection({
                     <div className="relative mx-auto max-w-5xl py-4">
                         <div className="absolute bottom-0 left-4 top-0 w-px bg-border/70 md:left-1/2 md:-translate-x-1/2" />
                         {timelineItems.map((job, index) => {
-                            const isCurrent = index === 0
-
                             return (
                                 <SectionReveal
                                     className="relative pb-8 last:pb-0"
@@ -43,24 +41,9 @@ export function ExperienceSection({
                                     >
                                         <article className="rounded-[1.75rem] border border-border/60 bg-secondary/35 p-6 shadow-sm">
                                             <div className="mb-4 flex flex-col gap-3">
-                                                <div className="flex flex-wrap items-center gap-3">
-                                                    <Badge
-                                                        variant="outline"
-                                                        className="w-fit"
-                                                    >
-                                                        {isCurrent
-                                                            ? 'Current'
-                                                            : `Previous ${String(
-                                                                  index
-                                                              ).padStart(
-                                                                  2,
-                                                                  '0'
-                                                              )}`}
-                                                    </Badge>
-                                                    <p className="text-sm text-muted-foreground">
-                                                        {job.period}
-                                                    </p>
-                                                </div>
+                                                <p className="text-sm text-muted-foreground">
+                                                    {job.period}
+                                                </p>
                                                 <div className="space-y-1">
                                                     <h3 className="font-heading text-2xl">
                                                         {job.role}
