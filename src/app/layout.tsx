@@ -14,9 +14,9 @@ const bodyFont = Instrument_Sans({
 })
 
 export const metadata: Metadata = {
-    title: 'Ain Mutaqorrobin | Full-Stack Developer',
+    title: 'Ain Mutaqorrobin | Software Engineer',
     description:
-        'Portfolio of Ain Mutaqorrobin, a full-stack developer focused on web, mobile, backend, and DevOps-oriented delivery.',
+        'Portfolio of Ain Mutaqorrobin, a software engineer developer focused on web, mobile, backend, and DevOps-oriented delivery.',
 }
 
 export default function RootLayout({
