@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Space_Grotesk, Instrument_Sans } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider'
+import { siteDescription, siteTitle, siteUrl } from '@/lib/content'
 import './globals.css'
 
 const headingFont = Space_Grotesk({
@@ -14,9 +15,46 @@ const bodyFont = Instrument_Sans({
 })
 
 export const metadata: Metadata = {
-    title: 'Ain Mutaqorrobin | Software Engineer',
-    description:
-        'Portfolio of Ain Mutaqorrobin, a software engineer developer focused on web, mobile, backend, and DevOps-oriented delivery.',
+    metadataBase: new URL(siteUrl),
+    title: siteTitle,
+    description: siteDescription,
+    alternates: {
+        canonical: '/',
+    },
+    openGraph: {
+        type: 'website',
+        url: '/',
+        title: siteTitle,
+        description: siteDescription,
+        siteName: 'Ain Mutaqorrobin Portfolio',
+        locale: 'en_MY',
+        images: [
+            {
+                url: '/og-image.png',
+                width: 1200,
+                height: 630,
+                alt: 'Ain Mutaqorrobin portfolio preview',
+            },
+        ],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: siteTitle,
+        description: siteDescription,
+        images: ['/og-image.png'],
+    },
+    robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+            index: true,
+            follow: true,
+            noimageindex: false,
+            'max-video-preview': -1,
+            'max-image-preview': 'large',
+            'max-snippet': -1,
+        },
+    },
 }
 
 export default function RootLayout({

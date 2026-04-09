@@ -30,10 +30,15 @@ export function HeroSection({ profile }: { profile: Profile }) {
                             </Badge>
                             <div className="space-y-4">
                                 <h1 className="max-w-4xl font-heading text-5xl font-semibold tracking-[-0.06em] text-balance sm:text-6xl lg:text-7xl">
-                                    {profile.name}
+                                    <span className="block">
+                                        {profile.name}
+                                    </span>
+                                    <span className="mt-3 block text-3xl text-foreground/88 sm:text-4xl lg:text-5xl">
+                                        {profile.role}
+                                    </span>
                                 </h1>
                                 <p className="text-base uppercase tracking-[0.3em] text-muted-foreground sm:text-sm">
-                                    {profile.role} / {profile.location}
+                                    {profile.location}
                                 </p>
                                 <p className="max-w-3xl text-lg leading-8 text-foreground/90 sm:text-xl">
                                     {profile.tagline}

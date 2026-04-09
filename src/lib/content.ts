@@ -1,6 +1,11 @@
 import profile from '@/data/profile.json'
 import projects from '@/data/projects.json'
 
+export const siteUrl = 'https://mutaqorrobin.online'
+export const siteTitle = 'Ain Mutaqorrobin | Software Engineer'
+export const siteDescription =
+    'Portfolio of Ain Mutaqorrobin, a software engineer in Kuala Lumpur, Malaysia focused on web, mobile, backend, and delivery-driven engineering.'
+
 export type ProjectStatus = 'development' | 'deprecated' | 'live'
 
 export type Project = {
