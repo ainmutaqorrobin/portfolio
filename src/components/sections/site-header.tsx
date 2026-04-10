@@ -1,9 +1,11 @@
 'use client'
 
 import { useEffect, useState, useTransition } from 'react'
+import { Menu, X } from 'lucide-react'
 
 import { SectionReveal } from '@/components/section-reveal'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import type { Profile } from '@/lib/content'
 
@@ -16,6 +18,7 @@ const navItems = [
 
 export function SiteHeader({ role }: Pick<Profile, 'role'>) {
     const [activeSection, setActiveSection] = useState<string>('about')
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
     const [, startTransition] = useTransition()
 
     useEffect(() => {
@@ -80,6 +83,22 @@ export function SiteHeader({ role }: Pick<Profile, 'role'>) {
         }
     }, [])
 
+    useEffect(() => {
+        const mediaQuery = window.matchMedia('(min-width: 768px)')
+
+        const handleViewportChange = (event: MediaQueryListEvent) => {
+            if (event.matches) {
+                setIsMobileMenuOpen(false)
+            }
+        }
+
+        mediaQuery.addEventListener('change', handleViewportChange)
+
+        return () => {
+            mediaQuery.removeEventListener('change', handleViewportChange)
+        }
+    }, [])
+
     return (
         <SectionReveal className="sticky top-0 z-50 w-full">
             <header>
@@ -117,9 +136,43 @@ export function SiteHeader({ role }: Pick<Profile, 'role'>) {
                                     )
                                 })}
                             </nav>
-                            <ThemeToggle />
+                            <div className="flex items-center gap-2">
+                                <ThemeToggle />
+                                <Button
+                                    variant="outline"
+                                    size="icon"
+                                    className="md:hidden"
+                                    type="button"
+                                    aria-label={
+                                        isMobileMenuOpen
+                                            ? 'Close navigation menu'
+                                            : 'Open navigation menu'
+                                    }
+                                    aria-expanded={isMobileMenuOpen}
+                                    aria-controls="mobile-site-nav"
+                                    onClick={() =>
+                                        setIsMobileMenuOpen((isOpen) => !isOpen)
+                                    }
+                                >
+                                    {isMobileMenuOpen ? (
+                                        <X className="size-5" />
+                                    ) : (
+                                        <Menu className="size-5" />
+                                    )}
+                                </Button>
+                            </div>
                         </div>
-                        <nav className="flex flex-wrap gap-2 text-sm text-muted-foreground md:hidden">
+                        <nav
+                            id="mobile-site-nav"
+                            className={cn(
+                                'grid overflow-hidden text-sm text-muted-foreground transition-[grid-template-rows,opacity,margin] duration-200 md:hidden',
+                                isMobileMenuOpen
+                                    ? 'mt-1 grid-rows-[1fr] opacity-100'
+                                    : 'grid-rows-[0fr] opacity-0'
+                            )}
+                        >
+                            <div className="min-h-0 overflow-hidden">
+                                <div className="grid gap-2 rounded-2xl border border-border/60 bg-background/72 p-3">
                             {navItems.map((item) => {
                                 const isActive = activeSection === item.id
 
@@ -127,7 +180,7 @@ export function SiteHeader({ role }: Pick<Profile, 'role'>) {
                                     <a
                                         key={item.id}
                                         className={cn(
-                                            'rounded-full border border-border/60 px-3 py-1.5 transition-colors',
+                                            'rounded-xl border border-border/60 px-3 py-2 text-center transition-colors',
                                             isActive
                                                 ? 'border-primary/40 bg-primary text-primary-foreground'
                                                 : 'bg-background/40 hover:text-foreground'
@@ -136,11 +189,16 @@ export function SiteHeader({ role }: Pick<Profile, 'role'>) {
                                         aria-current={
                                             isActive ? 'page' : undefined
                                         }
+                                        onClick={() =>
+                                            setIsMobileMenuOpen(false)
+                                        }
                                     >
                                         {item.label}
                                     </a>
                                 )
                             })}
+                                </div>
+                            </div>
                         </nav>
                     </div>
                 </div>
