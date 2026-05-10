@@ -34,9 +34,9 @@
             "Sonner",
             "Lucide Icons"
         ],
-        "status": "development",
+        "status": "live",
         "githubRepo": "https://github.com/ainmutaqorrobin/book-review-platform",
-        "hostedLink": "",
+        "hostedLink": "https://book-review.mutaqorrobin.online",
         "summary": [
             "A full-stack web application where users can browse books and write reviews.",
             "It also provides AI-enriched insights such as summary, sentiment, and tags using Mastra AI."
