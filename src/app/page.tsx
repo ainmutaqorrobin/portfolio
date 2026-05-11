@@ -45,6 +45,8 @@ const structuredData = {
 export default function Home() {
     return (
         <main className="relative overflow-x-clip">
+            <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[32rem] bg-[radial-gradient(circle_at_top,hsl(var(--primary)/0.16),transparent_58%)]" />
+            <div className="pointer-events-none absolute right-[-12rem] top-[28rem] -z-10 h-[28rem] w-[28rem] rounded-full bg-[radial-gradient(circle,hsl(var(--accent)/0.2),transparent_66%)] blur-3xl" />
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
@@ -52,8 +54,11 @@ export default function Home() {
                 }}
             />
             <SiteHeader role={siteProfile.role} />
-            <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col gap-8 px-4 py-4 sm:px-6 lg:px-8 lg:py-6">
-                <HeroSection profile={siteProfile} />
+            <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col gap-10 px-4 py-4 sm:px-6 lg:px-8 lg:gap-14 lg:py-6">
+                <HeroSection
+                    profile={siteProfile}
+                    projectCount={siteProjects.length}
+                />
                 <AboutSection about={siteProfile.about} />
                 <ExperienceSection
                     workExperience={siteProfile.workExperience}

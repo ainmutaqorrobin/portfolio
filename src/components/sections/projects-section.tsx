@@ -1,9 +1,10 @@
+import Image from 'next/image'
 import type { ComponentProps } from 'react'
 import { ExternalLink, Github } from 'lucide-react'
 
 import { SectionReveal } from '@/components/section-reveal'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
 import {
     Card,
     CardContent,
@@ -12,7 +13,6 @@ import {
     CardTitle,
 } from '@/components/ui/card'
 import type { Project, ProjectStatus } from '@/lib/content'
-import { cn } from '@/lib/utils'
 
 const statusVariants: Record<
     ProjectStatus,
@@ -37,106 +37,223 @@ const projectImages: Record<string, string> = {
 }
 
 export function ProjectsSection({ projects }: { projects: Project[] }) {
+    const [featuredProject, ...otherProjects] = projects
+
     return (
         <SectionReveal id="projects" delay={160}>
-            <Card>
+            <Card className="overflow-hidden">
                 <CardHeader className="gap-3">
                     <Badge variant="outline" className="w-fit">
-                        Skills and Projects
+                        Projects
                     </Badge>
                     <CardTitle className="text-3xl sm:text-4xl">
-                        Stacks and Projects I have built
+                        Selected work that shows product range
                     </CardTitle>
                 </CardHeader>
-                <CardContent className="grid gap-4 lg:grid-cols-2">
-                    {projects.map((project, index) => (
-                        <SectionReveal delay={index * 80} key={project.name}>
-                            <Card
-                                className={cn(
-                                    'relative h-full overflow-hidden border-border/70 bg-background/55',
-                                    project.status === 'deprecated' &&
-                                        'border-red-400/15 bg-red-400/5'
-                                )}
-                            >
-                                {projectImages[project.name] ? (
-                                    <div className="relative h-52 overflow-hidden border-b border-border/60 sm:h-60">
-                                        <div
-                                            className="absolute inset-0 bg-cover bg-center"
-                                            style={{
-                                                backgroundImage: `url(${projectImages[project.name]})`,
-                                            }}
-                                        />
-                                        <div className="absolute inset-0 bg-[linear-gradient(180deg,hsl(var(--background)/0.08),hsl(var(--background)/0.16)_35%,hsl(var(--background)/0.72))]" />
-                                        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background/85 to-transparent" />
-                                    </div>
-                                ) : null}
-                                <CardHeader className="relative gap-4 bg-background/92">
-                                    <div className="flex flex-wrap items-center justify-between gap-3">
-                                        <p className="text-sm uppercase tracking-[0.22em] text-muted-foreground">
-                                            {project.date}
-                                        </p>
-                                        <Badge
-                                            variant={
-                                                statusVariants[project.status]
-                                            }
-                                        >
-                                            {statusLabels[project.status]}
-                                        </Badge>
-                                    </div>
-                                    <CardTitle className="text-2xl">
-                                        {project.name}
-                                    </CardTitle>
-                                    <div className="space-y-2">
-                                        {project.summary.map((paragraph) => (
-                                            <CardDescription
-                                                className="text-sm leading-7"
-                                                key={paragraph}
+                <CardContent className="grid gap-6">
+                    {featuredProject ? (
+                        <SectionReveal delay={40}>
+                            <Card className="overflow-hidden border-primary/18 bg-background/58">
+                                <div className="grid lg:grid-cols-[1.08fr_0.92fr]">
+                                    <div className="relative min-h-[18rem] border-b border-border/60 lg:min-h-full lg:border-b-0 lg:border-r">
+                                        {projectImages[featuredProject.name] ? (
+                                            <>
+                                                <Image
+                                                    src={
+                                                        projectImages[
+                                                            featuredProject.name
+                                                        ]
+                                                    }
+                                                    alt={`${featuredProject.name} preview`}
+                                                    fill
+                                                    sizes="(max-width: 1024px) 100vw, 48vw"
+                                                    className="object-cover object-top"
+                                                />
+                                                <div className="absolute inset-0 bg-[linear-gradient(180deg,hsl(var(--background)/0.04),hsl(var(--background)/0.14)_40%,hsl(var(--background)/0.84))]" />
+                                            </>
+                                        ) : null}
+                                        <div className="absolute inset-x-0 top-0 flex flex-wrap items-center justify-between gap-3 p-5">
+                                            <Badge
+                                                variant="outline"
+                                                className="bg-background/75"
                                             >
-                                                {paragraph}
-                                            </CardDescription>
-                                        ))}
-                                    </div>
-                                </CardHeader>
-                                <CardContent className="relative grid gap-5 bg-background/92">
-                                    <div className="flex flex-wrap gap-2">
-                                        {project.stack.map((item) => (
-                                            <Badge key={item} variant="outline">
-                                                {item}
+                                                Featured Project
                                             </Badge>
-                                        ))}
+                                            <Badge
+                                                variant={
+                                                    statusVariants[
+                                                        featuredProject.status
+                                                    ]
+                                                }
+                                            >
+                                                {
+                                                    statusLabels[
+                                                        featuredProject.status
+                                                    ]
+                                                }
+                                            </Badge>
+                                        </div>
                                     </div>
-                                    <div className="flex flex-wrap gap-3">
-                                        <a
-                                            href={project.githubRepo}
-                                            target="_blank"
-                                            rel="noreferrer"
-                                        >
-                                            <Button variant="secondary">
-                                                <Github className="size-4" />
-                                                GitHub Repo
-                                            </Button>
-                                        </a>
-                                        {project.hostedLink ? (
+                                    <div className="grid gap-5 p-6 sm:p-8">
+                                        <div className="space-y-4">
+                                            <p className="text-sm uppercase tracking-[0.22em] text-muted-foreground">
+                                                {featuredProject.date}
+                                            </p>
+                                            <CardTitle className="text-3xl">
+                                                {featuredProject.name}
+                                            </CardTitle>
+                                            <div className="space-y-2">
+                                                {featuredProject.summary.map(
+                                                    (paragraph) => (
+                                                        <CardDescription
+                                                            className="text-sm leading-7 sm:text-base"
+                                                            key={paragraph}
+                                                        >
+                                                            {paragraph}
+                                                        </CardDescription>
+                                                    )
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-wrap gap-2">
+                                            {featuredProject.stack.map(
+                                                (item) => (
+                                                    <Badge
+                                                        key={item}
+                                                        variant="outline"
+                                                    >
+                                                        {item}
+                                                    </Badge>
+                                                )
+                                            )}
+                                        </div>
+                                        <div className="flex flex-wrap gap-3">
                                             <a
-                                                href={project.hostedLink}
+                                                href={featuredProject.githubRepo}
                                                 target="_blank"
                                                 rel="noreferrer"
+                                                className={buttonVariants({
+                                                    variant: 'secondary',
+                                                })}
                                             >
-                                                <Button variant="outline">
+                                                <Github className="size-4" />
+                                                GitHub Repo
+                                            </a>
+                                            {featuredProject.hostedLink ? (
+                                                <a
+                                                    href={
+                                                        featuredProject.hostedLink
+                                                    }
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    className={buttonVariants({
+                                                        variant: 'outline',
+                                                    })}
+                                                >
                                                     <ExternalLink className="size-4" />
                                                     Live Demo
-                                                </Button>
-                                            </a>
-                                        ) : (
-                                            <Badge variant="muted">
-                                                Hosted link pending
-                                            </Badge>
-                                        )}
+                                                </a>
+                                            ) : (
+                                                <Badge variant="muted">
+                                                    Hosted link pending
+                                                </Badge>
+                                            )}
+                                        </div>
                                     </div>
-                                </CardContent>
+                                </div>
                             </Card>
                         </SectionReveal>
-                    ))}
+                    ) : null}
+
+                    <div className="grid gap-4 xl:grid-cols-3">
+                        {otherProjects.map((project, index) => (
+                            <SectionReveal delay={index * 80} key={project.name}>
+                            <Card
+                                className="relative h-full overflow-hidden border-border/70 bg-background/55"
+                            >
+                                    {projectImages[project.name] ? (
+                                        <div className="relative h-52 overflow-hidden border-b border-border/60 sm:h-56">
+                                            <Image
+                                                src={projectImages[project.name]}
+                                                alt={`${project.name} preview`}
+                                                fill
+                                                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 30vw"
+                                                className="object-cover object-top"
+                                            />
+                                            <div className="absolute inset-0 bg-[linear-gradient(180deg,hsl(var(--background)/0.08),hsl(var(--background)/0.16)_35%,hsl(var(--background)/0.72))]" />
+                                            <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background/85 to-transparent" />
+                                        </div>
+                                    ) : null}
+                                    <CardHeader className="relative gap-4 bg-background/92">
+                                        <div className="flex flex-wrap items-center justify-between gap-3">
+                                            <p className="text-sm uppercase tracking-[0.22em] text-muted-foreground">
+                                                {project.date}
+                                            </p>
+                                            <Badge
+                                                variant={
+                                                    statusVariants[project.status]
+                                                }
+                                            >
+                                                {statusLabels[project.status]}
+                                            </Badge>
+                                        </div>
+                                        <CardTitle className="text-2xl">
+                                            {project.name}
+                                        </CardTitle>
+                                        <div className="space-y-2">
+                                            {project.summary.map((paragraph) => (
+                                                <CardDescription
+                                                    className="text-sm leading-7"
+                                                    key={paragraph}
+                                                >
+                                                    {paragraph}
+                                                </CardDescription>
+                                            ))}
+                                        </div>
+                                    </CardHeader>
+                                    <CardContent className="relative grid gap-5 bg-background/92">
+                                        <div className="flex flex-wrap gap-2">
+                                            {project.stack.map((item) => (
+                                                <Badge key={item} variant="outline">
+                                                    {item}
+                                                </Badge>
+                                            ))}
+                                        </div>
+                                        <div className="flex flex-wrap gap-3">
+                                            <a
+                                                href={project.githubRepo}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                className={buttonVariants({
+                                                    variant: 'secondary',
+                                                })}
+                                            >
+                                                <Github className="size-4" />
+                                                GitHub Repo
+                                            </a>
+                                            {project.hostedLink ? (
+                                                <a
+                                                    href={project.hostedLink}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    className={buttonVariants({
+                                                        variant: 'outline',
+                                                    })}
+                                                >
+                                                    <ExternalLink className="size-4" />
+                                                    Live Demo
+                                                </a>
+                                            ) : (
+                                                <Badge variant="muted">
+                                                    Hosted link pending
+                                                </Badge>
+                                            )}
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            </SectionReveal>
+                        ))}
+                    </div>
                 </CardContent>
             </Card>
         </SectionReveal>

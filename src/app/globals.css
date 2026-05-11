@@ -25,43 +25,43 @@
 }
 
 :root {
-    --background: 35 35% 96%;
-    --foreground: 18 18% 10%;
+    --background: 38 33% 95%;
+    --foreground: 20 18% 11%;
     --card: 0 0% 100%;
-    --card-foreground: 18 18% 10%;
+    --card-foreground: 20 18% 11%;
     --popover: 0 0% 100%;
-    --popover-foreground: 18 18% 10%;
-    --primary: 18 89% 58%;
+    --popover-foreground: 20 18% 11%;
+    --primary: 15 84% 56%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 30 31% 92%;
-    --secondary-foreground: 18 18% 14%;
-    --muted: 28 24% 88%;
-    --muted-foreground: 25 10% 35%;
-    --accent: 23 87% 91%;
-    --accent-foreground: 20 55% 18%;
-    --border: 24 22% 84%;
-    --input: 24 22% 84%;
-    --ring: 18 89% 58%;
+    --secondary: 38 26% 90%;
+    --secondary-foreground: 20 18% 14%;
+    --muted: 34 22% 86%;
+    --muted-foreground: 28 10% 34%;
+    --accent: 186 52% 90%;
+    --accent-foreground: 196 48% 18%;
+    --border: 26 19% 81%;
+    --input: 26 19% 81%;
+    --ring: 15 84% 56%;
 }
 
 .dark {
-    --background: 220 24% 8%;
-    --foreground: 34 24% 94%;
-    --card: 222 23% 10%;
-    --card-foreground: 34 24% 94%;
-    --popover: 222 23% 10%;
-    --popover-foreground: 34 24% 94%;
-    --primary: 17 96% 64%;
+    --background: 224 26% 9%;
+    --foreground: 35 25% 93%;
+    --card: 225 24% 11%;
+    --card-foreground: 35 25% 93%;
+    --popover: 225 24% 11%;
+    --popover-foreground: 35 25% 93%;
+    --primary: 16 92% 63%;
     --primary-foreground: 222 35% 10%;
-    --secondary: 220 17% 16%;
-    --secondary-foreground: 34 24% 94%;
+    --secondary: 221 17% 15%;
+    --secondary-foreground: 35 25% 93%;
     --muted: 221 16% 15%;
     --muted-foreground: 28 11% 68%;
-    --accent: 220 17% 16%;
-    --accent-foreground: 34 24% 94%;
-    --border: 223 15% 20%;
-    --input: 223 15% 20%;
-    --ring: 17 96% 64%;
+    --accent: 191 42% 18%;
+    --accent-foreground: 188 42% 86%;
+    --border: 222 15% 22%;
+    --input: 222 15% 22%;
+    --ring: 16 92% 63%;
 }
 
 html {
@@ -70,18 +70,24 @@ html {
 
 body {
     min-height: 100vh;
+    color-scheme: light;
     background:
         radial-gradient(
             circle at top left,
-            hsl(17 96% 64% / 0.18),
-            transparent 24%
+            hsl(15 84% 56% / 0.16),
+            transparent 28%
         ),
         radial-gradient(
-            circle at 90% 10%,
-            hsl(202 98% 60% / 0.12),
-            transparent 22%
+            circle at 82% 12%,
+            hsl(196 78% 58% / 0.12),
+            transparent 24%
         ),
-        linear-gradient(180deg, hsl(var(--background)), hsl(220 23% 7%));
+        linear-gradient(
+            180deg,
+            hsl(34 36% 97%) 0%,
+            hsl(var(--background)) 38%,
+            hsl(36 28% 92%) 100%
+        );
 }
 
 body::before {
@@ -90,20 +96,80 @@ body::before {
     inset: 0;
     pointer-events: none;
     background-image:
-        linear-gradient(hsl(var(--foreground) / 0.03) 1px, transparent 1px),
+        linear-gradient(hsl(var(--foreground) / 0.035) 1px, transparent 1px),
         linear-gradient(
             90deg,
-            hsl(var(--foreground) / 0.03) 1px,
+            hsl(var(--foreground) / 0.035) 1px,
             transparent 1px
         );
-    background-size: 36px 36px;
-    mask-image: radial-gradient(circle at center, black 35%, transparent 85%);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(circle at center, black 42%, transparent 92%);
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(
+            circle at 20% 18%,
+            hsl(var(--primary) / 0.08),
+            transparent 18%
+        ),
+        radial-gradient(
+            circle at 84% 24%,
+            hsl(var(--accent) / 0.1),
+            transparent 20%
+        );
+    mix-blend-mode: screen;
 }
 
 * {
     border-color: hsl(var(--border));
 }
 
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: 0.4s;
+}
+
 ::selection {
     background: hsl(var(--primary) / 0.3);
+}
+
+.dark body {
+    color-scheme: dark;
+    background:
+        radial-gradient(
+            circle at top left,
+            hsl(16 92% 63% / 0.18),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 88% 8%,
+            hsl(196 78% 58% / 0.16),
+            transparent 25%
+        ),
+        linear-gradient(
+            180deg,
+            hsl(226 27% 11%) 0%,
+            hsl(var(--background)) 42%,
+            hsl(223 24% 7%) 100%
+        );
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }

@@ -8,15 +8,16 @@ import type { Profile } from '@/lib/content'
 export function ContactSection({ contact }: Pick<Profile, 'contact'>) {
     return (
         <SectionReveal id="contact" delay={200}>
-            <Card className="overflow-hidden">
-                <CardContent className="grid gap-8 p-7 sm:p-10 lg:grid-cols-[1.1fr_0.9fr]">
+            <Card className="overflow-hidden border-primary/18">
+                <CardContent className="grid gap-8 p-7 sm:p-10 lg:grid-cols-[1.02fr_0.98fr]">
                     <div className="space-y-5">
                         <Badge variant="outline" className="w-fit">
                             Contact
                         </Badge>
                         <div className="space-y-3">
                             <h2 className="font-heading text-4xl tracking-[-0.05em] sm:text-5xl">
-                                Let&apos;s build something useful.
+                                Let&apos;s build something useful, stable, and
+                                ready to ship.
                             </h2>
                             <p className="max-w-2xl text-base leading-8 text-muted-foreground">
                                 If you are looking for a developer for web,
@@ -24,6 +25,27 @@ export function ContactSection({ contact }: Pick<Profile, 'contact'>) {
                                 free to reach out. I am open to freelance
                                 projects, collaborations, and software
                                 opportunities.
+                            </p>
+                        </div>
+                        <div className="grid gap-4 rounded-[1.9rem] border border-border/60 bg-background/48 p-5">
+                            <div className="grid gap-3 sm:grid-cols-2">
+                                {[
+                                    'Web products',
+                                    'Backend services',
+                                    'Mobile delivery',
+                                    'DevOps workflows',
+                                ].map((item) => (
+                                    <div
+                                        key={item}
+                                        className="rounded-[1.4rem] border border-border/60 bg-secondary/38 px-4 py-3 text-sm text-foreground/88"
+                                    >
+                                        {item}
+                                    </div>
+                                ))}
+                            </div>
+                            <p className="text-sm leading-7 text-muted-foreground">
+                                Email is best for project details, while
+                                WhatsApp is fastest for a quick first contact.
                             </p>
                         </div>
                     </div>

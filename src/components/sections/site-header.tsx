@@ -102,18 +102,23 @@ export function SiteHeader({ role }: Pick<Profile, 'role'>) {
     return (
         <SectionReveal className="sticky top-0 z-50 w-full">
             <header>
-                <div className="w-full border-b border-border/60 bg-background/86 shadow-lg shadow-black/10 backdrop-blur">
+                <div className="w-full border-b border-border/60 bg-background/82 shadow-[0_16px_50px_-24px_hsl(var(--foreground)/0.3)] backdrop-blur-xl">
                     <div className="mx-auto flex w-full max-w-7xl flex-col gap-3 px-4 py-3 sm:px-6 lg:px-8">
                         <div className="flex items-center justify-between gap-4">
-                            <div>
-                                <p className="font-heading text-sm font-semibold uppercase tracking-[0.25em] text-primary">
-                                    Portfolio
-                                </p>
-                                <p className="text-sm text-muted-foreground">
-                                    {role}
-                                </p>
+                            <div className="flex items-center gap-3">
+                                <div className="flex size-11 items-center justify-center rounded-2xl border border-border/70 bg-background/75 font-heading text-sm font-semibold tracking-[0.24em] text-primary shadow-sm">
+                                    AM
+                                </div>
+                                <div>
+                                    <p className="font-heading text-sm font-semibold uppercase tracking-[0.28em] text-primary">
+                                        Ain Mutaqorrobin
+                                    </p>
+                                    <p className="text-sm text-muted-foreground">
+                                        {role}
+                                    </p>
+                                </div>
                             </div>
-                            <nav className="hidden items-center gap-1 md:flex">
+                            <nav className="hidden items-center gap-1 rounded-full border border-border/70 bg-background/65 p-1 md:flex">
                                 {navItems.map((item) => {
                                     const isActive = activeSection === item.id
 
@@ -137,6 +142,12 @@ export function SiteHeader({ role }: Pick<Profile, 'role'>) {
                                 })}
                             </nav>
                             <div className="flex items-center gap-2">
+                                <a
+                                    href="#contact"
+                                    className="hidden rounded-full border border-primary/30 bg-primary/12 px-4 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary hover:text-primary-foreground lg:inline-flex"
+                                >
+                                    Available for work
+                                </a>
                                 <ThemeToggle />
                                 <Button
                                     variant="outline"
