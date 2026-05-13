@@ -74,8 +74,8 @@ export function ExperienceSection({
                                                     </div>
                                                 ) : null}
                                             </div>
-                                        <div className="flex flex-wrap gap-2">
-                                            {isCurrentRole ? (
+                                            <div className="flex flex-wrap gap-2">
+                                                {isCurrentRole ? (
                                                     <Badge className="w-fit bg-primary/12 text-primary">
                                                         Current Role
                                                     </Badge>

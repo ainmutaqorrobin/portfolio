@@ -29,8 +29,8 @@ export function AboutSection({ about }: Pick<Profile, 'about'>) {
                         </Badge>
                         <div className="space-y-3">
                             <CardTitle className="text-3xl sm:text-4xl">
-                                What I build and what I care about when
-                                shipping it
+                                What I build and what I care about when shipping
+                                it
                             </CardTitle>
                             <p className="max-w-md text-sm leading-7 text-muted-foreground sm:text-base">
                                 The strongest portfolio signal is not a long

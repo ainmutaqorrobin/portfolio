@@ -1,4 +1,9 @@
-import { siteDescription, siteProfile, siteProjects, siteUrl } from '@/lib/content'
+import {
+    siteDescription,
+    siteProfile,
+    siteProjects,
+    siteUrl,
+} from '@/lib/content'
 import { AboutSection } from '@/components/sections/about-section'
 import { ContactSection } from '@/components/sections/contact-section'
 import { ExperienceSection } from '@/components/sections/experience-section'

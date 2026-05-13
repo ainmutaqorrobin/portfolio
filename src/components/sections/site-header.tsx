@@ -184,30 +184,33 @@ export function SiteHeader({ role }: Pick<Profile, 'role'>) {
                         >
                             <div className="min-h-0 overflow-hidden">
                                 <div className="grid gap-2 rounded-2xl border border-border/60 bg-background/72 p-3">
-                            {navItems.map((item) => {
-                                const isActive = activeSection === item.id
+                                    {navItems.map((item) => {
+                                        const isActive =
+                                            activeSection === item.id
 
-                                return (
-                                    <a
-                                        key={item.id}
-                                        className={cn(
-                                            'rounded-xl border border-border/60 px-3 py-2 text-center transition-colors',
-                                            isActive
-                                                ? 'border-primary/40 bg-primary text-primary-foreground'
-                                                : 'bg-background/40 hover:text-foreground'
-                                        )}
-                                        href={item.href}
-                                        aria-current={
-                                            isActive ? 'page' : undefined
-                                        }
-                                        onClick={() =>
-                                            setIsMobileMenuOpen(false)
-                                        }
-                                    >
-                                        {item.label}
-                                    </a>
-                                )
-                            })}
+                                        return (
+                                            <a
+                                                key={item.id}
+                                                className={cn(
+                                                    'rounded-xl border border-border/60 px-3 py-2 text-center transition-colors',
+                                                    isActive
+                                                        ? 'border-primary/40 bg-primary text-primary-foreground'
+                                                        : 'bg-background/40 hover:text-foreground'
+                                                )}
+                                                href={item.href}
+                                                aria-current={
+                                                    isActive
+                                                        ? 'page'
+                                                        : undefined
+                                                }
+                                                onClick={() =>
+                                                    setIsMobileMenuOpen(false)
+                                                }
+                                            >
+                                                {item.label}
+                                            </a>
+                                        )
+                                    })}
                                 </div>
                             </div>
                         </nav>

@@ -1,11 +1,5 @@
 import Image from 'next/image'
-import {
-    ArrowRight,
-    Github,
-    Linkedin,
-    Mail,
-    MapPin,
-} from 'lucide-react'
+import { ArrowRight, Github, Linkedin, Mail, MapPin } from 'lucide-react'
 
 import { SectionReveal } from '@/components/section-reveal'
 import { SkillIcon } from '@/components/skill-icon'
@@ -39,13 +33,19 @@ export function HeroSection({
     ]
 
     return (
-        <section id="hero" className="grid items-start gap-6 xl:grid-cols-[1.15fr_0.85fr]">
+        <section
+            id="hero"
+            className="grid items-start gap-6 xl:grid-cols-[1.15fr_0.85fr]"
+        >
             <SectionReveal className="xl:row-span-2">
                 <Card className="relative overflow-hidden border-primary/18 bg-card/72">
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,hsl(var(--primary)/0.22),transparent_34%),radial-gradient(circle_at_90%_14%,hsl(var(--accent)/0.24),transparent_28%),linear-gradient(135deg,hsl(var(--background)/0),hsl(var(--background)/0.3)_70%,hsl(var(--foreground)/0.03))]" />
                     <CardContent className="relative grid gap-10 p-7 sm:p-10">
                         <div className="flex flex-wrap items-center justify-between gap-3">
-                            <Badge className="w-fit bg-background/75" variant="outline">
+                            <Badge
+                                className="w-fit bg-background/75"
+                                variant="outline"
+                            >
                                 Editorial / Delivery-Focused Portfolio
                             </Badge>
                             <p className="text-xs uppercase tracking-[0.34em] text-muted-foreground">
@@ -62,7 +62,9 @@ export function HeroSection({
                                     <span className="block text-foreground/72">
                                         {profile.role}
                                     </span>
-                                    <span className="mt-2 block">{profile.name}</span>
+                                    <span className="mt-2 block">
+                                        {profile.name}
+                                    </span>
                                 </h1>
                                 <p className="max-w-3xl text-lg leading-8 text-foreground/92 sm:text-[1.35rem]">
                                     {profile.tagline}

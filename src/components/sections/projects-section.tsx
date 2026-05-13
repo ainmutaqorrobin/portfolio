@@ -133,39 +133,44 @@ export function ProjectsSection({ projects }: { projects: Project[] }) {
                                         </div>
                                         <div className="mt-auto border-t border-border/60 pt-5">
                                             <div className="grid gap-3 sm:grid-cols-2">
-                                            <a
-                                                href={featuredProject.githubRepo}
-                                                target="_blank"
-                                                rel="noreferrer"
-                                                className={buttonVariants({
-                                                    variant: 'secondary',
-                                                })}
-                                            >
-                                                <Github className="size-4" />
-                                                GitHub Repo
-                                            </a>
-                                            {featuredProject.hostedLink ? (
                                                 <a
                                                     href={
-                                                        featuredProject.hostedLink
+                                                        featuredProject.githubRepo
                                                     }
                                                     target="_blank"
                                                     rel="noreferrer"
                                                     className={buttonVariants({
-                                                        variant: 'outline',
+                                                        variant: 'secondary',
                                                     })}
                                                 >
-                                                    <ExternalLink className="size-4" />
-                                                    Live Demo
+                                                    <Github className="size-4" />
+                                                    GitHub Repo
                                                 </a>
-                                            ) : (
-                                                <span
-                                                    className={`${pendingActionClassName} cursor-default justify-center border-dashed bg-background/38 text-muted-foreground opacity-75`}
-                                                >
-                                                    <Clock3 className="size-4" />
-                                                    Hosted Link Pending
-                                                </span>
-                                            )}
+                                                {featuredProject.hostedLink ? (
+                                                    <a
+                                                        href={
+                                                            featuredProject.hostedLink
+                                                        }
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                        className={buttonVariants(
+                                                            {
+                                                                variant:
+                                                                    'outline',
+                                                            }
+                                                        )}
+                                                    >
+                                                        <ExternalLink className="size-4" />
+                                                        Live Demo
+                                                    </a>
+                                                ) : (
+                                                    <span
+                                                        className={`${pendingActionClassName} cursor-default justify-center border-dashed bg-background/38 text-muted-foreground opacity-75`}
+                                                    >
+                                                        <Clock3 className="size-4" />
+                                                        Hosted Link Pending
+                                                    </span>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
@@ -176,12 +181,17 @@ export function ProjectsSection({ projects }: { projects: Project[] }) {
 
                     <div className="grid gap-4 xl:grid-cols-3">
                         {otherProjects.map((project, index) => (
-                            <SectionReveal delay={index * 80} key={project.name}>
+                            <SectionReveal
+                                delay={index * 80}
+                                key={project.name}
+                            >
                                 <Card className="relative flex h-full flex-col overflow-hidden border-border/70 bg-background/55">
                                     {projectImages[project.name] ? (
                                         <div className="relative h-52 overflow-hidden border-b border-border/60 sm:h-56">
                                             <Image
-                                                src={projectImages[project.name]}
+                                                src={
+                                                    projectImages[project.name]
+                                                }
                                                 alt={`${project.name} preview`}
                                                 fill
                                                 sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 30vw"
@@ -198,7 +208,9 @@ export function ProjectsSection({ projects }: { projects: Project[] }) {
                                             </p>
                                             <Badge
                                                 variant={
-                                                    statusVariants[project.status]
+                                                    statusVariants[
+                                                        project.status
+                                                    ]
                                                 }
                                             >
                                                 {statusLabels[project.status]}
@@ -208,57 +220,67 @@ export function ProjectsSection({ projects }: { projects: Project[] }) {
                                             {project.name}
                                         </CardTitle>
                                         <div className="space-y-2">
-                                            {project.summary.map((paragraph) => (
-                                                <CardDescription
-                                                    className="text-sm leading-7"
-                                                    key={paragraph}
-                                                >
-                                                    {paragraph}
-                                                </CardDescription>
-                                            ))}
+                                            {project.summary.map(
+                                                (paragraph) => (
+                                                    <CardDescription
+                                                        className="text-sm leading-7"
+                                                        key={paragraph}
+                                                    >
+                                                        {paragraph}
+                                                    </CardDescription>
+                                                )
+                                            )}
                                         </div>
                                     </CardHeader>
                                     <CardContent className="relative flex flex-1 flex-col gap-5 bg-background/92">
                                         <div className="flex flex-wrap gap-2">
                                             {project.stack.map((item) => (
-                                                <Badge key={item} variant="outline">
+                                                <Badge
+                                                    key={item}
+                                                    variant="outline"
+                                                >
                                                     {item}
                                                 </Badge>
                                             ))}
                                         </div>
                                         <div className="mt-auto border-t border-border/60 pt-5">
                                             <div className="grid gap-3 sm:grid-cols-2">
-                                            <a
-                                                href={project.githubRepo}
-                                                target="_blank"
-                                                rel="noreferrer"
-                                                className={buttonVariants({
-                                                    variant: 'secondary',
-                                                })}
-                                            >
-                                                <Github className="size-4" />
-                                                GitHub Repo
-                                            </a>
-                                            {project.hostedLink ? (
                                                 <a
-                                                    href={project.hostedLink}
+                                                    href={project.githubRepo}
                                                     target="_blank"
                                                     rel="noreferrer"
                                                     className={buttonVariants({
-                                                        variant: 'outline',
+                                                        variant: 'secondary',
                                                     })}
                                                 >
-                                                    <ExternalLink className="size-4" />
-                                                    Live Demo
+                                                    <Github className="size-4" />
+                                                    GitHub Repo
                                                 </a>
-                                            ) : (
-                                                <span
-                                                    className={`${pendingActionClassName} cursor-default justify-center border-dashed bg-background/38 text-muted-foreground opacity-75`}
-                                                >
-                                                    <Clock3 className="size-4" />
-                                                    Hosted Link Pending
-                                                </span>
-                                            )}
+                                                {project.hostedLink ? (
+                                                    <a
+                                                        href={
+                                                            project.hostedLink
+                                                        }
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                        className={buttonVariants(
+                                                            {
+                                                                variant:
+                                                                    'outline',
+                                                            }
+                                                        )}
+                                                    >
+                                                        <ExternalLink className="size-4" />
+                                                        Live Demo
+                                                    </a>
+                                                ) : (
+                                                    <span
+                                                        className={`${pendingActionClassName} cursor-default justify-center border-dashed bg-background/38 text-muted-foreground opacity-75`}
+                                                    >
+                                                        <Clock3 className="size-4" />
+                                                        Hosted Link Pending
+                                                    </span>
+                                                )}
                                             </div>
                                         </div>
                                     </CardContent>
