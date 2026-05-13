@@ -7,6 +7,8 @@
         "build": "next build --webpack",
         "fmt": "prettier . --write",
         "fmt:check": "prettier . --check",
+        "format:staged": "node scripts/format-staged.mjs",
+        "prepare": "node scripts/setup-git-hooks.mjs",
         "start": "next start",
         "test": "node --test tests/projects.test.mjs"
     },

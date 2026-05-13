@@ -38,6 +38,35 @@ npm run dev
 
 3. Open `http://localhost:3000`
 
+## Git Hooks And Formatting
+
+This repo uses a shared Git hook stored in `.githooks/pre-commit`.
+
+What it does:
+
+- runs before every commit
+- calls `npm run format:staged`
+- formats only staged files with Prettier
+- re-stages those formatted files automatically
+
+How it is enabled:
+
+- `npm install` runs the `prepare` script from `package.json`
+- that script runs `scripts/setup-git-hooks.mjs`
+- the setup script sets `git config core.hooksPath .githooks`
+
+If hooks stop working on your machine, run:
+
+```bash
+npm run prepare
+```
+
+You can also run the staged-file formatter manually:
+
+```bash
+npm run format:staged
+```
+
 ## Content
 
 Update your portfolio content inside:
