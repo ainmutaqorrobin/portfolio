@@ -98,7 +98,7 @@ export function HeroSection({
                             {statLabels.map((label, index) => (
                                 <div
                                     key={label}
-                                    className="rounded-[1.7rem] border border-border/60 bg-background/55 p-5"
+                                    className="flex min-h-[8.5rem] flex-col items-center justify-center rounded-[1.7rem] border border-border/60 bg-background/55 p-5 text-center"
                                 >
                                     <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">
                                         {label}
@@ -110,18 +110,18 @@ export function HeroSection({
                             ))}
                         </div>
 
-                        <div className="grid gap-4 border-t border-border/60 pt-6 lg:grid-cols-[0.84fr_1.16fr]">
+                        <div className="grid justify-items-center gap-5 border-t border-border/60 pt-6 text-center">
                             <div className="space-y-2">
                                 <p className="text-xs uppercase tracking-[0.28em] text-primary">
                                     What I optimize for
                                 </p>
-                                <p className="max-w-sm text-sm leading-7 text-muted-foreground">
+                                <p className="mx-auto max-w-2xl text-sm leading-7 text-muted-foreground">
                                     Maintainable product delivery, cross-stack
                                     ownership, and systems that teams can keep
                                     shipping on without friction.
                                 </p>
                             </div>
-                            <div className="grid gap-3 sm:grid-cols-3">
+                            <div className="grid w-full max-w-3xl gap-3 sm:grid-cols-3">
                                 {[
                                     'Maintainable codebases',
                                     'Fast iteration loops',

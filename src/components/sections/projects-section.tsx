@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import type { ComponentProps } from 'react'
-import { ExternalLink, Github } from 'lucide-react'
+import { Clock3, ExternalLink, Github } from 'lucide-react'
 
 import { SectionReveal } from '@/components/section-reveal'
 import { Badge } from '@/components/ui/badge'
@@ -36,6 +36,10 @@ const projectImages: Record<string, string> = {
     'Recipe Shop': '/recipe-shop.png',
 }
 
+const pendingActionClassName = buttonVariants({
+    variant: 'outline',
+})
+
 export function ProjectsSection({ projects }: { projects: Project[] }) {
     const [featuredProject, ...otherProjects] = projects
 
@@ -53,7 +57,7 @@ export function ProjectsSection({ projects }: { projects: Project[] }) {
                 <CardContent className="grid gap-6">
                     {featuredProject ? (
                         <SectionReveal delay={40}>
-                            <Card className="overflow-hidden border-primary/18 bg-background/58">
+                            <Card className="flex overflow-hidden border-primary/18 bg-background/58">
                                 <div className="grid lg:grid-cols-[1.08fr_0.92fr]">
                                     <div className="relative min-h-[18rem] border-b border-border/60 lg:min-h-full lg:border-b-0 lg:border-r">
                                         {projectImages[featuredProject.name] ? (
@@ -94,7 +98,7 @@ export function ProjectsSection({ projects }: { projects: Project[] }) {
                                             </Badge>
                                         </div>
                                     </div>
-                                    <div className="grid gap-5 p-6 sm:p-8">
+                                    <div className="flex h-full flex-col gap-5 p-6 sm:p-8">
                                         <div className="space-y-4">
                                             <p className="text-sm uppercase tracking-[0.22em] text-muted-foreground">
                                                 {featuredProject.date}
@@ -127,7 +131,8 @@ export function ProjectsSection({ projects }: { projects: Project[] }) {
                                                 )
                                             )}
                                         </div>
-                                        <div className="flex flex-wrap gap-3">
+                                        <div className="mt-auto border-t border-border/60 pt-5">
+                                            <div className="grid gap-3 sm:grid-cols-2">
                                             <a
                                                 href={featuredProject.githubRepo}
                                                 target="_blank"
@@ -154,10 +159,14 @@ export function ProjectsSection({ projects }: { projects: Project[] }) {
                                                     Live Demo
                                                 </a>
                                             ) : (
-                                                <Badge variant="muted">
-                                                    Hosted link pending
-                                                </Badge>
+                                                <span
+                                                    className={`${pendingActionClassName} cursor-default justify-center border-dashed bg-background/38 text-muted-foreground opacity-75`}
+                                                >
+                                                    <Clock3 className="size-4" />
+                                                    Hosted Link Pending
+                                                </span>
                                             )}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -168,9 +177,7 @@ export function ProjectsSection({ projects }: { projects: Project[] }) {
                     <div className="grid gap-4 xl:grid-cols-3">
                         {otherProjects.map((project, index) => (
                             <SectionReveal delay={index * 80} key={project.name}>
-                            <Card
-                                className="relative h-full overflow-hidden border-border/70 bg-background/55"
-                            >
+                                <Card className="relative flex h-full flex-col overflow-hidden border-border/70 bg-background/55">
                                     {projectImages[project.name] ? (
                                         <div className="relative h-52 overflow-hidden border-b border-border/60 sm:h-56">
                                             <Image
@@ -211,7 +218,7 @@ export function ProjectsSection({ projects }: { projects: Project[] }) {
                                             ))}
                                         </div>
                                     </CardHeader>
-                                    <CardContent className="relative grid gap-5 bg-background/92">
+                                    <CardContent className="relative flex flex-1 flex-col gap-5 bg-background/92">
                                         <div className="flex flex-wrap gap-2">
                                             {project.stack.map((item) => (
                                                 <Badge key={item} variant="outline">
@@ -219,7 +226,8 @@ export function ProjectsSection({ projects }: { projects: Project[] }) {
                                                 </Badge>
                                             ))}
                                         </div>
-                                        <div className="flex flex-wrap gap-3">
+                                        <div className="mt-auto border-t border-border/60 pt-5">
+                                            <div className="grid gap-3 sm:grid-cols-2">
                                             <a
                                                 href={project.githubRepo}
                                                 target="_blank"
@@ -244,10 +252,14 @@ export function ProjectsSection({ projects }: { projects: Project[] }) {
                                                     Live Demo
                                                 </a>
                                             ) : (
-                                                <Badge variant="muted">
-                                                    Hosted link pending
-                                                </Badge>
+                                                <span
+                                                    className={`${pendingActionClassName} cursor-default justify-center border-dashed bg-background/38 text-muted-foreground opacity-75`}
+                                                >
+                                                    <Clock3 className="size-4" />
+                                                    Hosted Link Pending
+                                                </span>
                                             )}
+                                            </div>
                                         </div>
                                     </CardContent>
                                 </Card>
