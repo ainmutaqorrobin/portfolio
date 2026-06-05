@@ -43,9 +43,11 @@ export function SectionReveal({
     return (
         <div
             ref={ref}
-            style={{ transitionDelay: `${delay}ms` }}
+            style={{
+                transitionDelay: `${delay}ms`,
+            }}
             className={cn(
-                'transform-gpu transition-all duration-700 ease-out',
+                'transform-gpu transition-all duration-700 ease-out text-center lg:text-left',
                 visible
                     ? 'translate-y-0 opacity-100 blur-0'
                     : 'translate-y-8 opacity-0 blur-sm',

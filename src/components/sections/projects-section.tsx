@@ -1,32 +1,31 @@
+'use client'
+
 import Image from 'next/image'
-import type { ComponentProps } from 'react'
-import { Clock3, ExternalLink, Github } from 'lucide-react'
+import { useState } from 'react'
+import { motion } from 'framer-motion'
+import {
+    Github,
+    ExternalLink,
+    Code2,
+    ChevronDown,
+    ChevronsDown,
+} from 'lucide-react'
 
 import { SectionReveal } from '@/components/section-reveal'
 import { Badge } from '@/components/ui/badge'
 import { buttonVariants } from '@/components/ui/button'
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card'
 import type { Project, ProjectStatus } from '@/lib/content'
 
-const statusVariants: Record<
-    ProjectStatus,
-    ComponentProps<typeof Badge>['variant']
-> = {
-    development: 'warning',
-    deprecated: 'muted',
-    live: 'success',
-}
-
-const statusLabels: Record<ProjectStatus, string> = {
-    development: 'In Development',
-    deprecated: 'Deprecated',
-    live: 'Live',
+const statusConfig: Record<ProjectStatus, { label: string; color: string }> = {
+    live: { label: '🚀 Live', color: 'from-emerald-500/20 to-emerald-500/5' },
+    development: {
+        label: '🔨 In Development',
+        color: 'from-amber-500/20 to-amber-500/5',
+    },
+    deprecated: {
+        label: '📦 Archived',
+        color: 'from-slate-500/20 to-slate-500/5',
+    },
 }
 
 const projectImages: Record<string, string> = {
@@ -36,260 +35,365 @@ const projectImages: Record<string, string> = {
     'Recipe Shop': '/recipe-shop.png',
 }
 
-const pendingActionClassName = buttonVariants({
-    variant: 'outline',
-})
-
 export function ProjectsSection({ projects }: { projects: Project[] }) {
-    const [featuredProject, ...otherProjects] = projects
+    const [flipped, setFlipped] = useState<Record<string, boolean>>({})
+    const [expandedDesc, setExpandedDesc] = useState<Record<string, boolean>>(
+        {}
+    )
+
+    const toggleFlip = (projectName: string) => {
+        setFlipped((prev) => ({
+            ...prev,
+            [projectName]: !prev[projectName],
+        }))
+    }
+
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.15,
+                delayChildren: 0.1,
+            },
+        },
+    }
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 30 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.6 },
+        },
+    }
 
     return (
         <SectionReveal id="projects" delay={160}>
-            <Card className="overflow-hidden">
-                <CardHeader className="gap-3">
-                    <Badge variant="outline" className="w-fit">
-                        Projects
-                    </Badge>
-                    <CardTitle className="text-3xl sm:text-4xl">
-                        Selected work that shows product range
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="grid gap-6">
-                    {featuredProject ? (
-                        <SectionReveal delay={40}>
-                            <Card className="flex overflow-hidden border-primary/18 bg-background/58">
-                                <div className="grid lg:grid-cols-[1.08fr_0.92fr]">
-                                    <div className="relative min-h-[18rem] border-b border-border/60 lg:min-h-full lg:border-b-0 lg:border-r">
-                                        {projectImages[featuredProject.name] ? (
-                                            <>
+            <div className="space-y-12 sm:space-y-16">
+                {/* Header */}
+                <motion.div
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: '-100px' }}
+                    className="space-y-4 sm:space-y-6 text-center lg:text-left"
+                >
+                    <motion.div
+                        variants={itemVariants}
+                        className="inline-flex mx-auto lg:mx-0 items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-3 sm:px-4 py-2"
+                    >
+                        <Code2 className="size-4 text-primary" />
+                        <span className="text-xs sm:text-sm font-medium">
+                            Featured Work
+                        </span>
+                    </motion.div>
+                    <motion.h2
+                        variants={itemVariants}
+                        className="font-heading text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold"
+                    >
+                        Projects That Matter
+                    </motion.h2>
+                    <motion.p
+                        variants={itemVariants}
+                        className="mx-auto lg:mx-0 max-w-3xl text-sm sm:text-base lg:text-lg text-muted-foreground"
+                    >
+                        A showcase of products I've built, from MVPs to
+                        production systems. Click any project to see more
+                        details.
+                    </motion.p>
+                </motion.div>
+
+                {/* 3D Flip Cards Grid */}
+                <motion.div
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: '-100px' }}
+                    className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+                >
+                    {projects.map((project, index) => {
+                        const isFlipped = flipped[project.name] || false
+                        const statusInfo = statusConfig[project.status]
+
+                        return (
+                            <motion.div
+                                key={project.name}
+                                variants={itemVariants}
+                                className="h-80 sm:h-96 lg:h-112 cursor-pointer perspective"
+                                onClick={() => toggleFlip(project.name)}
+                            >
+                                <motion.div
+                                    className="relative w-full h-full"
+                                    animate={{ rotateY: isFlipped ? 180 : 0 }}
+                                    transition={{
+                                        duration: 0.6,
+                                        type: 'spring',
+                                        stiffness: 100,
+                                    }}
+                                    style={{ transformStyle: 'preserve-3d' }}
+                                >
+                                    {/* Front side */}
+                                    <motion.div
+                                        className="absolute w-full h-full rounded-xl border border-primary/30 bg-background/40 overflow-hidden backdrop-blur-sm"
+                                        style={{ backfaceVisibility: 'hidden' }}
+                                    >
+                                        {/* Image */}
+                                        {projectImages[project.name] && (
+                                            <div className="relative h-48 w-full overflow-hidden bg-background">
                                                 <Image
                                                     src={
                                                         projectImages[
-                                                            featuredProject.name
+                                                            project.name
                                                         ]
                                                     }
-                                                    alt={`${featuredProject.name} preview`}
+                                                    alt={project.name}
                                                     fill
-                                                    sizes="(max-width: 1024px) 100vw, 48vw"
                                                     className="object-cover object-top"
                                                 />
-                                                <div className="absolute inset-0 bg-[linear-gradient(180deg,hsl(var(--background)/0.04),hsl(var(--background)/0.14)_40%,hsl(var(--background)/0.84))]" />
-                                            </>
-                                        ) : null}
-                                        <div className="absolute inset-x-0 top-0 flex flex-wrap items-center justify-between gap-3 p-5">
-                                            <Badge
-                                                variant="outline"
-                                                className="bg-background/75"
-                                            >
-                                                Featured Project
-                                            </Badge>
-                                            <Badge
-                                                variant={
-                                                    statusVariants[
-                                                        featuredProject.status
-                                                    ]
-                                                }
-                                            >
-                                                {
-                                                    statusLabels[
-                                                        featuredProject.status
-                                                    ]
-                                                }
-                                            </Badge>
-                                        </div>
-                                    </div>
-                                    <div className="flex h-full flex-col gap-5 p-6 sm:p-8">
-                                        <div className="space-y-4">
-                                            <p className="text-sm uppercase tracking-[0.22em] text-muted-foreground">
-                                                {featuredProject.date}
-                                            </p>
-                                            <CardTitle className="text-3xl">
-                                                {featuredProject.name}
-                                            </CardTitle>
+                                                <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
+                                            </div>
+                                        )}
+
+                                        {/* Content */}
+                                        <div className="flex flex-col gap-4 p-6">
                                             <div className="space-y-2">
-                                                {featuredProject.summary.map(
-                                                    (paragraph) => (
-                                                        <CardDescription
-                                                            className="text-sm leading-7 sm:text-base"
-                                                            key={paragraph}
+                                                <div className="flex items-start justify-between gap-2">
+                                                    <h3 className="font-heading text-xl font-bold leading-tight">
+                                                        {project.name}
+                                                    </h3>
+                                                    <Badge
+                                                        className={`shrink-0 bg-linear-to-r ${statusInfo.color} border-primary/20`}
+                                                    >
+                                                        {statusInfo.label}
+                                                    </Badge>
+                                                </div>
+                                                <p className="text-xs text-muted-foreground">
+                                                    {project.date}
+                                                </p>
+                                            </div>
+                                            <p className="line-clamp-2 text-sm text-muted-foreground">
+                                                {project.summary[0]}
+                                            </p>
+                                            <div className="mt-auto flex flex-wrap gap-1.5">
+                                                {project.stack
+                                                    .slice(0, 2)
+                                                    .map((tech) => (
+                                                        <Badge
+                                                            key={tech}
+                                                            variant="outline"
+                                                            className="text-xs"
                                                         >
-                                                            {paragraph}
-                                                        </CardDescription>
+                                                            {tech}
+                                                        </Badge>
+                                                    ))}
+                                                {project.stack.length > 2 && (
+                                                    <Badge
+                                                        variant="outline"
+                                                        className="text-xs"
+                                                    >
+                                                        +
+                                                        {project.stack.length -
+                                                            2}
+                                                    </Badge>
+                                                )}
+                                            </div>
+                                            <div className="text-center text-xs text-muted-foreground pt-4 border-t border-border/30">
+                                                Click to see details →
+                                            </div>
+                                        </div>
+                                    </motion.div>
+
+                                    {/* Back side */}
+                                    <motion.div
+                                        className="absolute w-full h-full rounded-xl border border-primary/40 bg-gradient-to-br from-primary/10 to-accent/10 backdrop-blur-sm overflow-y-auto lg:overflow-hidden"
+                                        style={{
+                                            backfaceVisibility: 'hidden',
+                                            transform: 'rotateY(180deg)',
+                                        }}
+                                    >
+                                        <div className="flex flex-col gap-4 p-4 sm:p-6 h-full">
+                                            <div className="space-y-2">
+                                                <h4 className="font-heading text-lg font-bold">
+                                                    {project.name}
+                                                </h4>
+                                                <p className="text-xs text-muted-foreground">
+                                                    Full details and links
+                                                </p>
+                                            </div>
+
+                                            {/* Description with expand/collapse */}
+                                            <div className="space-y-2">
+                                                {project.summary.map(
+                                                    (para, idx) => (
+                                                        <div
+                                                            key={para}
+                                                            className={
+                                                                expandedDesc[
+                                                                    project.name
+                                                                ]
+                                                                    ? ''
+                                                                    : idx > 0
+                                                                      ? 'hidden'
+                                                                      : ''
+                                                            }
+                                                        >
+                                                            <p
+                                                                className={`text-xs leading-relaxed text-foreground/80 ${!expandedDesc[project.name] && idx === 0 ? 'line-clamp-2' : ''}`}
+                                                            >
+                                                                {para}
+                                                            </p>
+                                                        </div>
                                                     )
                                                 )}
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-wrap gap-2">
-                                            {featuredProject.stack.map(
-                                                (item) => (
-                                                    <Badge
-                                                        key={item}
-                                                        variant="outline"
+                                                {project.summary.length > 1 && (
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation()
+                                                            setExpandedDesc(
+                                                                (prev) => ({
+                                                                    ...prev,
+                                                                    [project.name]:
+                                                                        !prev[
+                                                                            project
+                                                                                .name
+                                                                        ],
+                                                                })
+                                                            )
+                                                        }}
+                                                        className="lg:hidden w-full flex flex-col items-center justify-center text-primary hover:text-primary/80 transition-colors pt-3"
                                                     >
-                                                        {item}
-                                                    </Badge>
-                                                )
-                                            )}
-                                        </div>
-                                        <div className="mt-auto border-t border-border/60 pt-5">
-                                            <div className="grid gap-3 sm:grid-cols-2">
-                                                <a
-                                                    href={
-                                                        featuredProject.githubRepo
-                                                    }
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                    className={buttonVariants({
-                                                        variant: 'secondary',
-                                                    })}
-                                                >
-                                                    <Github className="size-4" />
-                                                    GitHub Repo
-                                                </a>
-                                                {featuredProject.hostedLink ? (
-                                                    <a
-                                                        href={
-                                                            featuredProject.hostedLink
-                                                        }
-                                                        target="_blank"
-                                                        rel="noreferrer"
-                                                        className={buttonVariants(
-                                                            {
-                                                                variant:
-                                                                    'outline',
-                                                            }
+                                                        {!expandedDesc[
+                                                            project.name
+                                                        ] && (
+                                                            <span className="text-xs mb-1">
+                                                                Read more
+                                                            </span>
                                                         )}
-                                                    >
-                                                        <ExternalLink className="size-4" />
-                                                        Live Demo
-                                                    </a>
-                                                ) : (
-                                                    <span
-                                                        className={`${pendingActionClassName} cursor-default justify-center border-dashed bg-background/38 text-muted-foreground opacity-75`}
-                                                    >
-                                                        <Clock3 className="size-4" />
-                                                        Hosted Link Pending
-                                                    </span>
+                                                        <motion.div
+                                                            animate={{
+                                                                rotate: expandedDesc[
+                                                                    project.name
+                                                                ]
+                                                                    ? 180
+                                                                    : 0,
+                                                            }}
+                                                            transition={{
+                                                                duration: 0.3,
+                                                            }}
+                                                        >
+                                                            <ChevronsDown className="size-4" />
+                                                        </motion.div>
+                                                    </button>
                                                 )}
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Card>
-                        </SectionReveal>
-                    ) : null}
 
-                    <div className="grid gap-4 xl:grid-cols-3">
-                        {otherProjects.map((project, index) => (
-                            <SectionReveal
-                                delay={index * 80}
-                                key={project.name}
-                            >
-                                <Card className="relative flex h-full flex-col overflow-hidden border-border/70 bg-background/55">
-                                    {projectImages[project.name] ? (
-                                        <div className="relative h-52 overflow-hidden border-b border-border/60 sm:h-56">
-                                            <Image
-                                                src={
-                                                    projectImages[project.name]
-                                                }
-                                                alt={`${project.name} preview`}
-                                                fill
-                                                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 30vw"
-                                                className="object-cover object-top"
-                                            />
-                                            <div className="absolute inset-0 bg-[linear-gradient(180deg,hsl(var(--background)/0.08),hsl(var(--background)/0.16)_35%,hsl(var(--background)/0.72))]" />
-                                            <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background/85 to-transparent" />
-                                        </div>
-                                    ) : null}
-                                    <CardHeader className="relative gap-4 bg-background/92">
-                                        <div className="flex flex-wrap items-center justify-between gap-3">
-                                            <p className="text-sm uppercase tracking-[0.22em] text-muted-foreground">
-                                                {project.date}
-                                            </p>
-                                            <Badge
-                                                variant={
-                                                    statusVariants[
-                                                        project.status
-                                                    ]
-                                                }
-                                            >
-                                                {statusLabels[project.status]}
-                                            </Badge>
-                                        </div>
-                                        <CardTitle className="text-2xl">
-                                            {project.name}
-                                        </CardTitle>
-                                        <div className="space-y-2">
-                                            {project.summary.map(
-                                                (paragraph) => (
-                                                    <CardDescription
-                                                        className="text-sm leading-7"
-                                                        key={paragraph}
-                                                    >
-                                                        {paragraph}
-                                                    </CardDescription>
-                                                )
-                                            )}
-                                        </div>
-                                    </CardHeader>
-                                    <CardContent className="relative flex flex-1 flex-col gap-5 bg-background/92">
-                                        <div className="flex flex-wrap gap-2">
-                                            {project.stack.map((item) => (
-                                                <Badge
-                                                    key={item}
-                                                    variant="outline"
-                                                >
-                                                    {item}
-                                                </Badge>
-                                            ))}
-                                        </div>
-                                        <div className="mt-auto border-t border-border/60 pt-5">
-                                            <div className="grid gap-3 sm:grid-cols-2">
+                                            {/* All tech stack */}
+                                            <div className="space-y-2 border-t border-border/30 pt-3">
+                                                <p className="text-xs font-semibold uppercase tracking-wider text-primary">
+                                                    Tech Stack
+                                                </p>
+                                                <div className="flex flex-wrap gap-1.5">
+                                                    {project.stack.map(
+                                                        (tech) => (
+                                                            <Badge
+                                                                key={tech}
+                                                                variant="outline"
+                                                                className="text-xs"
+                                                            >
+                                                                {tech}
+                                                            </Badge>
+                                                        )
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            {/* Links */}
+                                            <div className="flex gap-2 border-t border-border/30 pt-3">
                                                 <a
                                                     href={project.githubRepo}
                                                     target="_blank"
                                                     rel="noreferrer"
+                                                    onClick={(e) =>
+                                                        e.stopPropagation()
+                                                    }
                                                     className={buttonVariants({
-                                                        variant: 'secondary',
+                                                        size: 'sm',
+                                                        variant: 'outline',
+                                                        className:
+                                                            'flex-1 text-xs',
                                                     })}
                                                 >
-                                                    <Github className="size-4" />
-                                                    GitHub Repo
+                                                    <Github className="size-3" />
+                                                    GitHub
                                                 </a>
-                                                {project.hostedLink ? (
+                                                {project.hostedLink && (
                                                     <a
                                                         href={
                                                             project.hostedLink
                                                         }
                                                         target="_blank"
                                                         rel="noreferrer"
+                                                        onClick={(e) =>
+                                                            e.stopPropagation()
+                                                        }
                                                         className={buttonVariants(
                                                             {
-                                                                variant:
-                                                                    'outline',
+                                                                size: 'sm',
+                                                                className:
+                                                                    'flex-1 text-xs',
                                                             }
                                                         )}
                                                     >
-                                                        <ExternalLink className="size-4" />
-                                                        Live Demo
+                                                        <ExternalLink className="size-3" />
+                                                        Live
                                                     </a>
-                                                ) : (
-                                                    <span
-                                                        className={`${pendingActionClassName} cursor-default justify-center border-dashed bg-background/38 text-muted-foreground opacity-75`}
-                                                    >
-                                                        <Clock3 className="size-4" />
-                                                        Hosted Link Pending
-                                                    </span>
                                                 )}
                                             </div>
                                         </div>
-                                    </CardContent>
-                                </Card>
-                            </SectionReveal>
-                        ))}
-                    </div>
-                </CardContent>
-            </Card>
+                                    </motion.div>
+                                </motion.div>
+                            </motion.div>
+                        )
+                    })}
+                </motion.div>
+
+                {/* Stats section */}
+                <motion.div
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: '-100px' }}
+                    className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-3"
+                >
+                    {[
+                        { label: 'Lines of Code', value: '50K+' },
+                        { label: 'Deployment Cycles', value: '200+' },
+                        { label: 'Technologies', value: '15+' },
+                    ].map((stat, index) => (
+                        <motion.div
+                            key={stat.label}
+                            variants={itemVariants}
+                            whileHover={{
+                                y: -5,
+                                boxShadow:
+                                    '0 20px 40px rgba(var(--primary), 0.1)',
+                            }}
+                            className="relative overflow-hidden rounded-lg border border-primary/20 bg-gradient-to-br from-background/60 to-background/30 p-6 backdrop-blur-sm"
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 transition-opacity duration-300 hover:opacity-100" />
+                            <div className="relative space-y-2 text-center sm:text-left">
+                                <p className="text-3xl font-bold text-primary">
+                                    {stat.value}
+                                </p>
+                                <p className="text-sm text-muted-foreground">
+                                    {stat.label}
+                                </p>
+                            </div>
+                        </motion.div>
+                    ))}
+                </motion.div>
+            </div>
         </SectionReveal>
     )
 }

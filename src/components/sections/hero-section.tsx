@@ -1,20 +1,16 @@
+'use client'
+
 import Image from 'next/image'
-import { ArrowRight, Github, Linkedin, Mail, MapPin } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
+import { ArrowRight, Github, ChevronDown } from 'lucide-react'
 
 import { SectionReveal } from '@/components/section-reveal'
 import { SkillIcon } from '@/components/skill-icon'
 import { Badge } from '@/components/ui/badge'
 import { buttonVariants } from '@/components/ui/button'
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card'
 import type { Profile } from '@/lib/content'
 
-const statLabels = ['Selected Projects', 'Roles Held', 'Core Domains'] as const
 const portraitSrc = '/Myself-v2.png'
 
 export function HeroSection({
@@ -24,282 +20,329 @@ export function HeroSection({
     profile: Profile
     projectCount: number
 }) {
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+    const [scrollY, setScrollY] = useState(0)
+    const [isMobile, setIsMobile] = useState(false)
     const { contact } = profile
     const skillGroups = Object.entries(profile.skills)
-    const statValues = [
-        `${projectCount}+`,
-        `${profile.workExperience.length}`,
-        `${skillGroups.length}`,
+
+    useEffect(() => {
+        setIsMobile(window.innerWidth < 1024)
+        const handleMouseMove = (e: MouseEvent) => {
+            setMousePosition({ x: e.clientX, y: e.clientY })
+        }
+        const handleScroll = () => {
+            setScrollY(window.scrollY)
+        }
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 1024)
+        }
+        window.addEventListener('mousemove', handleMouseMove)
+        window.addEventListener('scroll', handleScroll)
+        window.addEventListener('resize', handleResize)
+        return () => {
+            window.removeEventListener('mousemove', handleMouseMove)
+            window.removeEventListener('scroll', handleScroll)
+            window.removeEventListener('resize', handleResize)
+        }
+    }, [])
+
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.15,
+                delayChildren: 0.2,
+            },
+        },
+    }
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 30 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.8 },
+        },
+    }
+
+    const stats = [
+        { value: projectCount + '+', label: 'Projects Built' },
+        { value: profile.workExperience.length, label: 'Roles Held' },
+        {
+            value: Object.keys(profile.skills).length,
+            label: 'Skill Categories',
+        },
     ]
 
     return (
         <section
             id="hero"
-            className="grid items-start gap-6 xl:grid-cols-[1.15fr_0.85fr]"
+            className="relative min-h-screen overflow-hidden bg-gradient-to-b from-background via-background to-background/95"
         >
-            <SectionReveal className="xl:row-span-2">
-                <Card className="relative overflow-hidden border-primary/18 bg-card/72">
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,hsl(var(--primary)/0.22),transparent_34%),radial-gradient(circle_at_90%_14%,hsl(var(--accent)/0.24),transparent_28%),linear-gradient(135deg,hsl(var(--background)/0),hsl(var(--background)/0.3)_70%,hsl(var(--foreground)/0.03))]" />
-                    <CardContent className="relative grid gap-10 p-7 sm:p-10">
-                        <div className="flex flex-wrap items-center justify-between gap-3">
-                            <Badge
-                                className="w-fit bg-background/75"
-                                variant="outline"
-                            >
-                                Editorial / Delivery-Focused Portfolio
-                            </Badge>
-                            <p className="text-xs uppercase tracking-[0.34em] text-muted-foreground">
-                                Open for selected builds
-                            </p>
-                        </div>
+            {/* Animated background elements */}
+            <motion.div
+                className="absolute inset-0 opacity-40"
+                animate={{
+                    background: [
+                        'radial-gradient(circle at 20% 50%, rgba(var(--primary), 0.1) 0%, transparent 50%)',
+                        'radial-gradient(circle at 80% 80%, rgba(var(--accent), 0.1) 0%, transparent 50%)',
+                        'radial-gradient(circle at 40% 20%, rgba(var(--primary), 0.1) 0%, transparent 50%)',
+                    ],
+                }}
+                transition={{ duration: 8, repeat: Infinity }}
+            />
 
-                        <div className="space-y-6">
-                            <div className="space-y-4">
-                                <p className="text-sm uppercase tracking-[0.36em] text-muted-foreground">
-                                    {profile.location}
-                                </p>
-                                <h1 className="max-w-4xl font-heading text-5xl font-semibold tracking-[-0.07em] text-balance sm:text-6xl lg:text-7xl">
-                                    <span className="block text-foreground/72">
-                                        {profile.role}
+            <div className="relative z-10 w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 max-w-7xl">
+                <motion.div
+                    className="space-y-12 sm:space-y-16"
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
+                >
+                    {/* Main hero content */}
+                    <div className="grid items-center gap-8 sm:gap-12 lg:grid-cols-2">
+                        {/* Left: Text content - Centered on mobile */}
+                        <motion.div
+                            variants={itemVariants}
+                            className="space-y-6 sm:space-y-8 text-center lg:text-left"
+                        >
+                            <div className="space-y-3 sm:space-y-4">
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.8 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ duration: 0.6 }}
+                                    className="inline-flex mx-auto lg:mx-0 items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-3 sm:px-4 py-2"
+                                >
+                                    <span className="relative flex size-2">
+                                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
+                                        <span className="relative inline-flex size-2 rounded-full bg-primary" />
                                     </span>
-                                    <span className="mt-2 block">
+                                    <span className="text-xs sm:text-sm font-medium text-primary">
+                                        Available for opportunities
+                                    </span>
+                                </motion.div>
+
+                                <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-tight">
+                                    <motion.span
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{
+                                            duration: 0.8,
+                                            delay: 0.1,
+                                        }}
+                                        className="block text-foreground"
+                                    >
                                         {profile.name}
-                                    </span>
+                                    </motion.span>
+                                    <motion.span
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{
+                                            duration: 0.8,
+                                            delay: 0.2,
+                                        }}
+                                        className="block bg-gradient-to-r from-primary via-primary to-accent bg-clip-text text-transparent"
+                                    >
+                                        {profile.role}
+                                    </motion.span>
                                 </h1>
-                                <p className="max-w-3xl text-lg leading-8 text-foreground/92 sm:text-[1.35rem]">
+
+                                <motion.p
+                                    variants={itemVariants}
+                                    className="text-base sm:text-lg lg:text-xl leading-relaxed text-muted-foreground"
+                                >
                                     {profile.tagline}
-                                </p>
-                                <p className="max-w-2xl text-base leading-8 text-muted-foreground">
-                                    {profile.heroSummary}
-                                </p>
+                                </motion.p>
                             </div>
 
-                            <div className="flex flex-wrap items-center gap-3">
+                            <motion.p
+                                variants={itemVariants}
+                                className="text-sm sm:text-base leading-relaxed text-foreground/80"
+                            >
+                                {profile.heroSummary}
+                            </motion.p>
+
+                            {/* CTA Buttons - Stack on mobile */}
+                            <motion.div
+                                variants={itemVariants}
+                                className="flex flex-col sm:flex-row justify-center lg:justify-start gap-3 sm:gap-4"
+                            >
                                 <a
                                     href="#projects"
                                     className={buttonVariants({
                                         size: 'lg',
+                                        className:
+                                            'w-full sm:w-auto text-xs sm:text-sm',
                                     })}
                                 >
-                                    View Projects
-                                    <ArrowRight className="size-4" />
+                                    Explore Projects
+                                    <ArrowRight className="size-4 sm:size-5" />
                                 </a>
                                 <a
-                                    href="#contact"
+                                    href={contact.github}
+                                    target="_blank"
+                                    rel="noreferrer"
                                     className={buttonVariants({
                                         size: 'lg',
                                         variant: 'outline',
+                                        className:
+                                            'w-full sm:w-auto text-xs sm:text-sm',
                                     })}
                                 >
-                                    Contact Me
+                                    <Github className="size-4 sm:size-5" />
+                                    GitHub
                                 </a>
-                            </div>
-                        </div>
+                            </motion.div>
+                        </motion.div>
 
-                        <div className="grid gap-4 border-t border-border/60 pt-6 sm:grid-cols-3">
-                            {statLabels.map((label, index) => (
-                                <div
-                                    key={label}
-                                    className="flex min-h-[8.5rem] flex-col items-center justify-center rounded-[1.7rem] border border-border/60 bg-background/55 p-5 text-center"
-                                >
-                                    <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">
-                                        {label}
-                                    </p>
-                                    <p className="mt-4 font-heading text-4xl tracking-[-0.06em] text-foreground">
-                                        {statValues[index]}
-                                    </p>
+                        {/* Right: 3D animated image - Hidden on very small mobile */}
+                        <motion.div
+                            variants={itemVariants}
+                            className="relative h-64 sm:h-72 md:h-80 lg:h-80 xl:h-96 mt-8 lg:mt-0"
+                            style={{
+                                perspective: 1000,
+                            }}
+                        >
+                            <motion.div
+                                className="relative h-full w-full"
+                                animate={{
+                                    y: isMobile ? 0 : scrollY * 0.5,
+                                    rotateX: isMobile
+                                        ? 0
+                                        : (mousePosition.y - 300) * 0.02,
+                                    rotateY: isMobile
+                                        ? 0
+                                        : (mousePosition.x - 300) * 0.02,
+                                }}
+                                transition={{
+                                    type: 'spring',
+                                    stiffness: 100,
+                                    damping: 30,
+                                }}
+                                style={{
+                                    transformStyle: 'preserve-3d',
+                                }}
+                            >
+                                <div className="absolute inset-0 rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/10 to-accent/10 blur-xl" />
+                                <div className="relative h-full w-full overflow-hidden rounded-3xl border border-primary/30 bg-background/50 backdrop-blur-sm">
+                                    <Image
+                                        src={portraitSrc}
+                                        alt={profile.name}
+                                        fill
+                                        className="object-cover"
+                                        style={{ objectPosition: 'center 20%' }}
+                                        priority
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
                                 </div>
-                            ))}
-                        </div>
+                            </motion.div>
+                        </motion.div>
+                    </div>
 
-                        <div className="grid justify-items-center gap-5 border-t border-border/60 pt-6 text-center">
-                            <div className="space-y-2">
-                                <p className="text-xs uppercase tracking-[0.28em] text-primary">
-                                    What I optimize for
-                                </p>
-                                <p className="mx-auto max-w-2xl text-sm leading-7 text-muted-foreground">
-                                    Maintainable product delivery, cross-stack
-                                    ownership, and systems that teams can keep
-                                    shipping on without friction.
-                                </p>
-                            </div>
-                            <div className="grid w-full max-w-3xl gap-3 sm:grid-cols-3">
-                                {[
-                                    'Maintainable codebases',
-                                    'Fast iteration loops',
-                                    'Production-ready delivery',
-                                ].map((focus) => (
-                                    <div
-                                        key={focus}
-                                        className="rounded-[1.6rem] border border-border/60 bg-background/55 px-4 py-4 text-sm leading-6 text-foreground/88"
+                    {/* Stats with animated counters */}
+                    <motion.div
+                        variants={itemVariants}
+                        className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-3"
+                    >
+                        {stats.map((stat, index) => (
+                            <motion.div
+                                key={stat.label}
+                                whileHover={{
+                                    y: -5,
+                                    boxShadow:
+                                        '0 20px 40px rgba(var(--primary), 0.1)',
+                                }}
+                                className="group relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-br from-background/80 to-background/40 p-6 backdrop-blur-sm cursor-pointer"
+                            >
+                                <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                                <div className="relative space-y-3">
+                                    <motion.div
+                                        initial={{ opacity: 0, scale: 0.5 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{
+                                            duration: 0.6,
+                                            delay: 0.3 + index * 0.1,
+                                        }}
+                                        className="font-heading text-3xl sm:text-4xl font-bold text-primary text-center sm:text-left"
                                     >
-                                        {focus}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
-            </SectionReveal>
-
-            <SectionReveal delay={140}>
-                <Card className="overflow-hidden border-primary/14 bg-card/76">
-                    <CardContent className="p-4">
-                        <div className="relative overflow-hidden rounded-[1.8rem] border border-border/60 bg-[linear-gradient(180deg,hsl(var(--primary)/0.18),hsl(var(--secondary))_34%,hsl(var(--background)))]">
-                            <div className="absolute inset-x-0 top-0 z-10 flex flex-wrap justify-between gap-2 p-4">
-                                <Badge
-                                    variant="outline"
-                                    className="bg-background/72"
-                                >
-                                    Based in Malaysia
-                                </Badge>
-                                <Badge
-                                    variant="outline"
-                                    className="bg-background/72"
-                                >
-                                    Software Engineer
-                                </Badge>
-                            </div>
-                            <div className="absolute inset-x-0 bottom-0 z-20 bg-linear-to-t from-background via-background/75 to-transparent p-5">
-                                <p className="font-heading text-2xl text-foreground">
-                                    {profile.name}
-                                </p>
-                                <p className="max-w-xs text-sm leading-6 text-muted-foreground">
-                                    Building web, backend, mobile, and delivery
-                                    workflows with a bias toward clean systems.
-                                </p>
-                            </div>
-                            <div className="absolute inset-x-0 bottom-0 h-28 bg-[radial-gradient(circle_at_center,hsl(var(--foreground)/0.16),transparent_70%)] blur-2xl" />
-                            <Image
-                                src={portraitSrc}
-                                alt={`${profile.name} portrait`}
-                                width={1440}
-                                height={1800}
-                                sizes="(min-width: 1280px) 34vw, (min-width: 640px) 50vw, 100vw"
-                                className="relative z-10 mx-auto h-90 w-auto max-w-full object-contain object-bottom pt-14 sm:h-[440px] lg:h-[520px]"
-                                priority
-                            />
-                        </div>
-                    </CardContent>
-                </Card>
-            </SectionReveal>
-
-            <SectionReveal delay={220}>
-                <Card className="overflow-hidden">
-                    <CardHeader className="gap-3">
-                        <CardDescription className="uppercase tracking-[0.22em] text-primary">
-                            Contact & Availability
-                        </CardDescription>
-                        <CardTitle className="text-3xl">
-                            {profile.availability}
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent className="grid gap-4 text-sm text-muted-foreground">
-                        <div className="grid gap-3 sm:grid-cols-2">
-                            <a
-                                className="rounded-[1.6rem] border border-border/60 bg-secondary/35 p-4 transition-transform duration-200 hover:-translate-y-1 hover:text-foreground"
-                                href={`mailto:${contact.email}`}
-                            >
-                                <div className="flex items-start gap-3">
-                                    <Mail className="mt-0.5 size-4 text-primary" />
-                                    <div className="space-y-1">
-                                        <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
-                                            Email
-                                        </p>
-                                        <p className="break-all text-foreground">
-                                            {contact.email}
-                                        </p>
-                                    </div>
+                                        {stat.value}
+                                    </motion.div>
+                                    <p className="text-xs sm:text-sm text-muted-foreground group-hover:text-foreground/80 transition-colors text-center sm:text-left">
+                                        {stat.label}
+                                    </p>
                                 </div>
-                            </a>
-                            <a
-                                className="rounded-[1.6rem] border border-border/60 bg-secondary/35 p-4 transition-transform duration-200 hover:-translate-y-1 hover:text-foreground"
-                                href={contact.linkedin}
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                <div className="flex items-start gap-3">
-                                    <Linkedin className="mt-0.5 size-4 text-primary" />
-                                    <div className="space-y-1">
-                                        <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
-                                            LinkedIn
-                                        </p>
-                                        <p className="text-foreground">
-                                            Connect professionally
-                                        </p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div className="grid gap-3 sm:grid-cols-2">
-                            <a
-                                className="rounded-[1.6rem] border border-border/60 bg-secondary/35 p-4 transition-transform duration-200 hover:-translate-y-1 hover:text-foreground"
-                                href={contact.github}
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                <div className="flex items-start gap-3">
-                                    <Github className="mt-0.5 size-4 text-primary" />
-                                    <div className="space-y-1">
-                                        <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
-                                            GitHub
-                                        </p>
-                                        <p className="break-all text-foreground">
-                                            Review my repositories
-                                        </p>
-                                    </div>
-                                </div>
-                            </a>
-                            <div className="rounded-[1.6rem] border border-border/60 bg-secondary/35 p-4">
-                                <div className="flex items-start gap-3">
-                                    <MapPin className="mt-0.5 size-4 text-primary" />
-                                    <div className="space-y-1">
-                                        <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
-                                            Location
-                                        </p>
-                                        <p className="text-foreground">
-                                            {profile.location}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
-            </SectionReveal>
-
-            <SectionReveal delay={280} className="xl:col-span-2">
-                <Card className="border-border/70 bg-card/68">
-                    <CardHeader>
-                        <CardDescription className="uppercase tracking-[0.22em] text-primary">
-                            Stack & Skills
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent className="grid gap-4 lg:grid-cols-4">
-                        {skillGroups.map(([category, items]) => (
-                            <div
-                                key={category}
-                                className="rounded-[1.75rem] border border-border/60 bg-background/46 p-4"
-                            >
-                                <p className="text-xs uppercase tracking-[0.24em] text-muted-foreground">
-                                    {category}
-                                </p>
-                                <div className="mt-4 flex flex-wrap gap-2">
-                                    {items.map((skill) => (
-                                        <Badge
-                                            key={`${category}-${skill}`}
-                                            className="gap-2 border-border/70 bg-background/70 normal-case tracking-normal"
-                                        >
-                                            <SkillIcon skill={skill} />
-                                            {skill}
-                                        </Badge>
-                                    ))}
-                                </div>
-                            </div>
+                            </motion.div>
                         ))}
-                    </CardContent>
-                </Card>
-            </SectionReveal>
+                    </motion.div>
+
+                    {/* Skills showcase with scroll animation */}
+                    <motion.div
+                        variants={itemVariants}
+                        className="space-y-4 sm:space-y-6"
+                    >
+                        <h3 className="font-heading text-2xl sm:text-3xl font-semibold text-center lg:text-left">
+                            Skills & Technologies
+                        </h3>
+                        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+                            {skillGroups.map(
+                                ([category, skills], categoryIndex) => (
+                                    <motion.div
+                                        key={category}
+                                        whileHover={{
+                                            y: -8,
+                                            boxShadow:
+                                                '0 20px 40px rgba(var(--primary), 0.15)',
+                                        }}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{
+                                            duration: 0.6,
+                                            delay: 0.5 + categoryIndex * 0.1,
+                                        }}
+                                        className="group relative overflow-hidden rounded-3xl border border-border/30 bg-gradient-to-br from-background/60 to-background/30 p-6 backdrop-blur-sm"
+                                    >
+                                        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                                        <div className="relative space-y-4">
+                                            <p className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-primary text-center sm:text-left">
+                                                {category}
+                                            </p>
+                                            <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
+                                                {(skills as string[]).map(
+                                                    (skill) => (
+                                                        <motion.div
+                                                            key={skill}
+                                                            whileHover={{
+                                                                scale: 1.05,
+                                                            }}
+                                                            className="inline-flex items-center gap-1.5 rounded-full border border-border/40 bg-background/70 px-3 py-1.5 text-xs text-foreground/80 hover:border-primary/50 hover:text-primary transition-colors"
+                                                        >
+                                                            <SkillIcon
+                                                                skill={skill}
+                                                            />
+                                                            {skill}
+                                                        </motion.div>
+                                                    )
+                                                )}
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                )
+                            )}
+                        </div>
+                    </motion.div>
+                </motion.div>
+
+                {/* Scroll indicator */}
+                <motion.div
+                    className="absolute bottom-8 left-1/2 -translate-x-1/2"
+                    animate={{ y: [0, 10, 0] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                >
+                    <ChevronDown className="size-6 text-muted-foreground" />
+                </motion.div>
+            </div>
         </section>
     )
 }
