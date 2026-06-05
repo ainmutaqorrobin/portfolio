@@ -5,7 +5,9 @@ WORKDIR /app
 
 FROM base AS deps
 COPY package.json package-lock.json* ./
-RUN npm ci
+# --ignore-scripts skips the dev-only "prepare" git-hook setup, which would
+# otherwise fail here since scripts/ isn't copied into this stage.
+RUN npm ci --ignore-scripts
 
 FROM deps AS builder
 COPY . .
