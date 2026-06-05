@@ -41,11 +41,15 @@ export function ProjectCardBack({
                         <div
                             key={para}
                             className={
-                                isExpanded ? '' : idx > 0 ? 'hidden' : ''
+                                isExpanded
+                                    ? ''
+                                    : idx > 0
+                                      ? 'hidden lg:block'
+                                      : ''
                             }
                         >
                             <p
-                                className={`text-xs leading-relaxed text-foreground/80 ${!isExpanded && idx === 0 ? 'sm:line-clamp-2' : ''}`}
+                                className={`text-xs leading-relaxed text-foreground/80 ${!isExpanded && idx === 0 ? 'sm:line-clamp-2 lg:line-clamp-none' : ''}`}
                             >
                                 {para}
                             </p>
