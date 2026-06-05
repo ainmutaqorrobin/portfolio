@@ -79,7 +79,7 @@ export function HeroSection({
     return (
         <section
             id="hero"
-            className="relative min-h-screen overflow-hidden bg-gradient-to-b from-background via-background to-background/95"
+            className="relative min-h-screen overflow-hidden rounded-3xl bg-gradient-to-b from-background via-background to-background/95"
         >
             {/* Animated background elements */}
             <motion.div
