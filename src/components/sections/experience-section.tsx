@@ -60,7 +60,7 @@ export function ExperienceSection({
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, margin: '-100px' }}
-                    className="space-y-0"
+                    className="space-y-6 sm:space-y-8"
                 >
                     {workExperience.map((job, index) => {
                         const [periodStart, periodEnd] = job.period
@@ -124,7 +124,7 @@ export function ExperienceSection({
                                             boxShadow:
                                                 '0 25px 50px rgba(var(--primary), 0.15)',
                                         }}
-                                        className="flex-1 overflow-hidden rounded-lg sm:rounded-xl border border-primary/20 bg-linear-to-br from-background/60 to-background/30 p-4 sm:p-6 lg:p-8 backdrop-blur-sm transition-all duration-300 hover:border-primary/40 mb-4 sm:mb-0"
+                                        className="flex-1 overflow-hidden rounded-lg sm:rounded-xl border border-primary/20 bg-linear-to-br from-background/60 to-background/30 p-5 sm:p-8 lg:p-10 backdrop-blur-sm transition-all duration-300 hover:border-primary/40 mb-4 sm:mb-0"
                                     >
                                         {/* Animated gradient background */}
                                         <div className="absolute inset-0 bg-linear-to-r from-primary/10 via-transparent to-accent/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
@@ -173,16 +173,13 @@ export function ExperienceSection({
                                             </p>
 
                                             {/* Timeline info */}
-                                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 text-xs sm:text-sm text-muted-foreground pt-2 border-t border-border/30">
+                                            <div className="flex flex-row items-center gap-2 text-xs sm:text-sm text-muted-foreground pt-2 border-t border-border/30">
                                                 <div className="flex items-center gap-2">
                                                     <Calendar className="h-3 sm:h-4 w-3 sm:w-4 text-primary/60 shrink-0" />
                                                     <span>{periodStart}</span>
                                                 </div>
-                                                <span className="text-primary/60 hidden sm:inline">
+                                                <span className="text-primary/60">
                                                     →
-                                                </span>
-                                                <span className="sm:hidden text-primary/60">
-                                                    to
                                                 </span>
                                                 <span>
                                                     {periodEnd || 'Present'}
