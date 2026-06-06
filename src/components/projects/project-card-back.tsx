@@ -1,7 +1,8 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Github, ExternalLink, ChevronsDown } from 'lucide-react'
+import { ExternalLink, ChevronsDown } from 'lucide-react'
+import { GithubIcon } from '@/components/icons/github-icon'
 import { Badge } from '@/components/ui/badge'
 import { buttonVariants } from '@/components/ui/button'
 import type { Project } from '@/lib/content'
@@ -25,7 +26,7 @@ export function ProjectCardBack({
                 transform: 'rotateY(180deg)',
             }}
         >
-            <div className="flex flex-col gap-5 p-6 sm:p-8 h-full">
+            <div className="flex flex-col gap-4 p-6 sm:p-8 pb-10 sm:pb-10 h-full">
                 <div className="space-y-2">
                     <h4 className="font-heading text-lg font-bold">
                         {project.name}
@@ -99,7 +100,7 @@ export function ProjectCardBack({
                 </div>
 
                 {/* Links */}
-                <div className="flex gap-2 border-t border-border/30 pt-3">
+                <div className="mt-auto flex gap-2 border-t border-border/30 pt-3">
                     <a
                         href={project.githubRepo}
                         target="_blank"
@@ -111,7 +112,7 @@ export function ProjectCardBack({
                             className: 'flex-1 text-xs',
                         })}
                     >
-                        <Github className="size-3" />
+                        <GithubIcon className="size-3" />
                         GitHub
                     </a>
                     {project.hostedLink && (

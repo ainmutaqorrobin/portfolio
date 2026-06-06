@@ -63,7 +63,7 @@ export function ProjectCardFront({ project }: ProjectCardFrontProps) {
             )}
 
             {/* Content */}
-            <div className="flex flex-col h-full gap-5 p-6 sm:p-7">
+            <div className="flex flex-col h-full gap-5 p-6 sm:p-7 pb-9 sm:pb-9">
                 <div className="space-y-2">
                     <div className="flex items-start justify-between gap-2">
                         <h3 className="font-heading text-xl font-bold leading-tight">

@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, type Variants } from 'framer-motion'
 import { ProjectCardFront } from './project-card-front'
 import { ProjectCardBack } from './project-card-back'
 import type { Project } from '@/lib/content'
@@ -11,7 +11,7 @@ interface ProjectCardProps {
     isExpanded: boolean
     onToggleFlip: () => void
     onToggleExpand: () => void
-    itemVariants: any
+    itemVariants: Variants
 }
 
 export function ProjectCard({
@@ -25,7 +25,7 @@ export function ProjectCard({
     return (
         <motion.div
             variants={itemVariants}
-            className="h-96 sm:h-112 lg:h-120 cursor-pointer perspective mb-4 sm:mb-6"
+            className="h-96 sm:h-120 lg:h-128 cursor-pointer perspective mb-4 sm:mb-6"
             onClick={onToggleFlip}
         >
             <motion.div
