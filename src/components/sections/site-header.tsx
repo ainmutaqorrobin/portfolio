@@ -1,87 +1,19 @@
 'use client'
 
-import { useEffect, useState, useTransition } from 'react'
+import { useEffect, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 
 import { SectionReveal } from '@/components/section-reveal'
+import { DesktopNav } from '@/components/site-header/desktop-nav'
+import { MobileNav } from '@/components/site-header/mobile-nav'
+import { useActiveSection } from '@/components/site-header/use-active-section'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
 import type { Profile } from '@/lib/content'
 
-const navItems = [
-    { href: '#about', label: 'About', id: 'about' },
-    { href: '#experience', label: 'Experience', id: 'experience' },
-    { href: '#projects', label: 'Projects', id: 'projects' },
-    { href: '#contact', label: 'Contact', id: 'contact' },
-] as const
-
 export function SiteHeader({ role }: Pick<Profile, 'role'>) {
-    const [activeSection, setActiveSection] = useState<string>('about')
+    const activeSection = useActiveSection()
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-    const [, startTransition] = useTransition()
-
-    useEffect(() => {
-        const sections = navItems
-            .map((item) => document.getElementById(item.id))
-            .filter((section): section is HTMLElement => section !== null)
-
-        if (sections.length === 0) return
-
-        let ticking = false
-
-        const updateActiveSection = () => {
-            const focusLine = 150
-            const scrollBottom = window.scrollY + window.innerHeight
-            const documentHeight = document.documentElement.scrollHeight
-
-            let currentSection = sections[0].id
-
-            if (scrollBottom >= documentHeight - 4) {
-                currentSection = sections.at(-1)?.id ?? currentSection
-            } else {
-                let closestDistance = Number.POSITIVE_INFINITY
-
-                for (const section of sections) {
-                    const top = section.getBoundingClientRect().top
-
-                    if (top <= focusLine) {
-                        const distance = Math.abs(top - focusLine)
-
-                        if (distance < closestDistance) {
-                            closestDistance = distance
-                            currentSection = section.id
-                        }
-                    }
-                }
-            }
-
-            startTransition(() => {
-                setActiveSection((previousSection) =>
-                    previousSection === currentSection
-                        ? previousSection
-                        : currentSection
-                )
-            })
-            ticking = false
-        }
-
-        const onScroll = () => {
-            if (!ticking) {
-                window.requestAnimationFrame(updateActiveSection)
-                ticking = true
-            }
-        }
-
-        updateActiveSection()
-        window.addEventListener('scroll', onScroll, { passive: true })
-        window.addEventListener('resize', onScroll)
-
-        return () => {
-            window.removeEventListener('scroll', onScroll)
-            window.removeEventListener('resize', onScroll)
-        }
-    }, [])
 
     useEffect(() => {
         const mediaQuery = window.matchMedia('(min-width: 768px)')
@@ -118,29 +50,7 @@ export function SiteHeader({ role }: Pick<Profile, 'role'>) {
                                     </p>
                                 </div>
                             </div>
-                            <nav className="hidden items-center gap-1 rounded-full border border-border/70 bg-background/65 p-1 md:flex">
-                                {navItems.map((item) => {
-                                    const isActive = activeSection === item.id
-
-                                    return (
-                                        <a
-                                            key={item.id}
-                                            className={cn(
-                                                'rounded-full px-4 py-2 text-sm transition-colors',
-                                                isActive
-                                                    ? 'bg-primary text-primary-foreground'
-                                                    : 'text-muted-foreground hover:bg-background/70 hover:text-foreground'
-                                            )}
-                                            href={item.href}
-                                            aria-current={
-                                                isActive ? 'page' : undefined
-                                            }
-                                        >
-                                            {item.label}
-                                        </a>
-                                    )
-                                })}
-                            </nav>
+                            <DesktopNav activeSection={activeSection} />
                             <div className="flex items-center gap-2">
                                 <a
                                     href="#contact"
@@ -173,47 +83,11 @@ export function SiteHeader({ role }: Pick<Profile, 'role'>) {
                                 </Button>
                             </div>
                         </div>
-                        <nav
-                            id="mobile-site-nav"
-                            className={cn(
-                                'grid overflow-hidden text-sm text-muted-foreground transition-[grid-template-rows,opacity,margin] duration-200 md:hidden',
-                                isMobileMenuOpen
-                                    ? 'mt-1 grid-rows-[1fr] opacity-100'
-                                    : 'grid-rows-[0fr] opacity-0'
-                            )}
-                        >
-                            <div className="min-h-0 overflow-hidden">
-                                <div className="grid gap-2 rounded-2xl border border-border/60 bg-background/72 p-3">
-                                    {navItems.map((item) => {
-                                        const isActive =
-                                            activeSection === item.id
-
-                                        return (
-                                            <a
-                                                key={item.id}
-                                                className={cn(
-                                                    'rounded-xl border border-border/60 px-3 py-2 text-center transition-colors',
-                                                    isActive
-                                                        ? 'border-primary/40 bg-primary text-primary-foreground'
-                                                        : 'bg-background/40 hover:text-foreground'
-                                                )}
-                                                href={item.href}
-                                                aria-current={
-                                                    isActive
-                                                        ? 'page'
-                                                        : undefined
-                                                }
-                                                onClick={() =>
-                                                    setIsMobileMenuOpen(false)
-                                                }
-                                            >
-                                                {item.label}
-                                            </a>
-                                        )
-                                    })}
-                                </div>
-                            </div>
-                        </nav>
+                        <MobileNav
+                            activeSection={activeSection}
+                            isOpen={isMobileMenuOpen}
+                            onNavigate={() => setIsMobileMenuOpen(false)}
+                        />
                     </div>
                 </div>
             </header>

@@ -7,6 +7,7 @@ import { SectionReveal } from '@/components/section-reveal'
 import { ProjectCard } from '@/components/projects/project-card'
 import { ProjectsHeader } from '@/components/projects/projects-header'
 import { ProjectsStats } from '@/components/projects/projects-stats'
+import { fadeInItem, staggerContainer } from '@/lib/motion'
 import type { Project } from '@/lib/content'
 
 export function ProjectsSection({ projects }: { projects: Project[] }) {
@@ -29,25 +30,8 @@ export function ProjectsSection({ projects }: { projects: Project[] }) {
         }))
     }
 
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.15,
-                delayChildren: 0.1,
-            },
-        },
-    }
-
-    const itemVariants = {
-        hidden: { opacity: 0, y: 30 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: { duration: 0.6 },
-        },
-    }
+    const containerVariants = staggerContainer(0.15, 0.1)
+    const itemVariants = fadeInItem({ y: 30 })
 
     return (
         <SectionReveal id="projects" delay={160}>

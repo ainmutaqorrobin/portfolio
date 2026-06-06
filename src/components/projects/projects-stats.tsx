@@ -1,10 +1,10 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, type Variants } from 'framer-motion'
 
 interface ProjectsStatsProps {
-    containerVariants: any
-    itemVariants: any
+    containerVariants: Variants
+    itemVariants: Variants
 }
 
 const stats = [
