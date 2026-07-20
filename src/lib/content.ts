@@ -8,6 +8,11 @@ export const siteDescription =
 
 export type ProjectStatus = 'development' | 'deprecated' | 'live'
 
+export type ProjectCover = {
+    command: string
+    glyphs: string[]
+}
+
 export type Project = {
     name: string
     date: string
@@ -16,6 +21,10 @@ export type Project = {
     githubRepo: string
     hostedLink: string
     summary: string[]
+    /** Screenshot in public/. Projects without a UI use `cover` instead. */
+    image?: string
+    /** Generated cover art for CLI and infrastructure projects. */
+    cover?: ProjectCover
 }
 
 export type WorkExperience = {

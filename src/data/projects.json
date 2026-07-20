@@ -1,5 +1,68 @@
 [
     {
+        "name": "bunship",
+        "date": "2026",
+        "stack": [
+            "Bun",
+            "TypeScript",
+            "oxc",
+            "Knip",
+            "Docker",
+            "GitHub Actions",
+            "npm"
+        ],
+        "status": "live",
+        "githubRepo": "https://github.com/ainmutaqorrobin/bunship",
+        "hostedLink": "https://www.npmjs.com/package/create-bunship",
+        "cover": {
+            "command": "bun create bunship",
+            "glyphs": ["Bun", "TypeScript", "Docker"]
+        },
+        "summary": [
+            "A CLI that scaffolds production-ready Bun monorepos by orchestrating each framework's official scaffolder non-interactively, so generated code always matches upstream instead of drifting from a hand-maintained template.",
+            "On top of that it layers an opinionated root toolchain: Bun workspaces, oxlint and oxfmt, knip for dead-code detection, husky pre-commit hooks, and optional Docker plus GitHub Actions VPS deployment. Published to npm as create-bunship."
+        ]
+    },
+    {
+        "name": "appctl",
+        "date": "2026",
+        "stack": ["Bash", "Nginx", "Docker", "Let's Encrypt"],
+        "status": "live",
+        "githubRepo": "https://github.com/ainmutaqorrobin/appctl",
+        "hostedLink": "",
+        "cover": {
+            "command": "appctl add myapp",
+            "glyphs": ["Bash", "Nginx", "Docker"]
+        },
+        "summary": [
+            "A port assigner and nginx server-block generator for a host-installed nginx fronting Docker apps, making the 101st deployment the same single command as the first.",
+            "It allocates a free host port from named tiers, writes and validates the nginx config, obtains a Let's Encrypt certificate, and reloads — rolling back cleanly if nginx -t ever fails. Containers publish on loopback only, so the internet cannot bypass nginx even though Docker's iptables rules sidestep the firewall."
+        ]
+    },
+    {
+        "name": "Book Review Platform",
+        "date": "2025",
+        "stack": [
+            "Next.js",
+            "Express",
+            "TypeScript",
+            "PostgreSQL",
+            "Redis",
+            "BullMQ",
+            "AWS S3",
+            "Mastra AI",
+            "Docker"
+        ],
+        "status": "live",
+        "githubRepo": "https://github.com/ainmutaqorrobin/book-review-platform",
+        "hostedLink": "https://book-review.mutaqorrobin.online",
+        "image": "/book-review.png",
+        "summary": [
+            "A full-stack book review platform where reviews save instantly while AI enrichment happens asynchronously, so the user never waits on a model call.",
+            "Reviews are queued through BullMQ on Redis and picked up by a separate worker process that generates a concise summary, sentiment, and relevant tags with Mastra AI. Cover images are stored on S3, and the whole stack runs containerized behind Nginx."
+        ]
+    },
+    {
         "name": "AI-Powered Notes with RAG",
         "date": "2025",
         "stack": [
@@ -15,55 +78,56 @@
         "status": "live",
         "githubRepo": "https://github.com/ainmutaqorrobin/AI-notes",
         "hostedLink": "https://ai-notes-vert.vercel.app/",
+        "image": "/ai-notes.png",
         "summary": [
-            "Note AI is an intelligent note-taking application powered by AI.",
-            "It lets users create and manage notes, then ask questions about them using RAG with OpenAI."
-        ]
-    },
-    {
-        "name": "Book Review Platform",
-        "date": "2025",
-        "stack": [
-            "Express",
-            "TypeScript",
-            "PostgreSQL",
-            "Mastra AI",
-            "Docker",
-            "Next.js",
-            "ShadCN",
-            "Sonner",
-            "Lucide Icons"
-        ],
-        "status": "live",
-        "githubRepo": "https://github.com/ainmutaqorrobin/book-review-platform",
-        "hostedLink": "https://book-review.mutaqorrobin.online",
-        "summary": [
-            "A full-stack web application where users can browse books and write reviews, with each review automatically enriched by AI using a concise summary, sentiment analysis, and relevant tags.",
-            "The AI enrichment is powered by Mastra AI, turning raw user reviews into structured, insightful feedback."
+            "Note AI is an intelligent note-taking application powered by AI, with real-time sync backed by Convex.",
+            "It lets users create and manage notes, then ask questions about them using retrieval-augmented generation with OpenAI."
         ]
     },
     {
         "name": "Ticketing App",
         "date": "2025",
-        "stack": ["Node.JS", "Docker", "Kubernetes", "skaffold", "Express"],
+        "stack": [
+            "Next.js",
+            "Node.js",
+            "Express",
+            "MongoDB",
+            "NATS Streaming",
+            "Kubernetes",
+            "Docker",
+            "skaffold"
+        ],
         "status": "development",
         "githubRepo": "https://github.com/ainmutaqorrobin/TicketingApp",
         "hostedLink": "",
+        "image": "/ticket-app.png",
         "summary": [
-            "A microservices-based ticketing system inspired by real-world event-ticketing platforms.",
-            "It demonstrates event-driven architecture, asynchronous communication, and service isolation."
+            "An event ticketing platform built as microservices, with a NATS Streaming event bus connecting independently deployable services.",
+            "It demonstrates event-driven architecture, asynchronous communication, and service isolation, with common types and middleware factored into a shared library published to npm."
         ]
     },
     {
-        "name": "Recipe Shop",
-        "date": "2024",
-        "stack": ["Angular", "Bootstrap", "Firebase"],
+        "name": "DevOps Capstone (AWS)",
+        "date": "2026",
+        "stack": [
+            "Terraform",
+            "Ansible",
+            "AWS",
+            "Docker",
+            "Prometheus",
+            "Grafana",
+            "Cloudflare"
+        ],
         "status": "deprecated",
-        "githubRepo": "https://github.com/ainmutaqorrobin/RecipeShop",
-        "hostedLink": "https://ng-project-18616.web.app",
+        "githubRepo": "https://github.com/ainmutaqorrobin/devops-bootcamp-project",
+        "hostedLink": "https://ainmutaqorrobin.github.io/devops-bootcamp-project/",
+        "cover": {
+            "command": "terraform apply",
+            "glyphs": ["Terraform", "Ansible", "AWS"]
+        },
         "summary": [
-            "Recipe Shop lets users manage shopping ingredients manually or import them from recipes.",
-            "This project is now deprecated but still useful as an earlier Angular and Firebase reference."
+            "A capstone project provisioning an AWS VPC with public and private subnets end to end: Terraform for the infrastructure, Ansible for configuration, Docker for the workload.",
+            "Prometheus and Grafana handle monitoring, a Cloudflare Tunnel provides secure access without exposing public ingress, and GitHub Actions publishes the documentation site. The AWS resources have since been torn down."
         ]
     }
 ]

@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { MousePointerClick } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
+import { ProjectCover } from '@/components/projects/project-cover'
 import type { Project, ProjectStatus } from '@/lib/content'
 
 const statusConfig: Record<ProjectStatus, { label: string; color: string }> = {
@@ -18,15 +19,33 @@ const statusConfig: Record<ProjectStatus, { label: string; color: string }> = {
     },
 }
 
-const projectImages: Record<string, string> = {
-    'AI-Powered Notes with RAG': '/ai-notes.png',
-    'Book Review Platform': '/book-review.png',
-    'Ticketing App': '/ticket-app.png',
-    'Recipe Shop': '/recipe-shop.png',
-}
-
 interface ProjectCardFrontProps {
     project: Project
+}
+
+/**
+ * Shared band around whichever visual a project carries, so the screenshot and
+ * generated-cover paths keep identical height, scrim, and click affordance.
+ */
+function CardVisual({ children }: { children: React.ReactNode }) {
+    return (
+        <div className="relative h-48 w-full overflow-hidden bg-background">
+            {children}
+            <div className="absolute inset-0 bg-linear-to-t from-background via-transparent to-transparent" />
+
+            {/* Clickable indicator */}
+            <motion.div
+                animate={{ scale: [1, 1.08, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-background/70 px-2.5 py-1 backdrop-blur-sm"
+            >
+                <MousePointerClick className="size-3.5 text-primary" />
+                <span className="text-[10px] font-medium text-primary">
+                    Click
+                </span>
+            </motion.div>
+        </div>
+    )
 }
 
 export function ProjectCardFront({ project }: ProjectCardFrontProps) {
@@ -37,30 +56,21 @@ export function ProjectCardFront({ project }: ProjectCardFrontProps) {
             className="absolute w-full h-full rounded-xl border border-primary/30 bg-background/40 overflow-hidden backdrop-blur-sm"
             style={{ backfaceVisibility: 'hidden' }}
         >
-            {/* Image */}
-            {projectImages[project.name] && (
-                <div className="relative h-48 w-full overflow-hidden bg-background">
+            {/* Visual: screenshot for UI projects, generated cover otherwise */}
+            {project.image ? (
+                <CardVisual>
                     <Image
-                        src={projectImages[project.name]}
+                        src={project.image}
                         alt={project.name}
                         fill
                         className="object-cover object-top"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
-
-                    {/* Clickable indicator */}
-                    <motion.div
-                        animate={{ scale: [1, 1.08, 1] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                        className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-background/70 px-2.5 py-1 backdrop-blur-sm"
-                    >
-                        <MousePointerClick className="size-3.5 text-primary" />
-                        <span className="text-[10px] font-medium text-primary">
-                            Click
-                        </span>
-                    </motion.div>
-                </div>
-            )}
+                </CardVisual>
+            ) : project.cover ? (
+                <CardVisual>
+                    <ProjectCover cover={project.cover} />
+                </CardVisual>
+            ) : null}
 
             {/* Content */}
             <div className="flex flex-col h-full gap-5 p-6 sm:p-7 pb-9 sm:pb-9">
