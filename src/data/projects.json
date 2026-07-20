@@ -1,5 +1,50 @@
 [
     {
+        "name": "AI-Powered Notes with RAG",
+        "date": "2025",
+        "stack": [
+            "Next.js",
+            "Convex",
+            "OpenAI",
+            "RadixUI",
+            "Tailwind CSS",
+            "Lucide Icons",
+            "TypeScript",
+            "Docker"
+        ],
+        "status": "live",
+        "githubRepo": "https://github.com/ainmutaqorrobin/AI-notes",
+        "hostedLink": "https://ai-notes-vert.vercel.app/",
+        "image": "/ai-notes.png",
+        "summary": [
+            "Note AI is an intelligent note-taking application powered by AI, with real-time sync backed by Convex.",
+            "It lets users create and manage notes, then ask questions about them using retrieval-augmented generation with OpenAI."
+        ]
+    },
+    {
+        "name": "Book Review Platform",
+        "date": "2025",
+        "stack": [
+            "Next.js",
+            "Express",
+            "TypeScript",
+            "PostgreSQL",
+            "Redis",
+            "BullMQ",
+            "AWS S3",
+            "Mastra AI",
+            "Docker"
+        ],
+        "status": "live",
+        "githubRepo": "https://github.com/ainmutaqorrobin/book-review-platform",
+        "hostedLink": "https://book-review.mutaqorrobin.online",
+        "image": "/book-review.png",
+        "summary": [
+            "A full-stack book review platform where reviews save instantly while AI enrichment happens asynchronously, so the user never waits on a model call.",
+            "Reviews are queued through BullMQ on Redis and picked up by a separate worker process that generates a concise summary, sentiment, and relevant tags with Mastra AI. Cover images are stored on S3, and the whole stack runs containerized behind Nginx."
+        ]
+    },
+    {
         "name": "bunship",
         "date": "2026",
         "stack": [
@@ -37,51 +82,6 @@
         "summary": [
             "A port assigner and nginx server-block generator for a host-installed nginx fronting Docker apps, making the 101st deployment the same single command as the first.",
             "It allocates a free host port from named tiers, writes and validates the nginx config, obtains a Let's Encrypt certificate, and reloads — rolling back cleanly if nginx -t ever fails. Containers publish on loopback only, so the internet cannot bypass nginx even though Docker's iptables rules sidestep the firewall."
-        ]
-    },
-    {
-        "name": "Book Review Platform",
-        "date": "2025",
-        "stack": [
-            "Next.js",
-            "Express",
-            "TypeScript",
-            "PostgreSQL",
-            "Redis",
-            "BullMQ",
-            "AWS S3",
-            "Mastra AI",
-            "Docker"
-        ],
-        "status": "live",
-        "githubRepo": "https://github.com/ainmutaqorrobin/book-review-platform",
-        "hostedLink": "https://book-review.mutaqorrobin.online",
-        "image": "/book-review.png",
-        "summary": [
-            "A full-stack book review platform where reviews save instantly while AI enrichment happens asynchronously, so the user never waits on a model call.",
-            "Reviews are queued through BullMQ on Redis and picked up by a separate worker process that generates a concise summary, sentiment, and relevant tags with Mastra AI. Cover images are stored on S3, and the whole stack runs containerized behind Nginx."
-        ]
-    },
-    {
-        "name": "AI-Powered Notes with RAG",
-        "date": "2025",
-        "stack": [
-            "Next.js",
-            "Convex",
-            "OpenAI",
-            "RadixUI",
-            "Tailwind CSS",
-            "Lucide Icons",
-            "TypeScript",
-            "Docker"
-        ],
-        "status": "live",
-        "githubRepo": "https://github.com/ainmutaqorrobin/AI-notes",
-        "hostedLink": "https://ai-notes-vert.vercel.app/",
-        "image": "/ai-notes.png",
-        "summary": [
-            "Note AI is an intelligent note-taking application powered by AI, with real-time sync backed by Convex.",
-            "It lets users create and manage notes, then ask questions about them using retrieval-augmented generation with OpenAI."
         ]
     },
     {
