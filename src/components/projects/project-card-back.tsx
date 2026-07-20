@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { ExternalLink, ChevronsDown } from 'lucide-react'
 import { GithubIcon } from '@/components/icons/github-icon'
+import { SkillIcon } from '@/components/skill-icon'
 import { Badge } from '@/components/ui/badge'
 import { buttonVariants } from '@/components/ui/button'
 import type { Project } from '@/lib/content'
@@ -91,8 +92,9 @@ export function ProjectCardBack({
                             <Badge
                                 key={tech}
                                 variant="outline"
-                                className="text-xs"
+                                className="gap-1.5 text-xs"
                             >
+                                <SkillIcon skill={tech} />
                                 {tech}
                             </Badge>
                         ))}
