@@ -64,23 +64,47 @@
         }
     ],
     "skills": {
-        "frontend": ["JavaScript", "TypeScript", "React", "Next.js", "Angular"],
+        "frontend": [
+            "JavaScript",
+            "TypeScript",
+            "React",
+            "Next.js",
+            "Angular",
+            "Expo",
+            "Tailwind CSS"
+        ],
         "backend": [
             "Node.js",
+            "Bun",
             "Express",
             "NestJS",
+            "BullMQ",
+            "NATS Streaming",
             "Jest",
             "Postman",
-            "NATS Streaming"
+            "Swagger"
         ],
-        "database": ["MongoDB", "PostgreSQL", "Firebase", "Convex"],
+        "database": [
+            "PostgreSQL",
+            "MongoDB",
+            "Redis",
+            "Drizzle",
+            "Firebase",
+            "Convex"
+        ],
         "devops": [
             "Docker",
             "Kubernetes",
             "Terraform",
             "Ansible",
+            "AWS",
+            "Nginx",
+            "Cloudflare",
+            "GitHub Actions",
             "Prometheus",
             "Grafana",
+            "Bash",
+            "Git",
             "CI/CD"
         ]
     }
