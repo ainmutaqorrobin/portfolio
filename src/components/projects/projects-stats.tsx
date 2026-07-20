@@ -10,7 +10,7 @@ interface ProjectsStatsProps {
 const stats = [
     { label: 'Lines of Code', value: '50K+' },
     { label: 'Deployment Cycles', value: '200+' },
-    { label: 'Technologies', value: '15+' },
+    { label: 'Technologies', value: '30+' },
 ]
 
 export function ProjectsStats({
