@@ -9,6 +9,7 @@ import {
     SectionLabel,
     SplitSection,
 } from '@/components/ui'
+import { StackIcon } from '@/components/stack-icon'
 import { siteProfile } from '@/lib/content'
 
 export const metadata: Metadata = {
@@ -85,25 +86,44 @@ export default function AboutPage() {
             </section>
 
             <section
-                className="reveal flex flex-col gap-4 border-t border-line py-14 font-mono text-sm"
+                className="reveal flex flex-col gap-6 border-t border-line py-14 font-mono"
                 style={reveal(5)}
             >
                 <SectionLabel>Tech stack</SectionLabel>
-                <dl className="flex flex-col">
+                {/*
+                  One card per category, one tag per tool. Tags never break
+                  across lines, so "Tailwind CSS" or "Monorepo (Nx, Turbo)"
+                  always reads as a single item.
+                */}
+                <ul className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,300px),1fr))] gap-px border border-line bg-line">
                     {Object.entries(skills).map(([group, items]) => (
-                        <div
+                        <li
                             key={group}
-                            className="flex flex-wrap gap-x-6 gap-y-1.5 border-b border-ink-2 py-2 leading-relaxed"
+                            className="flex flex-col gap-4 bg-ink p-5"
                         >
-                            <dt className="flex-[0_0_200px] text-faint">
+                            <h3 className="flex items-baseline justify-between gap-3 text-[13px] font-semibold text-fg">
                                 {group}
-                            </dt>
-                            <dd className="min-w-0 flex-[1_1_400px] text-body">
-                                {items.join(' · ')}
-                            </dd>
-                        </div>
+                                <span className="text-[11px] font-normal text-faint">
+                                    {items.length}
+                                </span>
+                            </h3>
+                            <ul className="flex flex-wrap gap-1.5">
+                                {items.map((item) => (
+                                    <li
+                                        key={item}
+                                        className="inline-flex items-center gap-1.5 border border-line-strong px-2 py-1 text-xs whitespace-nowrap text-body"
+                                    >
+                                        <StackIcon
+                                            name={item}
+                                            className="text-dim"
+                                        />
+                                        {item}
+                                    </li>
+                                ))}
+                            </ul>
+                        </li>
                     ))}
-                </dl>
+                </ul>
             </section>
 
             <SplitSection order={6} label="Currently learning">
