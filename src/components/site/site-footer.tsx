@@ -7,7 +7,14 @@ export function SiteFooter() {
 
     return (
         <footer className="shell mt-24">
-            <div className="flex flex-wrap items-end justify-between gap-6 border-t border-line py-10 font-mono text-xs text-faint">
+            {/*
+              Email, links, copyright. Stacked on phones; from md the email and
+              links sit side by side with the copyright on its own line below.
+              The links are their own grid (2 x 2, or one row when there's
+              room) sized to their content, so they line up instead of
+              wrapping unevenly or overlapping.
+            */}
+            <div className="grid gap-8 border-t border-line py-10 font-mono text-xs text-faint md:grid-cols-[1fr_auto] md:items-end md:gap-x-10">
                 <div className="flex flex-col gap-2">
                     <span>Email me</span>
                     <a
@@ -18,7 +25,7 @@ export function SiteFooter() {
                         {contact.email}
                     </a>
                 </div>
-                <div className="flex flex-wrap gap-x-5">
+                <div className="grid grid-cols-2 gap-x-6 sm:grid-cols-[repeat(4,max-content)] md:grid-cols-[repeat(2,max-content)] lg:grid-cols-[repeat(4,max-content)]">
                     <ExternalLink kind="github" href={contact.github}>
                         GitHub
                     </ExternalLink>
@@ -32,7 +39,7 @@ export function SiteFooter() {
                         Resume
                     </ResumeLink>
                 </div>
-                <span>
+                <span className="md:col-span-2">
                     © {new Date().getFullYear()} Ain Mutaqorrobin · Kuala Lumpur
                 </span>
             </div>

@@ -623,8 +623,7 @@
                         "name": "monorepo",
                         "detail": "bun install · oxfmt · first commit",
                         "col": 1.5,
-                        "row": 4,
-                        "kind": "store"
+                        "row": 4
                     }
                 ],
                 "edges": [

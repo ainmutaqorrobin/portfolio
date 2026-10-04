@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { Fragment } from 'react'
 
 import { NavLink } from '@/components/site/nav-link'
 import { PageTransition } from '@/components/site/page-transition'
@@ -13,6 +12,7 @@ import {
     SplitSection,
 } from '@/components/ui'
 import { ArchitectureDiagram } from '@/components/work/architecture-diagram'
+import { FlowStrip } from '@/components/work/flow-strip'
 import { ProjectShot } from '@/components/work/project-shot'
 import {
     caseStudyProjects,
@@ -178,42 +178,14 @@ export default async function ProjectPage({
                     diagram={study.diagram}
                     id={`diagram-${project.slug}`}
                 />
-                <p className="font-mono text-[11px] text-faint md:hidden">
-                    Swipe sideways to see the whole diagram.
-                </p>
             </section>
 
             <section className="flex flex-col gap-7 border-t border-line py-14">
                 <SectionLabel>{study.flow.title}</SectionLabel>
-                <div className="flex flex-wrap items-center gap-2.5 font-mono text-[13px]">
-                    {study.flow.states.map((state, i) => {
-                        const done = i === study.flow.states.length - 1
-                        return (
-                            <Fragment key={state}>
-                                {i > 0 ? (
-                                    <span aria-hidden className="text-faint">
-                                        ──▶
-                                    </span>
-                                ) : null}
-                                <span
-                                    className={cn(
-                                        'border px-3.5 py-2.5',
-                                        done
-                                            ? 'border-ok text-ok'
-                                            : 'border-line-strong'
-                                    )}
-                                >
-                                    {state}
-                                </span>
-                            </Fragment>
-                        )
-                    })}
-                    {study.flow.failState ? (
-                        <span className="border border-dashed border-err px-3.5 py-2.5 text-err sm:ml-4">
-                            {study.flow.failState}
-                        </span>
-                    ) : null}
-                </div>
+                <FlowStrip
+                    states={study.flow.states}
+                    failState={study.flow.failState}
+                />
                 <ol className="flex flex-col gap-3 text-base leading-relaxed text-body">
                     {study.flow.steps.map((step, i) => (
                         <li key={step} className="flex gap-4">
@@ -287,18 +259,18 @@ export default async function ProjectPage({
 
             <nav
                 aria-label="More projects"
-                className="mt-8 grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-px border-t border-line bg-line font-mono"
+                className="mt-8 grid gap-px border-t border-line bg-line font-mono sm:grid-cols-2"
             >
                 {prev ? (
                     <SiblingLink project={prev} label="← Previous project" />
-                ) : (
-                    <span />
-                )}
+                ) : null}
                 {next ? (
                     <SiblingLink
                         project={next}
                         label="Next project →"
                         alignEnd
+                        // With no previous project, keep "next" on the right.
+                        className={prev ? undefined : 'sm:col-start-2'}
                     />
                 ) : null}
             </nav>
@@ -310,17 +282,22 @@ function SiblingLink({
     project,
     label,
     alignEnd,
+    className,
 }: {
     project: Project
     label: string
     alignEnd?: boolean
+    className?: string
 }) {
     return (
         <NavLink
             href={`/work/${project.slug}`}
             className={cn(
                 'flex flex-col gap-1.5 bg-ink py-7 hover:text-accent',
-                alignEnd && 'items-end text-right'
+                // Right-aligned only beside a "previous" link; stacked on
+                // phones, both read left to right.
+                alignEnd && 'sm:items-end sm:text-right',
+                className
             )}
         >
             <span className="text-xs text-faint">{label}</span>
