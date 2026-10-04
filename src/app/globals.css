@@ -174,6 +174,13 @@ html {
     animation: type-path 420ms steps(var(--chars), end) both;
 }
 
+/* Phones: it would be cut off mid-word, and the menu marks the current page. */
+@media (width < 40rem) {
+    .type-path {
+        display: none;
+    }
+}
+
 @keyframes type-path {
     from {
         max-width: 0;
@@ -303,6 +310,32 @@ html {
     }
 }
 
+/* ---------- Mobile menu ---------- */
+
+.mobile-menu {
+    animation: menu-in 280ms var(--ease-out-expo) both;
+}
+
+/* Page links drop in one after another, like the page entrance cascade. */
+.mobile-menu .menu-item {
+    animation: menu-item-in 420ms var(--ease-out-expo) both;
+    animation-delay: calc(60ms + var(--i, 0) * 45ms);
+}
+
+@keyframes menu-in {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+}
+
+@keyframes menu-item-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     ::view-transition-group(*),
     ::view-transition-old(*),
@@ -313,6 +346,8 @@ html {
     .type-path,
     .route-sweep,
     .reveal,
+    .mobile-menu,
+    .mobile-menu .menu-item,
     .row-in,
     .diagram-node,
     .diagram-edge,
