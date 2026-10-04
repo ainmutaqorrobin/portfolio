@@ -1,22 +1,27 @@
 import type { Metadata } from 'next'
-import { Space_Grotesk, Instrument_Sans } from 'next/font/google'
-import { ThemeProvider } from '@/components/theme-provider'
+import { Geist, Martian_Mono } from 'next/font/google'
+
+import { SiteFooter } from '@/components/site/site-footer'
+import { SiteHeader } from '@/components/site/site-header'
 import { siteDescription, siteTitle, siteUrl } from '@/lib/content'
 import './globals.css'
 
-const headingFont = Space_Grotesk({
+const monoFont = Martian_Mono({
     subsets: ['latin'],
-    variable: '--font-heading',
+    variable: '--font-martian',
 })
 
-const bodyFont = Instrument_Sans({
+const sansFont = Geist({
     subsets: ['latin'],
-    variable: '--font-body',
+    variable: '--font-geist',
 })
 
 export const metadata: Metadata = {
     metadataBase: new URL(siteUrl),
-    title: siteTitle,
+    title: {
+        default: siteTitle,
+        template: '%s · Ain Mutaqorrobin',
+    },
     description: siteDescription,
     alternates: {
         canonical: '/',
@@ -63,11 +68,23 @@ export default function RootLayout({
     children: React.ReactNode
 }>) {
     return (
-        <html lang="en" suppressHydrationWarning>
-            <body
-                className={`${headingFont.variable} ${bodyFont.variable} bg-background font-body text-foreground antialiased`}
-            >
-                <ThemeProvider>{children}</ThemeProvider>
+        // Extensions stamp attributes onto <html> before React loads (e.g.
+        // data-expander-initialized); only this element's own attributes are
+        // exempted, so real mismatches deeper in the tree still surface.
+        <html
+            lang="en"
+            className={`${monoFont.variable} ${sansFont.variable}`}
+            suppressHydrationWarning
+        >
+            <body className="min-h-dvh bg-ink font-sans text-fg antialiased">
+                <a href="#main" className="skip-link">
+                    Skip to content
+                </a>
+                <SiteHeader />
+                <main id="main" className="shell">
+                    {children}
+                </main>
+                <SiteFooter />
             </body>
         </html>
     )
