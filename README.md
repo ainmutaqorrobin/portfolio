@@ -1,18 +1,26 @@
-# Personal Portfolio Starter
+# Ain Mutaqorrobin — Portfolio
 
-This repo gives you:
+A multi-page portfolio with a monospace, terminal-inspired look and plain-language copy (no `cat`/`cd`/`ls`-style labels — the design keeps the aesthetic, not the jargon):
 
-- a single-page portfolio with these sections: Hero, About Me, Work Experience, Skills & Projects, Contact
-- one central project data file at `src/data/projects.json`
+- pages: `/` (home), `/work`, `/work/[slug]` (one detail page per project), `/experience`, `/about`, `/contact`
+- animated route changes using React's `<ViewTransition>`: pages slide in the direction of travel, the header's breadcrumb types itself out, and a project screenshot morphs from the work list into its detail page
+- each project's architecture is drawn as a real SVG diagram (`src/components/work/architecture-diagram.tsx`), not a generic stack list
+- a downloadable résumé (`public/resume/`), linked from the home hero, the experience page, the contact page, and the footer
+- all content in `src/data/profile.json` and `src/data/projects.json`
 - Docker packaging for production deployment
 - GitHub Actions CI/CD that tests, builds, pushes an image to Docker Hub, then deploys to your VPS over SSH
 
 ## Files You Will Edit Most
 
-- `src/data/profile.json`: your name, role, about text, work history, skills, and contact info
-- `src/data/projects.json`: project name, date, stack, status, repo link, and hosted link
-- `src/app/page.tsx`: layout structure if you want to change sections later
-- `src/app/globals.css`: visual style
+- `src/data/profile.json`: name, pitch, about text, principles, work history, education, certifications (each with a verification `url`), skills, contact info, and the `resume` file paths
+- `src/data/projects.json`: projects. Give a project a `caseStudy` object (problem, `diagram`, decisions, deploy steps) to flesh out its `/work/<slug>` page
+- `public/work/`: real screenshots referenced by a project's `image`
+- `public/resume/`: the downloadable résumé PDF
+- `src/app/globals.css`: colour tokens, page transitions, and entrance animations
+
+## Page Transitions
+
+Internal links go through `src/components/site/nav-link.tsx`, which tags each navigation as `nav-forward` or `nav-back` (see `src/lib/navigation.ts`). Every page is wrapped in `PageTransition`, which maps those types to the `page-forward` / `page-back` animations in `globals.css`. Everything is disabled under `prefers-reduced-motion`. Browsers without the View Transitions API swap pages instantly but still play the entrance cascade.
 
 ## Local Development
 
@@ -162,8 +170,5 @@ Notes:
 
 ## Optional Improvements
 
-- Add a downloadable resume button
-- Add project screenshots
-- Add blog posts or case studies
 - Add analytics
 - Add a contact form backed by an API route or external service
