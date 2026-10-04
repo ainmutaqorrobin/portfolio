@@ -63,7 +63,7 @@ export default function ExperiencePage() {
                                     index === 0 && 'text-accent'
                                 )}
                             >
-                                {job.period.replace(' - ', ' – ')}
+                                {job.period}
                             </span>
                             <span className="text-xs text-faint">
                                 {job.location}
@@ -76,9 +76,9 @@ export default function ExperiencePage() {
                         </div>
                         <div className="flex min-w-0 flex-[3_1_480px] flex-col gap-3.5">
                             <h2 className="text-[26px] font-semibold">
-                                {job.company}{' '}
+                                {job.company},{' '}
                                 <span className="font-normal text-faint">
-                                    — {job.role}
+                                    {job.role}
                                 </span>
                             </h2>
                             <PlusList items={job.highlights} />

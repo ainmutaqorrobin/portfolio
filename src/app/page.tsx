@@ -122,9 +122,9 @@ export default function HomePage() {
             >
                 <div className="flex flex-col gap-3">
                     <h3 className="text-[22px] font-semibold">
-                        {current.company}{' '}
+                        {current.company},{' '}
                         <span className="font-normal text-faint">
-                            — {current.role}
+                            {current.role}
                         </span>
                     </h3>
                     <PlusList items={current.highlights.slice(0, 3)} />
@@ -206,7 +206,7 @@ export default function HomePage() {
                                     index === 0 ? 'text-accent' : 'text-faint'
                                 )}
                             >
-                                {job.period.replace(' - ', ' – ')}
+                                {job.period}
                             </span>
                             <span
                                 className={cn(

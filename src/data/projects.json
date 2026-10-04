@@ -18,7 +18,7 @@
         "githubRepo": "https://github.com/ainmutaqorrobin/book-review-platform",
         "hostedLink": "https://book-review.mutaqorrobin.online",
         "image": "/work/book-review.png",
-        "tagline": "Reviews save instantly; a BullMQ worker enriches them with AI summaries, sentiment and tags in the background.",
+        "tagline": "Reviews save instantly, and a BullMQ worker adds AI summaries, sentiment and tags in the background.",
         "summary": [
             "A full-stack book review platform where reviews save instantly while AI enrichment happens asynchronously, so the user never waits on a model call.",
             "Reviews are queued through BullMQ on Redis and picked up by a separate worker process that generates a concise summary, sentiment, and relevant tags with Mastra AI. Cover images live in S3-compatible object storage, and the whole stack runs containerized behind Nginx."
@@ -50,7 +50,7 @@
             "flow": {
                 "title": "Lifecycle of a review",
                 "states": ["pending", "processing", "completed"],
-                "failState": "failed — review kept",
+                "failState": "failed, but the review is kept",
                 "steps": [
                     "User submits a review. The API validates it and saves it with ai_enrichment_status = pending.",
                     "The API enqueues a BullMQ job and returns 201 immediately.",
@@ -79,17 +79,17 @@
             ],
             "deploy": [
                 {
-                    "comment": "local — Compose Watch syncs source changes",
+                    "comment": "local, with Compose Watch syncing source changes",
                     "command": "docker compose up --watch"
                 },
                 {
-                    "comment": "production — prebuilt images from Docker Hub",
+                    "comment": "production, using prebuilt images from Docker Hub",
                     "command": "docker compose -f docker-compose.production.yml up -d"
                 }
             ],
             "lessons": [],
             "diagram": {
-                "title": "Architecture — six services behind nginx",
+                "title": "Architecture: six services behind nginx",
                 "cols": 5,
                 "rows": 5,
                 "zones": [
@@ -251,7 +251,7 @@
             "headline": "Ask your notes, not the internet.",
             "problem": [
                 "Notes pile up faster than anyone rereads them, and keyword search only finds what you remember wording exactly.",
-                "Note AI embeds every note the moment it is saved, so a plain-language question is answered from your own notes — with links back to the notes the answer came from, and an honest \"can't find that\" when nothing matches."
+                "Note AI embeds every note the moment it's saved, so you can ask a question in plain language and get an answer from your own notes. Each answer links back to the notes it came from, and when nothing matches it simply says it can't find that."
             ],
             "stackGroups": [
                 {
@@ -280,12 +280,12 @@
                     "score > 0.3",
                     "streamed answer"
                 ],
-                "failState": "no match — \"can't find that in your notes\"",
+                "failState": "no match, so it says \"can't find that in your notes\"",
                 "steps": [
-                    "The chat posts to a Convex HTTP route with the user's auth token (401 without one); only the last 10 messages go to the model.",
+                    "The chat posts to a Convex HTTP route with the user's auth token, and gets a 401 without one. Only the last 10 messages go to the model.",
                     "gpt-4.1-mini decides whether it needs the notes and calls the findRelatedNotes tool with a search query.",
                     "The query is embedded with text-embedding-3-small and run against the noteEmbeddings vector index, filtered to that user.",
-                    "Matches scoring 0.3 or lower are dropped; the rest are resolved back to whole, de-duplicated notes.",
+                    "Matches scoring 0.3 or lower are dropped. The rest are turned back into whole notes, with duplicates removed.",
                     "The model answers from those notes in markdown, linking each source as /notes?noteId=…, and the reply streams into the chat."
                 ]
             },
@@ -313,7 +313,7 @@
             ],
             "deploy": [
                 {
-                    "comment": "backend — Convex functions, schema and vector index",
+                    "comment": "backend: Convex functions, schema and vector index",
                     "command": "npx convex dev"
                 },
                 {
@@ -323,7 +323,7 @@
             ],
             "lessons": [],
             "diagram": {
-                "title": "Architecture — next.js on convex",
+                "title": "Architecture: Next.js on Convex",
                 "cols": 4,
                 "rows": 3,
                 "zones": [
@@ -456,8 +456,8 @@
         "caseStudy": {
             "headline": "Upstream writes the app. bunship wires everything around it.",
             "problem": [
-                "Every new project starts the same way: run a framework scaffolder, then spend an afternoon wiring the monorepo around it — workspaces, lint, format, dead-code checks, git hooks, Docker, CI.",
-                "Hand-maintained templates fix that once, then drift the moment a framework ships a new major. bunship leaves the app code to each framework's official scaffolder and owns only the layer around it — and every generated repo has to pass its own bun run check and bun run build from the first commit."
+                "Every new project starts the same way. You run a framework scaffolder, then spend an afternoon wiring up the monorepo around it: workspaces, linting, formatting, dead-code checks, git hooks, Docker and CI.",
+                "Hand-maintained templates fix that once, then fall behind the moment a framework ships a new major version. bunship leaves the app code to each framework's official scaffolder and only owns the layer around it. Every generated repo has to pass its own bun run check and bun run build from the very first commit."
             ],
             "stackGroups": [
                 {
@@ -510,7 +510,7 @@
                 {
                     "tag": "adapter boundary",
                     "title": "Adapters only write inside their app",
-                    "body": "Adapters are declarative fragments; root files belong to steps. Adding a framework means one adapter file and a registry entry, never a special case in a step."
+                    "body": "Adapters are declarative fragments, and root files belong to steps. Adding a framework means one adapter file and a registry entry, never a special case inside a step."
                 },
                 {
                     "tag": "drift canary",
@@ -529,17 +529,17 @@
                     "command": "bun create bunship"
                 },
                 {
-                    "comment": "agent mode — one JSON manifest on stdout",
+                    "comment": "agent mode, with one JSON manifest on stdout",
                     "command": "bun create bunship my-app --web next --api nest --docker --cicd --json"
                 },
                 {
-                    "comment": "release — tag push publishes to npm with provenance",
+                    "comment": "release: pushing a tag publishes to npm with provenance",
                     "command": "bun run release"
                 }
             ],
             "lessons": [],
             "diagram": {
-                "title": "Architecture — steps over one context",
+                "title": "Architecture: steps over one context",
                 "cols": 4,
                 "rows": 5,
                 "zones": [
@@ -697,12 +697,12 @@
         "tagline": "Makes the 101st deployment the same single command as the first.",
         "summary": [
             "A port assigner and nginx server-block generator for a host-installed nginx fronting Docker apps, making the 101st deployment the same single command as the first.",
-            "It allocates a free host port from named tiers, writes and validates the nginx config, obtains a Let's Encrypt certificate, and reloads — rolling back cleanly if nginx -t ever fails. Containers publish on loopback only, so the internet cannot bypass nginx even though Docker's iptables rules sidestep the firewall."
+            "It allocates a free host port from named tiers, writes and validates the nginx config, gets a Let's Encrypt certificate and reloads. If nginx -t ever fails, it rolls back cleanly. Containers publish on loopback only, so the internet can't bypass nginx even though Docker's iptables rules sidestep the firewall."
         ],
         "caseStudy": {
             "headline": "The 101st deployment is the same command as the first.",
             "problem": [
-                "Fronting many Docker apps with one host nginx gets painful fast: pick a free port, edit compose, write a server block, symlink it, get a certificate, reload — for every project, by hand, identically each time.",
+                "Fronting many Docker apps with one host nginx gets painful fast. For every project you pick a free port, edit compose, write a server block, symlink it, get a certificate and reload, all by hand and the same way every time.",
                 "One bad block in that routine can take nginx down for every app on the box. appctl turns it into a single command with one registry as the source of truth, and never reloads a config that hasn't passed nginx -t."
             ],
             "stackGroups": [
@@ -738,7 +738,7 @@
                     "Pick a tier (prompted, or TIER=…) and take the first port in its band that is neither in the registry nor bound on the host.",
                     "Write an HTTP-only server block, enable it, test and reload, so certbot's http-01 challenge can be served.",
                     "Obtain the certificate with certbot certonly. If that fails, the working HTTP route stays up and appctl prints how to retry.",
-                    "Rewrite the block with :443, the certbot hardening includes and optional WebSocket upgrade, then test and reload again; a failed test falls back to HTTP-only.",
+                    "Rewrite the block with :443, the certbot hardening includes and an optional WebSocket upgrade, then test and reload again. If that test fails, it falls back to HTTP only.",
                     "Print the exact docker-compose ports line, bound to 127.0.0.1, to paste into the project."
                 ]
             },
@@ -774,13 +774,13 @@
                     "command": "sudo appctl add blog.example.com"
                 },
                 {
-                    "comment": "release — a pushed tag publishes the GitHub release",
+                    "comment": "release: a pushed tag publishes the GitHub release",
                     "command": "./release.sh patch"
                 }
             ],
             "lessons": [],
             "diagram": {
-                "title": "Architecture — one host, many apps",
+                "title": "Architecture: one host, many apps",
                 "cols": 4,
                 "rows": 4,
                 "zones": [
@@ -927,7 +927,7 @@
         ],
         "caseStudy": {
             "diagram": {
-                "title": "Architecture — five services, one event bus",
+                "title": "Architecture: five services, one event bus",
                 "cols": 5,
                 "rows": 4,
                 "zones": [
@@ -1078,7 +1078,7 @@
             },
             "headline": "Five services, one event bus, no shared database.",
             "problem": [
-                "A ticket can't be sold twice, an unpaid order has to release its ticket, and a payment has to complete exactly one order — across services that never share a database.",
+                "A ticket can't be sold twice, an unpaid order has to release its ticket, and a payment has to complete exactly one order. All of that has to hold across services that never share a database.",
                 "The Ticketing App splits that into five independently deployable services that only talk through NATS Streaming events, each keeping its own MongoDB and its own copy of the data it needs."
             ],
             "stackGroups": [
@@ -1113,7 +1113,7 @@
                     "Orders checks the ticket isn't already reserved, saves the order with a 15-minute expiry and publishes order:created.",
                     "Tickets reserves the ticket by setting its orderId and publishes ticket:updated, so every other copy stays in step.",
                     "Expiration queues a Bull job on Redis, delayed until the order expires.",
-                    "Payments charges the card through a Stripe PaymentIntent and publishes payment:created; Orders marks the order complete.",
+                    "Payments charges the card through a Stripe PaymentIntent and publishes payment:created, and Orders marks the order complete.",
                     "If the delayed job fires first, expiration:complete makes Orders cancel the order, and order:cancelled releases the ticket."
                 ]
             },
@@ -1150,7 +1150,7 @@
                 }
             ],
             "lessons": [
-                "Saving a record and publishing its event are not atomic yet: a crash in between leaves other services out of sync. The fix is an outbox — write the event to the same database in one transaction and let a background worker publish it.",
+                "Saving a record and publishing its event aren't atomic yet, so a crash in between leaves other services out of sync. The fix is an outbox: write the event to the same database in one transaction and let a background worker publish it.",
                 "Orders validates ticketId as a MongoDB ObjectId, which quietly couples it to the tickets service's database. It should only check that the id is present and trust the replicated ticket data."
             ]
         }
@@ -1180,7 +1180,7 @@
         ],
         "caseStudy": {
             "diagram": {
-                "title": "Architecture — aws vpc 10.0.0.0/24",
+                "title": "Architecture: AWS VPC 10.0.0.0/24",
                 "cols": 5,
                 "rows": 3,
                 "zones": [
@@ -1307,8 +1307,8 @@
             },
             "headline": "Three servers, two subnets, zero clicks in the console.",
             "problem": [
-                "The bootcamp's final brief: design, provision, configure, deploy, monitor and document a complete system — reproducibly, not by hand in the AWS console.",
-                "Terraform builds the network and servers and writes the Ansible inventory; Ansible configures every box and runs the app from ECR; Prometheus and Grafana watch the web server from the private subnet."
+                "The bootcamp's final brief was to design, provision, configure, deploy, monitor and document a complete system, and to do it reproducibly instead of clicking around the AWS console.",
+                "Terraform builds the network and servers and writes the Ansible inventory. Ansible configures every box and runs the app from ECR. Prometheus and Grafana watch the web server from the private subnet."
             ],
             "stackGroups": [
                 {

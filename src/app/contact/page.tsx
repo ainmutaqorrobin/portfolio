@@ -78,8 +78,8 @@ export default function ContactPage() {
                     className="reveal max-w-2xl text-[19px] leading-relaxed text-body"
                     style={reveal(2)}
                 >
-                    {availability} Email is best for anything detailed; WhatsApp
-                    is fastest for a first hello.
+                    {availability} Email is best for anything detailed, and
+                    WhatsApp is fastest for a first hello.
                 </p>
                 <a
                     href={`mailto:${contact.email}`}
