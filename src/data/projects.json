@@ -1,29 +1,9 @@
 [
     {
-        "name": "AI-Powered Notes with RAG",
-        "date": "2025",
-        "stack": [
-            "Next.js",
-            "Convex",
-            "OpenAI",
-            "RadixUI",
-            "Tailwind CSS",
-            "Lucide Icons",
-            "TypeScript",
-            "Docker"
-        ],
-        "status": "live",
-        "githubRepo": "https://github.com/ainmutaqorrobin/AI-notes",
-        "hostedLink": "https://ai-notes-vert.vercel.app/",
-        "image": "/ai-notes.png",
-        "summary": [
-            "Note AI is an intelligent note-taking application powered by AI, with real-time sync backed by Convex.",
-            "It lets users create and manage notes, then ask questions about them using retrieval-augmented generation with OpenAI."
-        ]
-    },
-    {
+        "slug": "book-review-platform",
         "name": "Book Review Platform",
         "date": "2025",
+        "featured": true,
         "stack": [
             "Next.js",
             "Express",
@@ -31,22 +11,430 @@
             "PostgreSQL",
             "Redis",
             "BullMQ",
-            "AWS S3",
             "Mastra AI",
             "Docker"
         ],
         "status": "live",
         "githubRepo": "https://github.com/ainmutaqorrobin/book-review-platform",
         "hostedLink": "https://book-review.mutaqorrobin.online",
-        "image": "/book-review.png",
+        "image": "/work/book-review.png",
+        "tagline": "Reviews save instantly, and a BullMQ worker adds AI summaries, sentiment and tags in the background.",
         "summary": [
             "A full-stack book review platform where reviews save instantly while AI enrichment happens asynchronously, so the user never waits on a model call.",
-            "Reviews are queued through BullMQ on Redis and picked up by a separate worker process that generates a concise summary, sentiment, and relevant tags with Mastra AI. Cover images are stored on S3, and the whole stack runs containerized behind Nginx."
-        ]
+            "Reviews are queued through BullMQ on Redis and picked up by a separate worker process that generates a concise summary, sentiment, and relevant tags with Mastra AI. Cover images live in S3-compatible object storage, and the whole stack runs containerized behind Nginx."
+        ],
+        "caseStudy": {
+            "headline": "The review saves now. The AI catches up later.",
+            "problem": [
+                "Put a model call inside the request and every review becomes as slow, and as fragile, as the AI provider. A timeout would mean a lost review.",
+                "So the review and its enrichment are split: the write is synchronous and cheap, and the AI work is a background job that can be slow, retried, or fail without touching what the user wrote."
+            ],
+            "stackGroups": [
+                {
+                    "label": "frontend",
+                    "items": "Next.js App Router · React · TypeScript · Tailwind"
+                },
+                {
+                    "label": "backend",
+                    "items": "Express · TypeScript · PostgreSQL"
+                },
+                {
+                    "label": "async",
+                    "items": "Redis · BullMQ · Mastra AI"
+                },
+                {
+                    "label": "ops",
+                    "items": "Docker Compose · Nginx · GitHub Actions · RustFS (S3)"
+                }
+            ],
+            "flow": {
+                "title": "Lifecycle of a review",
+                "states": ["pending", "processing", "completed"],
+                "failState": "failed, but the review is kept",
+                "steps": [
+                    "User submits a review. The API validates it and saves it with ai_enrichment_status = pending.",
+                    "The API enqueues a BullMQ job and returns 201 immediately.",
+                    "The frontend polls briefly and shows the pending AI state on the review card.",
+                    "The worker picks up the job, marks the review processing, and calls Mastra AI.",
+                    "The worker stores summary, sentiment_score and tags, then marks the review completed.",
+                    "The review card updates in place when enrichment finishes."
+                ]
+            },
+            "decisions": [
+                {
+                    "tag": "persist first",
+                    "title": "The write never waits on AI",
+                    "body": "The review is saved before any job exists, so a slow or failing model can never cost the user their content."
+                },
+                {
+                    "tag": "separate worker",
+                    "title": "Jobs live outside the API",
+                    "body": "A dedicated backend-worker process consumes the queue, isolating background work from request handling."
+                },
+                {
+                    "tag": "fail visibly",
+                    "title": "Enqueue failure is a state",
+                    "body": "If Redis enqueueing fails after the save, the review is kept and marked with a failed AI state instead of disappearing."
+                }
+            ],
+            "deploy": [
+                {
+                    "comment": "local, with Compose Watch syncing source changes",
+                    "command": "docker compose up --watch"
+                },
+                {
+                    "comment": "production, using prebuilt images from Docker Hub",
+                    "command": "docker compose -f docker-compose.production.yml up -d"
+                }
+            ],
+            "lessons": [],
+            "diagram": {
+                "title": "Architecture: six services behind nginx",
+                "cols": 5,
+                "rows": 5,
+                "zones": [
+                    {
+                        "label": "docker compose",
+                        "col": 0,
+                        "row": 2,
+                        "colSpan": 4,
+                        "rowSpan": 3
+                    }
+                ],
+                "nodes": [
+                    {
+                        "id": "browser",
+                        "name": "browser",
+                        "detail": "reader on the live site",
+                        "col": 1.5,
+                        "row": 0,
+                        "kind": "external"
+                    },
+                    {
+                        "id": "nginx",
+                        "name": "nginx",
+                        "detail": "TLS · routes / and /api/",
+                        "col": 1.5,
+                        "row": 1
+                    },
+                    {
+                        "id": "frontend",
+                        "name": "frontend",
+                        "detail": "Next.js · polls pending reviews",
+                        "col": 0.5,
+                        "row": 2
+                    },
+                    {
+                        "id": "backend",
+                        "name": "backend",
+                        "detail": "Express API · auth, books, reviews, uploads",
+                        "col": 2.5,
+                        "row": 2
+                    },
+                    {
+                        "id": "rustfs",
+                        "name": "rustfs",
+                        "detail": "S3-compatible cover storage",
+                        "col": 0,
+                        "row": 3,
+                        "kind": "store"
+                    },
+                    {
+                        "id": "db",
+                        "name": "db",
+                        "detail": "PostgreSQL · reviews + AI fields",
+                        "col": 1.5,
+                        "row": 3,
+                        "kind": "store"
+                    },
+                    {
+                        "id": "redis",
+                        "name": "redis",
+                        "detail": "BullMQ job queue",
+                        "col": 3,
+                        "row": 3,
+                        "kind": "store"
+                    },
+                    {
+                        "id": "worker",
+                        "name": "backend-worker",
+                        "detail": "separate process · consumes jobs",
+                        "col": 2,
+                        "row": 4,
+                        "highlight": true
+                    },
+                    {
+                        "id": "mastra",
+                        "name": "Mastra AI",
+                        "detail": "summary · sentiment · tags",
+                        "col": 4,
+                        "row": 4,
+                        "kind": "external"
+                    }
+                ],
+                "edges": [
+                    {
+                        "from": "browser",
+                        "to": "nginx",
+                        "label": "https"
+                    },
+                    {
+                        "from": "nginx",
+                        "to": "frontend",
+                        "label": "/"
+                    },
+                    {
+                        "from": "nginx",
+                        "to": "backend",
+                        "label": "/api/"
+                    },
+                    {
+                        "from": "backend",
+                        "to": "rustfs",
+                        "label": "covers"
+                    },
+                    {
+                        "from": "backend",
+                        "to": "db",
+                        "label": "save · pending"
+                    },
+                    {
+                        "from": "backend",
+                        "to": "redis",
+                        "label": "enqueue",
+                        "async": true
+                    },
+                    {
+                        "from": "redis",
+                        "to": "worker",
+                        "label": "job",
+                        "async": true
+                    },
+                    {
+                        "from": "worker",
+                        "to": "db",
+                        "label": "summary · tags"
+                    },
+                    {
+                        "from": "worker",
+                        "to": "mastra",
+                        "label": "enrich"
+                    }
+                ]
+            }
+        }
     },
     {
+        "slug": "ai-notes",
+        "name": "AI-Powered Notes with RAG",
+        "date": "2025",
+        "featured": false,
+        "stack": [
+            "Next.js",
+            "Convex",
+            "OpenAI",
+            "Vercel AI SDK",
+            "RadixUI",
+            "Tailwind CSS",
+            "TypeScript"
+        ],
+        "status": "live",
+        "githubRepo": "https://github.com/ainmutaqorrobin/AI-notes",
+        "hostedLink": "https://ai-notes-vert.vercel.app/",
+        "image": "/work/ai-notes.png",
+        "tagline": "Create notes, then ask questions about them through retrieval-augmented generation with OpenAI, with real-time sync on Convex.",
+        "summary": [
+            "Note AI is an intelligent note-taking application powered by AI, with real-time sync backed by Convex.",
+            "It lets users create and manage notes, then ask questions about them using retrieval-augmented generation with OpenAI."
+        ],
+        "caseStudy": {
+            "headline": "Ask your notes, not the internet.",
+            "problem": [
+                "Notes pile up faster than anyone rereads them, and keyword search only finds what you remember wording exactly.",
+                "Note AI embeds every note the moment it's saved, so you can ask a question in plain language and get an answer from your own notes. Each answer links back to the notes it came from, and when nothing matches it simply says it can't find that."
+            ],
+            "stackGroups": [
+                {
+                    "label": "frontend",
+                    "items": "Next.js 15 · React 19 · Tailwind v4 · Radix UI"
+                },
+                {
+                    "label": "backend",
+                    "items": "Convex · Convex Auth (password)"
+                },
+                {
+                    "label": "ai",
+                    "items": "Vercel AI SDK v5 · gpt-4.1-mini · text-embedding-3-small"
+                },
+                {
+                    "label": "hosting",
+                    "items": "Vercel · Convex"
+                }
+            ],
+            "flow": {
+                "title": "Answering a question",
+                "states": [
+                    "question",
+                    "tool call",
+                    "vector search",
+                    "score > 0.3",
+                    "streamed answer"
+                ],
+                "failState": "no match, so it says \"can't find that in your notes\"",
+                "steps": [
+                    "The chat posts to a Convex HTTP route with the user's auth token, and gets a 401 without one. Only the last 10 messages go to the model.",
+                    "gpt-4.1-mini decides whether it needs the notes and calls the findRelatedNotes tool with a search query.",
+                    "The query is embedded with text-embedding-3-small and run against the noteEmbeddings vector index, filtered to that user.",
+                    "Matches scoring 0.3 or lower are dropped. The rest are turned back into whole notes, with duplicates removed.",
+                    "The model answers from those notes in markdown, linking each source as /notes?noteId=…, and the reply streams into the chat."
+                ]
+            },
+            "decisions": [
+                {
+                    "tag": "chunk on paragraphs",
+                    "title": "Embed meaning, not the whole note",
+                    "body": "A note is split on blank lines and every paragraph gets its own embedding, so a question can land on the one paragraph that answers it."
+                },
+                {
+                    "tag": "retrieval as a tool",
+                    "title": "The model decides when to search",
+                    "body": "Retrieval is exposed as a tool instead of being stuffed into every prompt, so small talk costs no vector search and answers cite real note ids."
+                },
+                {
+                    "tag": "scoped at the index",
+                    "title": "Users can't retrieve each other's notes",
+                    "body": "The vector index filters on userId inside the search itself, rather than trusting a filter applied after results come back."
+                },
+                {
+                    "tag": "one write",
+                    "title": "A note never exists without its vectors",
+                    "body": "The note and its embeddings are inserted in a single Convex mutation, and deleting a note removes its embeddings with it."
+                }
+            ],
+            "deploy": [
+                {
+                    "comment": "backend: Convex functions, schema and vector index",
+                    "command": "npx convex dev"
+                },
+                {
+                    "comment": "frontend",
+                    "command": "npm run dev"
+                }
+            ],
+            "lessons": [],
+            "diagram": {
+                "title": "Architecture: Next.js on Convex",
+                "cols": 4,
+                "rows": 3,
+                "zones": [
+                    {
+                        "label": "convex",
+                        "col": 0,
+                        "row": 1,
+                        "colSpan": 4,
+                        "rowSpan": 2
+                    }
+                ],
+                "nodes": [
+                    {
+                        "id": "app",
+                        "name": "Next.js app",
+                        "detail": "useQuery for live notes · useChat streams answers",
+                        "col": 1.5,
+                        "row": 0
+                    },
+                    {
+                        "id": "gpt",
+                        "name": "gpt-4.1-mini",
+                        "detail": "OpenAI · answers in markdown with note links",
+                        "col": 3,
+                        "row": 0,
+                        "kind": "external"
+                    },
+                    {
+                        "id": "create",
+                        "name": "createNote",
+                        "detail": "action · embeds each paragraph with text-embedding-3-small",
+                        "col": 0,
+                        "row": 1
+                    },
+                    {
+                        "id": "chat",
+                        "name": "POST /api/chat",
+                        "detail": "HTTP action · streamText with a retrieval tool",
+                        "col": 2.5,
+                        "row": 1,
+                        "highlight": true
+                    },
+                    {
+                        "id": "notes",
+                        "name": "notes",
+                        "detail": "title · body · userId",
+                        "col": 0,
+                        "row": 2,
+                        "kind": "store"
+                    },
+                    {
+                        "id": "vectors",
+                        "name": "noteEmbeddings",
+                        "detail": "1536-d vector index, filtered by userId",
+                        "col": 1,
+                        "row": 2,
+                        "kind": "store"
+                    },
+                    {
+                        "id": "related",
+                        "name": "findRelatedNotes",
+                        "detail": "embeds the query · top 16 · score > 0.3",
+                        "col": 2.5,
+                        "row": 2
+                    }
+                ],
+                "edges": [
+                    {
+                        "from": "app",
+                        "to": "create",
+                        "label": "save note"
+                    },
+                    {
+                        "from": "app",
+                        "to": "chat",
+                        "label": "ask"
+                    },
+                    {
+                        "from": "chat",
+                        "to": "gpt",
+                        "label": "streamText"
+                    },
+                    {
+                        "from": "chat",
+                        "to": "related",
+                        "label": "tool call"
+                    },
+                    {
+                        "from": "create",
+                        "to": "notes",
+                        "label": "insert"
+                    },
+                    {
+                        "from": "create",
+                        "to": "vectors",
+                        "label": "vectors"
+                    },
+                    {
+                        "from": "related",
+                        "to": "vectors",
+                        "label": "vector search"
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "slug": "bunship",
         "name": "bunship",
         "date": "2026",
+        "featured": true,
         "stack": [
             "Bun",
             "TypeScript",
@@ -59,34 +447,465 @@
         "status": "live",
         "githubRepo": "https://github.com/ainmutaqorrobin/bunship",
         "hostedLink": "https://www.npmjs.com/package/create-bunship",
-        "cover": {
-            "command": "bun create bunship",
-            "glyphs": ["Bun", "TypeScript", "Docker"]
-        },
+        "command": "bun create bunship",
+        "tagline": "Scaffolds production-ready Bun monorepos using each framework's official scaffolder.",
         "summary": [
             "A CLI that scaffolds production-ready Bun monorepos by orchestrating each framework's official scaffolder non-interactively, so generated code always matches upstream instead of drifting from a hand-maintained template.",
             "On top of that it layers an opinionated root toolchain: Bun workspaces, oxlint and oxfmt, knip for dead-code detection, husky pre-commit hooks, and optional Docker plus GitHub Actions VPS deployment. Published to npm as create-bunship."
-        ]
+        ],
+        "caseStudy": {
+            "headline": "Upstream writes the app. bunship wires everything around it.",
+            "problem": [
+                "Every new project starts the same way. You run a framework scaffolder, then spend an afternoon wiring up the monorepo around it: workspaces, linting, formatting, dead-code checks, git hooks, Docker and CI.",
+                "Hand-maintained templates fix that once, then fall behind the moment a framework ships a new major version. bunship leaves the app code to each framework's official scaffolder and only owns the layer around it. Every generated repo has to pass its own bun run check and bun run build from the very first commit."
+            ],
+            "stackGroups": [
+                {
+                    "label": "cli",
+                    "items": "TypeScript · runs on Node ≥ 20 · zero runtime deps (tsdown bundle)"
+                },
+                {
+                    "label": "interface",
+                    "items": "clack prompts · --json agent mode"
+                },
+                {
+                    "label": "generated repo",
+                    "items": "Bun workspaces · oxlint · oxfmt · knip · husky"
+                },
+                {
+                    "label": "release",
+                    "items": "GitHub Actions · npm trusted publishing (OIDC)"
+                }
+            ],
+            "flow": {
+                "title": "The pipeline of a run",
+                "states": [
+                    "preflight",
+                    "scaffoldRoot",
+                    "scaffoldApps",
+                    "postProcess",
+                    "agentSkills",
+                    "tooling",
+                    "agentHooks",
+                    "docker",
+                    "cicd",
+                    "finalize"
+                ],
+                "failState": "step fails → exit 1, manifest names the step",
+                "steps": [
+                    "preflight checks the Node version each selected framework needs and fails fast with the version it found.",
+                    "Each adapter runs its official scaffolder non-interactively, then patches its app into the workspace: package name, ports, a /health endpoint on APIs.",
+                    "agentSkills installs framework playbooks first, so tooling can describe what actually landed rather than what was planned.",
+                    "tooling merges every adapter's fragments into one set of root configs: oxlint, oxfmt, knip, gitignore, AGENTS.md.",
+                    "docker and cicd add prod and hot-reload compose stacks plus CI and a VPS deploy workflow when asked.",
+                    "finalize runs git init before bun install, because husky's prepare script needs .git to exist, then formats and makes the first commit."
+                ]
+            },
+            "decisions": [
+                {
+                    "tag": "no boilerplate",
+                    "title": "Official scaffolders, not templates",
+                    "body": "App code always comes from upstream, so output matches whatever each framework ships today. Express is the one exception, because it has no official scaffolder."
+                },
+                {
+                    "tag": "adapter boundary",
+                    "title": "Adapters only write inside their app",
+                    "body": "Adapters are declarative fragments, and root files belong to steps. Adding a framework means one adapter file and a registry entry, never a special case inside a step."
+                },
+                {
+                    "tag": "drift canary",
+                    "title": "A red nightly is the system working",
+                    "body": "Scaffolders are version-pinned and the nightly matrix proves them on Ubuntu and Windows. A canary job strips the pins and runs against @latest, catching upstream changes before users do."
+                },
+                {
+                    "tag": "stdout is an api",
+                    "title": "Built for coding agents too",
+                    "body": "In --json mode the only thing on stdout is one manifest, progress goes to stderr, and exit codes mean something: 0 ok, 1 step failed, 2 usage error."
+                }
+            ],
+            "deploy": [
+                {
+                    "comment": "interactive",
+                    "command": "bun create bunship"
+                },
+                {
+                    "comment": "agent mode, with one JSON manifest on stdout",
+                    "command": "bun create bunship my-app --web next --api nest --docker --cicd --json"
+                },
+                {
+                    "comment": "release: pushing a tag publishes to npm with provenance",
+                    "command": "bun run release"
+                }
+            ],
+            "lessons": [],
+            "diagram": {
+                "title": "Architecture: steps over one context",
+                "cols": 4,
+                "rows": 5,
+                "zones": [
+                    {
+                        "label": "stack adapters · official scaffolders",
+                        "col": 0,
+                        "row": 3,
+                        "colSpan": 3,
+                        "rowSpan": 1
+                    }
+                ],
+                "nodes": [
+                    {
+                        "id": "you",
+                        "name": "you",
+                        "detail": "interactive prompts · Esc goes back",
+                        "col": 0.5,
+                        "row": 0,
+                        "kind": "external"
+                    },
+                    {
+                        "id": "agent",
+                        "name": "AI agent",
+                        "detail": "--json · exit codes 0 / 1 / 2",
+                        "col": 2.5,
+                        "row": 0,
+                        "kind": "external"
+                    },
+                    {
+                        "id": "resolve",
+                        "name": "resolve + validate",
+                        "detail": "flags or prompts → one config",
+                        "col": 1.5,
+                        "row": 1
+                    },
+                    {
+                        "id": "pipeline",
+                        "name": "pipeline",
+                        "detail": "10 ordered steps over one RunContext",
+                        "col": 1.5,
+                        "row": 2,
+                        "highlight": true
+                    },
+                    {
+                        "id": "manifest",
+                        "name": "manifest",
+                        "detail": "pretty log, or one JSON doc on stdout",
+                        "col": 3,
+                        "row": 2
+                    },
+                    {
+                        "id": "web",
+                        "name": "web",
+                        "detail": "create-next-app · create-vite · create-nuxt",
+                        "col": 0,
+                        "row": 3
+                    },
+                    {
+                        "id": "mobile",
+                        "name": "mobile",
+                        "detail": "create-expo-app",
+                        "col": 1,
+                        "row": 3
+                    },
+                    {
+                        "id": "api",
+                        "name": "api",
+                        "detail": "nest new · create-hono · fastify generate · Express template",
+                        "col": 2,
+                        "row": 3
+                    },
+                    {
+                        "id": "tooling",
+                        "name": "root toolchain",
+                        "detail": "oxlint · oxfmt · knip · husky · Docker · CI",
+                        "col": 3,
+                        "row": 3
+                    },
+                    {
+                        "id": "repo",
+                        "name": "monorepo",
+                        "detail": "bun install · oxfmt · first commit",
+                        "col": 1.5,
+                        "row": 4,
+                        "kind": "store"
+                    }
+                ],
+                "edges": [
+                    {
+                        "from": "you",
+                        "to": "resolve",
+                        "label": "prompts"
+                    },
+                    {
+                        "from": "agent",
+                        "to": "resolve",
+                        "label": "flags"
+                    },
+                    {
+                        "from": "resolve",
+                        "to": "pipeline",
+                        "label": "config"
+                    },
+                    {
+                        "from": "pipeline",
+                        "to": "manifest",
+                        "label": "report"
+                    },
+                    {
+                        "from": "pipeline",
+                        "to": "web"
+                    },
+                    {
+                        "from": "pipeline",
+                        "to": "mobile"
+                    },
+                    {
+                        "from": "pipeline",
+                        "to": "api"
+                    },
+                    {
+                        "from": "pipeline",
+                        "to": "tooling"
+                    },
+                    {
+                        "from": "web",
+                        "to": "repo"
+                    },
+                    {
+                        "from": "mobile",
+                        "to": "repo"
+                    },
+                    {
+                        "from": "api",
+                        "to": "repo"
+                    },
+                    {
+                        "from": "tooling",
+                        "to": "repo"
+                    }
+                ]
+            }
+        }
     },
     {
+        "slug": "appctl",
         "name": "appctl",
         "date": "2026",
+        "featured": true,
         "stack": ["Bash", "Nginx", "Docker", "Let's Encrypt"],
         "status": "live",
         "githubRepo": "https://github.com/ainmutaqorrobin/appctl",
         "hostedLink": "",
-        "cover": {
-            "command": "appctl add myapp",
-            "glyphs": ["Bash", "Nginx", "Docker"]
-        },
+        "command": "appctl add myapp",
+        "tagline": "Makes the 101st deployment the same single command as the first.",
         "summary": [
             "A port assigner and nginx server-block generator for a host-installed nginx fronting Docker apps, making the 101st deployment the same single command as the first.",
-            "It allocates a free host port from named tiers, writes and validates the nginx config, obtains a Let's Encrypt certificate, and reloads — rolling back cleanly if nginx -t ever fails. Containers publish on loopback only, so the internet cannot bypass nginx even though Docker's iptables rules sidestep the firewall."
-        ]
+            "It allocates a free host port from named tiers, writes and validates the nginx config, gets a Let's Encrypt certificate and reloads. If nginx -t ever fails, it rolls back cleanly. Containers publish on loopback only, so the internet can't bypass nginx even though Docker's iptables rules sidestep the firewall."
+        ],
+        "caseStudy": {
+            "headline": "The 101st deployment is the same command as the first.",
+            "problem": [
+                "Fronting many Docker apps with one host nginx gets painful fast. For every project you pick a free port, edit compose, write a server block, symlink it, get a certificate and reload, all by hand and the same way every time.",
+                "One bad block in that routine can take nginx down for every app on the box. appctl turns it into a single command with one registry as the source of truth, and never reloads a config that hasn't passed nginx -t."
+            ],
+            "stackGroups": [
+                {
+                    "label": "cli",
+                    "items": "Bash · one self-contained script"
+                },
+                {
+                    "label": "edge",
+                    "items": "nginx · sites-available / sites-enabled"
+                },
+                {
+                    "label": "tls",
+                    "items": "certbot (Let's Encrypt) · shared origin cert · none"
+                },
+                {
+                    "label": "release",
+                    "items": "GitHub Releases · appctl upgrade"
+                }
+            ],
+            "flow": {
+                "title": "What add does",
+                "states": [
+                    "allocate port",
+                    "HTTP block",
+                    "nginx -t",
+                    "certbot",
+                    ":443 block",
+                    "reload"
+                ],
+                "failState": "test fails → roll back, running nginx untouched",
+                "steps": [
+                    "Pick a tier (prompted, or TIER=…) and take the first port in its band that is neither in the registry nor bound on the host.",
+                    "Write an HTTP-only server block, enable it, test and reload, so certbot's http-01 challenge can be served.",
+                    "Obtain the certificate with certbot certonly. If that fails, the working HTTP route stays up and appctl prints how to retry.",
+                    "Rewrite the block with :443, the certbot hardening includes and an optional WebSocket upgrade, then test and reload again. If that test fails, it falls back to HTTP only.",
+                    "Print the exact docker-compose ports line, bound to 127.0.0.1, to paste into the project."
+                ]
+            },
+            "decisions": [
+                {
+                    "tag": "loopback only",
+                    "title": "The internet can't bypass nginx",
+                    "body": "Containers publish on 127.0.0.1. Docker's iptables rules bypass UFW and firewalld, so a 0.0.0.0 publish is exposed even behind a firewall deny rule."
+                },
+                {
+                    "tag": "test, then reload",
+                    "title": "A bad config never goes live",
+                    "body": "Every change runs nginx -t first. On failure appctl rolls back its own files and exits, leaving the running nginx and every other app untouched."
+                },
+                {
+                    "tag": "tls in phases",
+                    "title": "No certificate, no outage",
+                    "body": "The HTTP block goes live before certbot runs, so a DNS or port-80 problem leaves a working HTTP route instead of a half-written TLS block."
+                },
+                {
+                    "tag": "one source of truth",
+                    "title": "The registry decides",
+                    "body": "Every mapping lives in one TSV file. Rows change only after a successful test and reload, so a failure can never leave a dangling entry."
+                }
+            ],
+            "deploy": [
+                {
+                    "comment": "install the latest release",
+                    "command": "curl -fsSL https://github.com/ainmutaqorrobin/appctl/releases/latest/download/appctl | sudo tee /usr/local/bin/appctl >/dev/null && sudo chmod +x /usr/local/bin/appctl"
+                },
+                {
+                    "comment": "deploy an app: port, nginx block, TLS, compose line",
+                    "command": "sudo appctl add blog.example.com"
+                },
+                {
+                    "comment": "release: a pushed tag publishes the GitHub release",
+                    "command": "./release.sh patch"
+                }
+            ],
+            "lessons": [],
+            "diagram": {
+                "title": "Architecture: one host, many apps",
+                "cols": 4,
+                "rows": 4,
+                "zones": [
+                    {
+                        "label": "VPS host",
+                        "col": 0,
+                        "row": 1,
+                        "colSpan": 4,
+                        "rowSpan": 3
+                    },
+                    {
+                        "label": "docker · published on loopback only",
+                        "col": 0.5,
+                        "row": 3,
+                        "colSpan": 2.5,
+                        "rowSpan": 1,
+                        "inset": 8
+                    }
+                ],
+                "nodes": [
+                    {
+                        "id": "internet",
+                        "name": "internet",
+                        "detail": "requests for every domain",
+                        "col": 1.5,
+                        "row": 0,
+                        "kind": "external"
+                    },
+                    {
+                        "id": "appctl",
+                        "name": "appctl",
+                        "detail": "add · remove · ws · docs · upgrade",
+                        "col": 0,
+                        "row": 1,
+                        "highlight": true
+                    },
+                    {
+                        "id": "nginx",
+                        "name": "nginx",
+                        "detail": "host-installed · :80 / :443",
+                        "col": 1.5,
+                        "row": 1
+                    },
+                    {
+                        "id": "certbot",
+                        "name": "certbot",
+                        "detail": "Let's Encrypt · certonly --nginx",
+                        "col": 3,
+                        "row": 1,
+                        "kind": "external"
+                    },
+                    {
+                        "id": "registry",
+                        "name": "registry.tsv",
+                        "detail": "project → port → domain, TLS, WS",
+                        "col": 0,
+                        "row": 2,
+                        "kind": "store"
+                    },
+                    {
+                        "id": "block",
+                        "name": "server block",
+                        "detail": "sites-enabled · gated by nginx -t",
+                        "col": 1.5,
+                        "row": 2
+                    },
+                    {
+                        "id": "app",
+                        "name": "frontend app",
+                        "detail": "tier frontend · 127.0.0.1:10000",
+                        "col": 1,
+                        "row": 3
+                    },
+                    {
+                        "id": "api",
+                        "name": "backend app",
+                        "detail": "tier backend · 127.0.0.1:11000",
+                        "col": 2,
+                        "row": 3
+                    }
+                ],
+                "edges": [
+                    {
+                        "from": "internet",
+                        "to": "nginx",
+                        "label": "https"
+                    },
+                    {
+                        "from": "nginx",
+                        "to": "block",
+                        "label": "loads"
+                    },
+                    {
+                        "from": "appctl",
+                        "to": "registry",
+                        "label": "allocate port"
+                    },
+                    {
+                        "from": "appctl",
+                        "to": "block",
+                        "label": "write · test · reload"
+                    },
+                    {
+                        "from": "certbot",
+                        "to": "block",
+                        "label": "cert"
+                    },
+                    {
+                        "from": "block",
+                        "to": "app",
+                        "label": "proxy_pass"
+                    },
+                    {
+                        "from": "block",
+                        "to": "api"
+                    }
+                ]
+            }
+        }
     },
     {
+        "slug": "ticketing-app",
         "name": "Ticketing App",
         "date": "2025",
+        "featured": false,
         "stack": [
             "Next.js",
             "Node.js",
@@ -100,15 +919,247 @@
         "status": "development",
         "githubRepo": "https://github.com/ainmutaqorrobin/TicketingApp",
         "hostedLink": "",
-        "image": "/ticket-app.png",
+        "command": "skaffold dev",
+        "tagline": "Event ticketing as microservices on a NATS Streaming event bus, with common types and middleware published to npm.",
         "summary": [
             "An event ticketing platform built as microservices, with a NATS Streaming event bus connecting independently deployable services.",
             "It demonstrates event-driven architecture, asynchronous communication, and service isolation, with common types and middleware factored into a shared library published to npm."
-        ]
+        ],
+        "caseStudy": {
+            "diagram": {
+                "title": "Architecture: five services, one event bus",
+                "cols": 5,
+                "rows": 4,
+                "zones": [
+                    {
+                        "label": "kubernetes · skaffold dev",
+                        "col": 0,
+                        "row": 1,
+                        "colSpan": 5,
+                        "rowSpan": 3
+                    }
+                ],
+                "nodes": [
+                    {
+                        "id": "ingress",
+                        "name": "ingress-nginx",
+                        "detail": "/api/users · tickets · orders · payments, / → client",
+                        "col": 2,
+                        "row": 0
+                    },
+                    {
+                        "id": "stripe",
+                        "name": "Stripe",
+                        "detail": "PaymentIntents",
+                        "col": 4,
+                        "row": 0,
+                        "kind": "external"
+                    },
+                    {
+                        "id": "client",
+                        "name": "client",
+                        "detail": "Next.js UI",
+                        "col": 0,
+                        "row": 1
+                    },
+                    {
+                        "id": "auth",
+                        "name": "auth",
+                        "detail": "signup · signin · JWT cookie · own MongoDB",
+                        "col": 1,
+                        "row": 1
+                    },
+                    {
+                        "id": "tickets",
+                        "name": "tickets",
+                        "detail": "create · update · own MongoDB",
+                        "col": 2,
+                        "row": 1
+                    },
+                    {
+                        "id": "orders",
+                        "name": "orders",
+                        "detail": "reserve with a 15-min window · own MongoDB",
+                        "col": 3,
+                        "row": 1
+                    },
+                    {
+                        "id": "payments",
+                        "name": "payments",
+                        "detail": "charge · own MongoDB",
+                        "col": 4,
+                        "row": 1
+                    },
+                    {
+                        "id": "nats",
+                        "name": "NATS Streaming",
+                        "detail": "event bus · queue groups",
+                        "col": 2,
+                        "row": 2,
+                        "highlight": true
+                    },
+                    {
+                        "id": "expiration",
+                        "name": "expiration",
+                        "detail": "times out unpaid orders",
+                        "col": 4,
+                        "row": 2
+                    },
+                    {
+                        "id": "redis",
+                        "name": "redis",
+                        "detail": "Bull delayed jobs",
+                        "col": 4,
+                        "row": 3,
+                        "kind": "store"
+                    }
+                ],
+                "edges": [
+                    {
+                        "from": "ingress",
+                        "to": "client"
+                    },
+                    {
+                        "from": "ingress",
+                        "to": "auth"
+                    },
+                    {
+                        "from": "ingress",
+                        "to": "tickets"
+                    },
+                    {
+                        "from": "ingress",
+                        "to": "orders"
+                    },
+                    {
+                        "from": "ingress",
+                        "to": "payments"
+                    },
+                    {
+                        "from": "payments",
+                        "to": "stripe",
+                        "label": "charge"
+                    },
+                    {
+                        "from": "tickets",
+                        "to": "nats",
+                        "label": "ticket:*",
+                        "async": true,
+                        "both": true
+                    },
+                    {
+                        "from": "orders",
+                        "to": "nats",
+                        "label": "order:*",
+                        "async": true,
+                        "both": true
+                    },
+                    {
+                        "from": "payments",
+                        "to": "nats",
+                        "label": "payment:*",
+                        "async": true,
+                        "both": true
+                    },
+                    {
+                        "from": "nats",
+                        "to": "expiration",
+                        "label": "expiry events",
+                        "async": true,
+                        "both": true,
+                        "route": "under"
+                    },
+                    {
+                        "from": "expiration",
+                        "to": "redis",
+                        "label": "delayed job"
+                    }
+                ]
+            },
+            "headline": "Five services, one event bus, no shared database.",
+            "problem": [
+                "A ticket can't be sold twice, an unpaid order has to release its ticket, and a payment has to complete exactly one order. All of that has to hold across services that never share a database.",
+                "The Ticketing App splits that into five independently deployable services that only talk through NATS Streaming events, each keeping its own MongoDB and its own copy of the data it needs."
+            ],
+            "stackGroups": [
+                {
+                    "label": "services",
+                    "items": "Node.js · Express · TypeScript · Mongoose"
+                },
+                {
+                    "label": "messaging",
+                    "items": "NATS Streaming · Bull on Redis"
+                },
+                {
+                    "label": "platform",
+                    "items": "Kubernetes · ingress-nginx · Skaffold"
+                },
+                {
+                    "label": "payments",
+                    "items": "Stripe"
+                }
+            ],
+            "flow": {
+                "title": "Buying a ticket",
+                "states": [
+                    "order:created",
+                    "ticket reserved",
+                    "15-min timer",
+                    "payment:created",
+                    "order complete"
+                ],
+                "failState": "timer wins → order cancelled, ticket released",
+                "steps": [
+                    "Orders checks the ticket isn't already reserved, saves the order with a 15-minute expiry and publishes order:created.",
+                    "Tickets reserves the ticket by setting its orderId and publishes ticket:updated, so every other copy stays in step.",
+                    "Expiration queues a Bull job on Redis, delayed until the order expires.",
+                    "Payments charges the card through a Stripe PaymentIntent and publishes payment:created, and Orders marks the order complete.",
+                    "If the delayed job fires first, expiration:complete makes Orders cancel the order, and order:cancelled releases the ticket."
+                ]
+            },
+            "decisions": [
+                {
+                    "tag": "events, not calls",
+                    "title": "Services never call each other",
+                    "body": "Everything crosses NATS Streaming. Orders keeps its own replica of tickets, built from events, instead of asking the tickets service at request time."
+                },
+                {
+                    "tag": "versioned records",
+                    "title": "Out-of-order events are rejected",
+                    "body": "Records carry a version through mongoose-update-if-current, and listeners only apply an event whose version is the next one, so a late message cannot overwrite newer data."
+                },
+                {
+                    "tag": "queue groups",
+                    "title": "Scale out without double work",
+                    "body": "Each service subscribes with a queue group, so with several replicas running every event is still handled once."
+                },
+                {
+                    "tag": "shared contract",
+                    "title": "One package for the protocol",
+                    "body": "Event subjects, payload types, base Listener and Publisher classes and auth middleware live in @robin_project/common on npm."
+                }
+            ],
+            "deploy": [
+                {
+                    "comment": "ingress controller, once per cluster",
+                    "command": "kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.13.2/deploy/static/provider/cloud/deploy.yaml"
+                },
+                {
+                    "comment": "build, deploy and watch every service",
+                    "command": "skaffold dev"
+                }
+            ],
+            "lessons": [
+                "Saving a record and publishing its event aren't atomic yet, so a crash in between leaves other services out of sync. The fix is an outbox: write the event to the same database in one transaction and let a background worker publish it.",
+                "Orders validates ticketId as a MongoDB ObjectId, which quietly couples it to the tickets service's database. It should only check that the id is present and trust the replicated ticket data."
+            ]
+        }
     },
     {
+        "slug": "devops-capstone",
         "name": "DevOps Capstone (AWS)",
         "date": "2026",
+        "featured": false,
         "stack": [
             "Terraform",
             "Ansible",
@@ -121,13 +1172,212 @@
         "status": "deprecated",
         "githubRepo": "https://github.com/ainmutaqorrobin/devops-bootcamp-project",
         "hostedLink": "https://ainmutaqorrobin.github.io/devops-bootcamp-project/",
-        "cover": {
-            "command": "terraform apply",
-            "glyphs": ["Terraform", "Ansible", "AWS"]
-        },
+        "command": "terraform apply",
+        "tagline": "A VPC with public and private subnets: Terraform, Ansible, Docker, Prometheus + Grafana, and a Cloudflare Tunnel instead of public ingress.",
         "summary": [
             "A capstone project provisioning an AWS VPC with public and private subnets end to end: Terraform for the infrastructure, Ansible for configuration, Docker for the workload.",
             "Prometheus and Grafana handle monitoring, a Cloudflare Tunnel provides secure access without exposing public ingress, and GitHub Actions publishes the documentation site. The AWS resources have since been torn down."
-        ]
+        ],
+        "caseStudy": {
+            "diagram": {
+                "title": "Architecture: AWS VPC 10.0.0.0/24",
+                "cols": 5,
+                "rows": 3,
+                "zones": [
+                    {
+                        "label": "public subnet · 10.0.0.0/25",
+                        "col": 0,
+                        "row": 1,
+                        "colSpan": 5,
+                        "rowSpan": 1
+                    },
+                    {
+                        "label": "private subnet · 10.0.0.128/25",
+                        "col": 0,
+                        "row": 2,
+                        "colSpan": 5,
+                        "rowSpan": 1
+                    }
+                ],
+                "nodes": [
+                    {
+                        "id": "actions",
+                        "name": "GitHub Actions",
+                        "detail": "build image on push · docs to Pages",
+                        "col": 0,
+                        "row": 0,
+                        "kind": "external"
+                    },
+                    {
+                        "id": "ecr",
+                        "name": "ECR",
+                        "detail": "app image · scan on push",
+                        "col": 1.5,
+                        "row": 0,
+                        "kind": "store"
+                    },
+                    {
+                        "id": "cloudflare",
+                        "name": "Cloudflare",
+                        "detail": "DNS · Tunnel",
+                        "col": 3,
+                        "row": 0,
+                        "kind": "external"
+                    },
+                    {
+                        "id": "ssm",
+                        "name": "SSM",
+                        "detail": "Session Manager on every instance",
+                        "col": 4,
+                        "row": 0,
+                        "kind": "external"
+                    },
+                    {
+                        "id": "web",
+                        "name": "web server",
+                        "detail": "t3.micro · 10.0.0.5 · EIP · app on :80",
+                        "col": 2,
+                        "row": 1,
+                        "highlight": true
+                    },
+                    {
+                        "id": "nat",
+                        "name": "NAT gateway",
+                        "detail": "egress for the private subnet",
+                        "col": 4,
+                        "row": 1
+                    },
+                    {
+                        "id": "ansible",
+                        "name": "ansible controller",
+                        "detail": "t3.micro · 10.0.0.135",
+                        "col": 1,
+                        "row": 2
+                    },
+                    {
+                        "id": "monitoring",
+                        "name": "monitoring",
+                        "detail": "10.0.0.136 · Prometheus :9090 · Grafana :3000",
+                        "col": 3,
+                        "row": 2
+                    }
+                ],
+                "edges": [
+                    {
+                        "from": "actions",
+                        "to": "ecr",
+                        "label": "push"
+                    },
+                    {
+                        "from": "ecr",
+                        "to": "web",
+                        "label": "pull :latest"
+                    },
+                    {
+                        "from": "cloudflare",
+                        "to": "web",
+                        "label": "DNS / tunnel"
+                    },
+                    {
+                        "from": "ssm",
+                        "to": "web",
+                        "label": "shell"
+                    },
+                    {
+                        "from": "ansible",
+                        "to": "web",
+                        "label": "configure"
+                    },
+                    {
+                        "from": "ansible",
+                        "to": "monitoring",
+                        "label": "configure"
+                    },
+                    {
+                        "from": "monitoring",
+                        "to": "web",
+                        "label": "scrape :9100"
+                    },
+                    {
+                        "from": "monitoring",
+                        "to": "nat",
+                        "label": "egress"
+                    }
+                ]
+            },
+            "headline": "Three servers, two subnets, zero clicks in the console.",
+            "problem": [
+                "The bootcamp's final brief was to design, provision, configure, deploy, monitor and document a complete system, and to do it reproducibly instead of clicking around the AWS console.",
+                "Terraform builds the network and servers and writes the Ansible inventory. Ansible configures every box and runs the app from ECR. Prometheus and Grafana watch the web server from the private subnet."
+            ],
+            "stackGroups": [
+                {
+                    "label": "iac",
+                    "items": "Terraform · S3 remote state"
+                },
+                {
+                    "label": "config",
+                    "items": "Ansible · common, docker, webapp, monitoring"
+                },
+                {
+                    "label": "compute",
+                    "items": "3 × t3.micro · Ubuntu 24.04 · ap-southeast-1"
+                },
+                {
+                    "label": "observability",
+                    "items": "Prometheus · Grafana"
+                }
+            ],
+            "flow": {
+                "title": "From nothing to monitored",
+                "states": [
+                    "terraform apply",
+                    "inventory.ini",
+                    "ansible-playbook",
+                    "docker run",
+                    "scraped"
+                ],
+                "steps": [
+                    "terraform apply builds the VPC, both subnets, the internet and NAT gateways, three Ubuntu servers and the ECR repository, with state kept in S3.",
+                    "Terraform renders inventory.ini from a template with each server's IP, the SSH key and the ECR repository URI.",
+                    "The playbook applies common to every host (AWS CLI, timezone, SSM agent), then docker and webapp to the web server, and docker and monitoring to the monitoring server.",
+                    "The web server pulls the latest image from ECR and runs it on port 80.",
+                    "Prometheus on the private monitoring server scrapes the web server at 10.0.0.5:9100, with Grafana on top."
+                ]
+            },
+            "decisions": [
+                {
+                    "tag": "private by default",
+                    "title": "Only the web server is public",
+                    "body": "The Ansible controller and the monitoring server live in the private subnet and reach the internet only outwards, through a NAT gateway."
+                },
+                {
+                    "tag": "infra writes config",
+                    "title": "The inventory is generated",
+                    "body": "Terraform renders the Ansible inventory from the resources it just created, so the playbook can never point at a stale IP."
+                },
+                {
+                    "tag": "no bastion",
+                    "title": "Shell access through Session Manager",
+                    "body": "Every instance gets an SSM instance profile, so operators open a session through AWS rather than hopping through a jump host."
+                },
+                {
+                    "tag": "remote state",
+                    "title": "State lives in S3",
+                    "body": "Terraform state sits in an S3 backend instead of on one person's laptop."
+                }
+            ],
+            "deploy": [
+                {
+                    "comment": "provision the network, servers and ECR (from terraform/)",
+                    "command": "terraform init && terraform apply"
+                },
+                {
+                    "comment": "configure every host and start the app (from ansible/)",
+                    "command": "ansible-playbook playbook.yml"
+                }
+            ],
+            "lessons": []
+        }
     }
 ]

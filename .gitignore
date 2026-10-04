@@ -14,3 +14,11 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 deploy
+
+# Local résumé source (contains personal contact details and a photo);
+# public/resume/ holds the published PDF that the site actually links to.
+/*.docx
+
+# Scratch output from the Playwright browser tool (screenshots, logs)
+.playwright-mcp
+

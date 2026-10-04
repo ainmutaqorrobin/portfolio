@@ -1,9 +1,10 @@
 {
     "name": "Ain Mutaqorrobin",
     "role": "Software Engineer",
-    "location": "Kuala Lumpur, Malaysia",
-    "tagline": "I build web and mobile products with a strong focus on maintainability, delivery speed, and clean engineering workflows.",
-    "heroSummary": "As a software engineer, I enjoy building practical products, improving developer workflows, and turning ideas into production-ready systems with modern JavaScript and TypeScript stacks.",
+    "location": "Bangsar, Kuala Lumpur",
+    "timezone": "UTC+8",
+    "tagline": "I build web and mobile apps end to end: the screens people use, the APIs behind them, and the pipelines that ship them.",
+    "heroSummary": "Software engineer with around three years of experience building web and mobile products, currently leading a cross-platform mobile team shipping React Native (Expo) apps to Google Play and the App Store. Hands-on production experience with React Native, Next.js, TypeScript, NestJS, and PostgreSQL, along with AWS infrastructure (EC2, RDS, S3, ALB, IAM) managed with Terraform and release automation through EAS CI/CD.",
     "availability": "Open to freelance projects, software roles, and technical collaborations.",
     "contact": {
         "email": "ainmutaqorrobin@gmail.com",
@@ -17,95 +18,189 @@
         "My work covers frontend development, backend services, debugging, maintenance, and shipping features that are practical for real users and teams.",
         "Lately I have been going deeper into microservices and DevOps, especially Docker and Kubernetes, to strengthen how I design, package, and deploy production systems."
     ],
+    "principles": [
+        {
+            "title": "Practical shipping",
+            "body": "I prefer useful software over impressive complexity, and I care about whether teams can keep delivering after launch."
+        },
+        {
+            "title": "Cross-stack ownership",
+            "body": "Frontend, backend, deployment, and debugging all matter when product quality depends on the full system."
+        },
+        {
+            "title": "Calm engineering",
+            "body": "Readable structure, documented decisions, and repeatable workflows beat heroics when deadlines start to tighten."
+        }
+    ],
+    "learning": ["Kubernetes", "Microservices", "DevOps"],
     "workExperience": [
         {
             "company": "Studio20",
             "role": "Full-Stack Developer",
+            "location": "Kuala Lumpur",
             "period": "Dec 2025 - Present",
-            "summary": "Working across backend, frontend, and mobile application development.",
+            "summary": "Leading mobile, owning backend services and the AWS footprint they run on.",
+            "tags": [
+                "react native",
+                "expo",
+                "eas",
+                "nestjs",
+                "postgresql",
+                "aws",
+                "terraform"
+            ],
             "highlights": [
-                "Build and maintain scalable web and mobile applications.",
-                "Manage and scale containerized environments for reliable deployments.",
-                "Lead and coordinate mobile development teams to deliver projects efficiently."
+                "Lead the mobile development team building cross-platform Android and iOS applications with React Native and Expo.",
+                "Built a CI/CD pipeline on EAS (Expo Application Services) that automates builds and submission to the Google Play Store and Apple App Store.",
+                "Integrated third-party identity services, including Singpass (MyInfo API) for government-verified user data and Tencent Cloud eKYC for identity verification.",
+                "Manage production infrastructure on AWS (EC2, RDS, S3, ALB, IAM), provisioned and maintained with Terraform.",
+                "Develop backend services with NestJS and PostgreSQL, including scheduled cron jobs, and maintain containerized environments for repeatable deployments."
             ]
         },
         {
-            "company": "Siaga Labs",
+            "company": "Siaga Labs Sdn Bhd",
             "role": "Junior Software Developer",
+            "location": "Subang Jaya, Selangor",
             "period": "Nov 2024 - Dec 2025",
-            "summary": "Built web applications using Next.js and TypeScript in a product-focused team environment.",
+            "summary": "Built web applications using Next.js and TypeScript in a product-focused team.",
+            "tags": ["next.js", "typescript", "axios", "swagger", "postman"],
             "highlights": [
-                "Connected backend and frontend systems using Axios, making sure different parts of the application work well together.",
-                "Used Swagger and Postman to check and document APIs, ensuring the website runs correctly.",
-                "Developed comprehensive utility functions and global CSS variables, enhancing code reusability and maintaining consistent design system across multiple modules."
+                "Built and maintained modern web applications using Next.js and TypeScript.",
+                "Connected back-end and front-end systems through RESTful APIs using Axios.",
+                "Tested and documented APIs with Swagger and Postman to ensure correct behaviour and smooth deployments."
             ]
         },
         {
             "company": "Mesiniaga Berhad",
             "role": "Software Engineer (Protege)",
+            "location": "Subang Jaya, Selangor",
             "period": "Feb 2024 - Oct 2024",
-            "summary": "Worked on enterprise web applications using Angular and TypeScript in a structured engineering environment.",
+            "summary": "Enterprise web applications using Angular and TypeScript.",
+            "tags": ["angular", "typescript", "rest", "gitlab"],
             "highlights": [
-                "Handled front-end development for web applications using TypeScript and the Angular framework.",
-                "Integrated REST APIs and connected business logic to the front-end application using Angular.",
-                "Resolved tickets and bugs raised by partners related to internal libraries and the company framework in GitLab."
+                "Developed front-end web applications using TypeScript on the Angular framework.",
+                "Implemented REST API integration, connecting business logic to the Angular front-end.",
+                "Resolved partner-raised tickets and bugs related to the internal library and company framework in GitLab.",
+                "Verified API deployment status using Swagger and Postman."
             ]
         },
         {
             "company": "Netizen Experience",
-            "role": "Software Engineer Internship",
+            "role": "Software Engineer Intern",
+            "location": "Kuala Lumpur",
             "period": "Mar 2023 - Aug 2023",
-            "summary": "Supported web development tasks and internal product work during my software engineering internship.",
+            "summary": "Internship covering web development and technical documentation.",
+            "tags": ["react", "typescript", "next.js", "aws lambda"],
             "highlights": [
-                "Contributed to web development tasks using HTML, CSS, JavaScript, and TypeScript.",
-                "Worked on internal projects using React, TypeScript, CSS Modules, and GitHub.",
-                "Created documentation for an e-commerce website covering both front-end and back-end flows with Next.js and AWS Lambda."
+                "Contributed to web development using React and TypeScript.",
+                "Produced e-commerce technical documentation involving Next.js and AWS Lambda."
             ]
         }
     ],
+    "education": [
+        {
+            "title": "B.CS (Software Engineering)",
+            "school": "Universiti Malaysia Pahang (UMP), Pekan",
+            "period": "2019 - 2023",
+            "note": "CGPA 3.35 · Dean's List twice"
+        },
+        {
+            "title": "Matriculation",
+            "school": "Kolej Matrikulasi Pahang (KMPH), Gambang",
+            "period": "2018 - 2019",
+            "note": "CGPA 3.58 · Dean's List (GPA 3.92) · Co-curricular Semester Figure Award"
+        }
+    ],
+    "certifications": [
+        {
+            "name": "NestJS: The Complete Developer's Guide",
+            "issuer": "Udemy",
+            "url": "https://www.udemy.com/certificate/UC-1dbc51cf-38bc-4752-a79f-0973d6c22415/"
+        },
+        {
+            "name": "Next.js 15 & React: The Complete Guide",
+            "issuer": "Udemy",
+            "url": "https://www.udemy.com/certificate/UC-efd6ac07-5dd9-4229-bad5-19f16e45e514/"
+        },
+        {
+            "name": "Advanced React: Design Systems, Design Patterns, and Performance",
+            "issuer": "Udemy",
+            "url": "https://www.udemy.com/certificate/UC-d1d9c4e2-30e9-4b6a-a37e-7e79e4be7498/"
+        },
+        {
+            "name": "Microfrontends: A Complete Developer's Guide",
+            "issuer": "Udemy",
+            "url": "https://www.udemy.com/certificate/UC-dfa21e9b-1444-4ce4-b434-b4023c2805f1/"
+        },
+        {
+            "name": "DevOps Bootcamp 2025",
+            "issuer": "Infratify",
+            "url": "https://www.infratify.com/api/certificates/IT-Q0X82-8EFI1-ZI2GC/view"
+        }
+    ],
     "skills": {
-        "frontend": [
+        "Frontend": [
             "JavaScript",
             "TypeScript",
             "React",
             "Next.js",
             "Angular",
+            "Redux",
+            "Zustand",
+            "Tailwind CSS",
+            "Radix UI"
+        ],
+        "Mobile": [
+            "React Native",
             "Expo",
-            "Tailwind CSS"
+            "EAS Build",
+            "EAS Submit",
+            "Android",
+            "iOS"
         ],
-        "backend": [
-            "Node.js",
-            "Bun",
-            "Express",
-            "NestJS",
-            "BullMQ",
-            "NATS Streaming",
-            "Jest",
-            "Postman",
-            "Swagger"
-        ],
-        "database": [
+        "Backend": ["Node.js", "Express.js", "NestJS", "Scheduled jobs (cron)"],
+        "Databases": [
             "PostgreSQL",
             "MongoDB",
-            "Redis",
-            "Drizzle",
+            "Microsoft SQL Server",
+            "SQLite",
             "Firebase",
-            "Convex"
+            "Convex",
+            "Redis"
         ],
-        "devops": [
+        "DevOps & cloud": [
+            "AWS (EC2, RDS, S3, ALB, IAM)",
+            "Terraform",
             "Docker",
             "Kubernetes",
-            "Terraform",
             "Ansible",
-            "AWS",
-            "Nginx",
-            "Cloudflare",
+            "EAS CI/CD",
             "GitHub Actions",
             "Prometheus",
-            "Grafana",
-            "Bash",
-            "Git",
-            "CI/CD"
-        ]
+            "Grafana"
+        ],
+        "Architecture": [
+            "Microservices",
+            "Event-Driven Architecture",
+            "Micro Frontends",
+            "Monorepo (Nx, Turbo)"
+        ],
+        "APIs & tools": [
+            "REST",
+            "Singpass (MyInfo API)",
+            "Tencent Cloud eKYC",
+            "Postman",
+            "Axios",
+            "Swagger",
+            "NATS Streaming",
+            "BullMQ",
+            "Cloudinary"
+        ],
+        "AI": ["OpenAI API", "Vercel AI SDK", "Mastra AI", "RAG"],
+        "Testing & version control": ["Jest", "Git", "GitHub", "GitLab"]
+    },
+    "resume": {
+        "pdf": "/resume/Ain-Mutaqorrobin-Resume.pdf",
+        "pages": 2
     }
 }
